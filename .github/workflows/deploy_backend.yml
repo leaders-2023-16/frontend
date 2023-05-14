@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'master'
-      - 'feature/ci'
 
 env:
   IMAGE: registry.hub.docker.com/andrewklyuchnikov/leaders-frontend
