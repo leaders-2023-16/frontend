@@ -1,0 +1,2 @@
+docker_image: registry.hub.docker.com/andrewklyuchnikov/leaders-frontend
+app_external_port: 8080
