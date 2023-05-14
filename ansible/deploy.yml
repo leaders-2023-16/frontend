@@ -1,0 +1,31 @@
+- hosts: stage
+  gather_facts: no
+  tasks:
+    - include: tasks/docker_login.yml
+
+    - name: Pull the new image
+      docker_image:
+        name: "{{ docker_image }}:{{app_image_version}}"
+        source: pull
+      register: pulled_image
+
+    - name: Stop the existing container
+      docker_container:
+        name: leaders-frontend
+        state: stopped
+      register: stopped_container
+      changed_when: stopped_container is changed
+
+    - name: Remove the existing container
+      docker_container:
+        name: leaders-frontend
+        state: absent
+      when: stopped_container is changed
+
+    - name: Run the container with the new image
+      docker_container:
+        name: leaders-frontend
+        image: "{{ docker_image }}:{{app_image_version}}"
+        ports:
+          - "127.0.0.1:{{ app_external_port }}:80"
+      when: pulled_image is changed
