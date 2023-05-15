@@ -1,9 +1,11 @@
 #build
 FROM node:19-alpine as builder
+ARG VITE_API_URL=https://leaders.rubles.lol/api
 WORKDIR /usr/src/app
 COPY package.json yarn.lock ./
 RUN yarn
 COPY . ./
+ENV VITE_API_URL=$VITE_API_URL
 RUN yarn build
 
 #nginx

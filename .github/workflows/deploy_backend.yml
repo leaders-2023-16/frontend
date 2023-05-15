@@ -33,6 +33,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           cache-from: ${{ env.IMAGE }}:latest
+          build-args: VITE_API_URL=${{ vars.BACKEND_URL }}
           push: true
           tags: ${{ env.IMAGE }}:latest,${{ env.IMAGE }}:${{ github.sha }}
 
