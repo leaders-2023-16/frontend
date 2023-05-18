@@ -52,7 +52,8 @@ jobs:
 
             See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
 
-            See job logs: ${{ env.GITHUB_SERVER_URL }}/${{ env.GITHUB_REPOSITORY }}/actions/runs/${{ env.GITHUB_RUN_ID }}"
+            See job logs: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
 
 
   deploy:
@@ -93,7 +94,7 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            Frontend was deployed by ${{ github.actor }}
+            ✅ Frontend was deployed by ${{ github.actor }}
 
             Commit message: ${{ github.event.commits[0].message }}
 
@@ -118,4 +119,4 @@ jobs:
 
             See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
             
-            See job logs: ${{ env.GITHUB_SERVER_URL }}/${{ env.GITHUB_REPOSITORY }}/actions/runs/${{ env.GITHUB_RUN_ID }}"
+            See job logs: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
