@@ -9,6 +9,7 @@ import {
 import { router } from './router.tsx'
 import enTranslations from '@shopify/polaris/locales/en.json';
 import { AppProvider } from '@shopify/polaris';
+import setup from './services/setupInterceptors.ts';
 
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
@@ -20,3 +21,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     </AppProvider>
   </React.StrictMode>,
 )
+
+setup(store)

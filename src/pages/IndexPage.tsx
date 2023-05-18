@@ -282,7 +282,8 @@ export const IndexPage = () => {
 
     return (
         <div style={{ height: '500px' }}>
-            <Frame
+            sdfsfdsdf
+            {/* <Frame
                 logo={logo}
                 topBar={topBarMarkup}
                 navigation={navigationMarkup}
@@ -295,7 +296,7 @@ export const IndexPage = () => {
                 {pageMarkup}
                 {toastMarkup}
                 {modalMarkup}
-            </Frame>
+            </Frame> */}
         </div>
     );
 }
