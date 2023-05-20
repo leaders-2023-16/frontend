@@ -1,5 +1,5 @@
 import TokenService from './tokenService';
-import axios from './axios';
+import { http as axios } from './axios';
 import { authActions } from '../store/auth';
 import { Store } from '@reduxjs/toolkit';
 
@@ -32,14 +32,14 @@ const setup = (store: Store) => {
                     originalConfig._retry = true;
                     try {
                         const token = TokenService.getLocalRefreshToken();
-                        const rs = await axios.get('/auth/refresh', {
+                        const rs = await axios.get('v1/auth/refresh', {
                             headers: {
                                 Authorization: `Bearer ${token}`
                             }
                         });
                         dispatch(authActions.refreshToken(rs.data));
-                        TokenService.updateLocalAccessToken(rs.data.accessToken);
-                        TokenService.updateLocalRefreshToken(rs.data.refreshToken);
+                        TokenService.updateLocalAccessToken(rs.data.access);
+                        TokenService.updateLocalRefreshToken(rs.data.refresh);
 
                         return axios(originalConfig);
                     } catch (_error) {

@@ -4,7 +4,7 @@ import { User, AuthState, Role } from './types';
 import { loginAsync, registerAsync, logoutAsync } from './api';
 
 const user: User = tokenService.getUser();
-const initialState: AuthState = user.accessToken
+const initialState: AuthState = user.access
     ? {
         isLoggedIn: true,
         user: user,
@@ -12,7 +12,7 @@ const initialState: AuthState = user.accessToken
     }
     : {
         isLoggedIn: false,
-        user: { accessToken: '', refreshToken: '', role: Role.USER },
+        user: { access: '', refresh: '', role: Role.USER },
         error: ''
     };
 
@@ -24,15 +24,15 @@ export const authSlice = createSlice({
             state.error = action.payload;
         },
         refreshToken: (state, { payload }) => {
-            state.user.accessToken = payload.acessToken;
-            state.user.refreshToken = payload.refreshToken;
+            state.user.access = payload.acess;
+            state.user.refresh = payload.refresh;
         }
     },
     extraReducers: (builder) => {
         builder
             .addCase(loginAsync.fulfilled, (state, { payload }) => {
                 state.isLoggedIn = true;
-                state.user = payload.user;
+                state.user = { access: payload.access, refresh: payload.refresh, role: Role.USER }
                 state.error = '';
             })
             .addCase(loginAsync.rejected, (state) => {
@@ -43,7 +43,7 @@ export const authSlice = createSlice({
             })
             .addCase(logoutAsync.fulfilled, (state) => {
                 state.isLoggedIn = false;
-                state.user = { accessToken: '', refreshToken: '', role: Role.USER };
+                state.user = { access: '', refresh: '', role: Role.USER };
                 state.error = '';
             });
     }

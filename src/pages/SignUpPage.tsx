@@ -1,4 +1,3 @@
-import { Form, FormLayout, TextField, Button, HorizontalStack } from '@shopify/polaris';
 import { useCallback } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { loginAsync } from '../store/auth/api';

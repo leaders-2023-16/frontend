@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { authActions } from ".";
 import authService from "../../services/authService";
-import { AuthState, UserRegister, UserCredentials } from "./types";
+import { AuthState, UserRegister, UserCredentials, User } from "./types";
 
 export const registerAsync = createAsyncThunk<AuthState, UserRegister>(
     'auth/register',
@@ -34,7 +34,7 @@ export const registerAsync = createAsyncThunk<AuthState, UserRegister>(
     }
 );
 
-export const loginAsync = createAsyncThunk<AuthState, UserCredentials>(
+export const loginAsync = createAsyncThunk<User, UserCredentials>(
     'auth/login',
     async (userCredentials: UserCredentials, thunkApi) => {
         try {
@@ -42,7 +42,7 @@ export const loginAsync = createAsyncThunk<AuthState, UserCredentials>(
                 userCredentials.username,
                 userCredentials.password
             );
-            if (response.accessToken) {
+            if (response.access) {
                 return response;
             }
         } catch (_error) {

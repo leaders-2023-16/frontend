@@ -3,23 +3,23 @@ import { User } from "../store/auth/types";
 class TokenService {
   getLocalRefreshToken() {
     const user = this.getUser();
-    return user?.refreshToken;
+    return user?.refresh;
   }
 
   getLocalAccessToken() {
     const user = this.getUser();
-    return user?.accessToken;
+    return user?.access;
   }
 
   updateLocalRefreshToken(token: string) {
     const user = this.getUser();
-    user.refreshToken = token;
+    user.refresh = token;
     this.setUser(user);
   }
 
   updateLocalAccessToken(token: string) {
     const user = this.getUser();
-    user.accessToken = token;
+    user.access = token;
     this.setUser(user);
   }
 
