@@ -5,8 +5,8 @@ export enum Role {
 }
 
 export interface User {
-  accessToken: string;
-  refreshToken: string;
+  access: string;
+  refresh: string;
   role: Role
 }
 

@@ -11,8 +11,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
-    "@shopify/polaris": "^10.49.1",
-    "@shopify/polaris-icons": "^6.15.0",
+    "antd": "^5.5.0",
     "axios": "^1.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
