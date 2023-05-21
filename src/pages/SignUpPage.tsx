@@ -1,7 +1,10 @@
-import { useCallback } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { loginAsync } from "../store/auth/api";
-import { useAppDispatch } from "../store";
+import { useCallback, useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { loginAsync } from '../store/auth/api';
+import { useAppDispatch, useAppSelector } from '../store';
+import { Input, Checkbox, Button, Form } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { selectAuth } from '../store/auth/selectors';
 
 export const SignUp = () => {
   const dispatch = useAppDispatch();
@@ -10,10 +13,7 @@ export const SignUp = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<{ email: string; password: string }>({
-    mode: "onBlur",
-    defaultValues: {
-      email: "",
-    },
+    mode: "onBlur"
   });
 
   const onSubmit = useCallback(
@@ -22,43 +22,41 @@ export const SignUp = () => {
     },
     [dispatch]
   );
+  
+    return (
+        <Form
+            name="basic"
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
+            style={{ maxWidth: 600, margin: 'auto' }}
+            initialValues={{ remember: true }}
+            onFinish={onSubmit}
+        >
+            <Form.Item
+                label="Username"
+                name="username"
+                rules={[{ required: true, message: 'Please input your username!' }]}
+            >
+                <Input />
+            </Form.Item>
 
-  return (
-    <HorizontalStack align="center">
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <FormLayout>
-          <Controller
-            name="email"
-            control={control}
-            rules={{ required: { value: true, message: "Обязательное поле!" } }}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label="Почта"
-                type="email"
-                autoComplete="email"
-                error={errors.email?.message}
-              />
-            )}
-          />
-          <Controller
-            name="password"
-            control={control}
-            rules={{ required: { value: true, message: "Обязательное поле!" } }}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label="Пароль"
-                type="password"
-                autoComplete="password"
-                error={errors.password?.message}
-              />
-            )}
-          />
+            <Form.Item
+                label="Password"
+                name="password"
+                rules={[{ required: true, message: 'Please input your password!' }]}
+            >
+                <Input.Password />
+            </Form.Item>
 
-          <Button submit>Зарегистрироваться</Button>
-        </FormLayout>
-      </Form>
-    </HorizontalStack>
-  );
-};
+            <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
+                <Checkbox>Remember me</Checkbox>
+            </Form.Item>
+
+            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                <Button type="primary" htmlType="submit">
+                    Submit
+                </Button>
+            </Form.Item>
+        </Form>
+    );
+}
