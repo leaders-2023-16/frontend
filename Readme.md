@@ -10,3 +10,11 @@
 ### Необходимые версии:
 - node>=16.20.0
 - yarn>=1.22.19
+
+
+### REMOVE WHEN RELEASE
+
+trainee login
+
+trainee@user.com
+admin2admin

@@ -7,20 +7,22 @@ import { useNavigate } from 'react-router-dom';
 import { selectAuth } from '../store/auth/selectors';
 
 export const SignUp = () => {
-    const dispatch = useAppDispatch()
-    const navigate = useNavigate()
-    const user = useAppSelector(selectAuth)
+  const dispatch = useAppDispatch();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<{ email: string; password: string }>({
+    mode: "onBlur"
+  });
 
-    const onSubmit = useCallback(({ email, password }: { email: string, password: string }) => {
-        dispatch(loginAsync({ password, username: email }))
-    }, [dispatch]);
-
-
-    useEffect(() => {
-        if (user?.isLoggedIn) {
-            navigate('/profile')
-        }
-    }, [navigate, user])
+  const onSubmit = useCallback(
+    ({ email, password }: { email: string; password: string }) => {
+      dispatch(loginAsync({ password, username: email }));
+    },
+    [dispatch]
+  );
+  
     return (
         <Form
             name="basic"
