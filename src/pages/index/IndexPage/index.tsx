@@ -1,14 +1,29 @@
 import React from "react";
-import { Button, Col, Select } from "antd";
+import { Button, Col, Select, notification } from "antd";
 import Paragraph from "antd/es/typography/Paragraph";
 import Title from "antd/es/typography/Title";
 import { useAppDispatch, useAppSelector } from "../../../store";
-import { getSelectedDirectionTrain } from "../../../store/submitApplicationScreen/selectors";
-import { submitApplicationScreenActions } from "../../../store/submitApplicationScreen";
+import {
+  getDirectionTrainSelectError,
+  getIsSubmitingApplication,
+  getSelectedDirectionTrain,
+} from "../../../store/submitApplicationScreen/selectors";
+import {
+  submitApplicationActionAsync,
+  submitApplicationScreenActions,
+} from "../../../store/submitApplicationScreen";
+import {
+  TrainDirection,
+  TrainDirectionByName,
+  TrainDirectionName,
+} from "../../../store/submitApplicationScreen/types";
 
 export const IndexPage = () => {
   const dispatch = useAppDispatch();
+  const [api, contextHolder] = notification.useNotification();
+
   const selectedDirectionTrain = useAppSelector(getSelectedDirectionTrain);
+  const isLoading = useAppSelector(getIsSubmitingApplication);
 
   const handleChange = React.useCallback(
     (value: string) => {
@@ -17,8 +32,24 @@ export const IndexPage = () => {
     [dispatch]
   );
 
+  const handlePressSend = React.useCallback(() => {
+    if (!selectedDirectionTrain) {
+      api.warning({
+        message: "Предупреждение",
+        description:
+          "Для подачи заявки необходимо выбрать направление стажировки",
+      });
+      return;
+    }
+
+    dispatch(
+      submitApplicationActionAsync(TrainDirectionByName[selectedDirectionTrain])
+    );
+  }, [dispatch, api, selectedDirectionTrain]);
+
   return (
     <Col>
+      {contextHolder}
       <Title>Подать заявку</Title>
       <Paragraph>
         Для участия в стажировке необходимо выбрать направление и заполнить всю
@@ -35,41 +66,43 @@ export const IndexPage = () => {
         }
         options={[
           {
-            value: "it-city",
+            value: TrainDirectionName[TrainDirection.IT_CITY],
             label: "IT-город",
           },
           {
-            value: "media-city",
+            value: TrainDirectionName[TrainDirection.MEDIA_CITY],
             label: "Медийный город",
           },
           {
-            value: "social-city",
+            value: TrainDirectionName[TrainDirection.SOCIAL_CITY],
             label: "Социальный город",
           },
 
           {
-            value: "comfort-city-zone",
+            value: TrainDirectionName[TrainDirection.COMFORT_CITY_ZONE],
             label: "Комфортная городская среда",
           },
 
           {
-            value: "rights-area",
+            value: TrainDirectionName[TrainDirection.RIGHTS_AREA],
             label: "Правовое пространство",
           },
 
           {
-            value: "city-economic",
+            value: TrainDirectionName[TrainDirection.CITY_ECONOMIC],
             label: "Городская экономика",
           },
 
           {
-            value: "hr-city",
+            value: TrainDirectionName[TrainDirection.HR_CITY],
             label: "HR-город",
           },
         ]}
       />
       <Col style={{ marginTop: "20px" }}>
-        <Button type="primary">Подать заявку</Button>
+        <Button type="primary" onClick={handlePressSend} loading={isLoading}>
+          Подать заявку
+        </Button>
       </Col>
     </Col>
   );
