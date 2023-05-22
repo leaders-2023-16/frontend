@@ -4,6 +4,8 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { authReducer } from "./auth";
 import { traineeProfileApi } from "./traineeProfile";
 import { submitApplicationScreenReducer } from "./submitApplicationScreen";
+import { submitApplicationScreenApi } from "./submitApplicationScreen/api";
+
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
@@ -12,9 +14,15 @@ export const store = configureStore({
     submitApplicationScreen: submitApplicationScreenReducer,
 
     [traineeProfileApi.reducerPath]: traineeProfileApi.reducer,
+    [submitApplicationScreenApi.reducerPath]:
+      submitApplicationScreenApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(traineeProfileApi.middleware),
+    getDefaultMiddleware().concat(
+      // redux api
+      traineeProfileApi.middleware,
+      submitApplicationScreenApi.middleware
+    ),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

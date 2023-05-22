@@ -3,7 +3,7 @@ import { http } from "./axios";
 export class CandidateService {
   async submitApplication(direction: number) {
     return http
-      .post("v1/intership-applications", {
+      .post("v1/internship-applications/", {
         direction,
       })
       .then((response) => {
@@ -12,7 +12,7 @@ export class CandidateService {
   }
 
   async getApplicationStatus(userId: string) {
-    return http.get(`v1/intership-applications/${userId}`).then((response) => {
+    return http.get(`v1/internship-applications/${userId}`).then((response) => {
       return response.data;
     });
   }
