@@ -1,12 +1,12 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import { LayoutPage } from "./components/Layout";
-import { IndexPage } from "./pages/IndexPage";
-import { PrivateRoute } from "./pages/PrivateRoute";
 import { Login } from "./pages/LoginPage";
 import { SignUp } from "./pages/SignUpPage";
 import { ProfilePage } from "./pages/profile/ProfilePage";
 import { AuthorizedLayout } from "./layouts/AuthorizedLayout";
 import { UnAuthorizedLayout } from "./layouts/UnAuthorizedLayout";
+import { IndexLayout } from "./pages/index/IndexLayout";
+import { IndexPage } from "./pages/index/IndexPage";
 
 export const router = createBrowserRouter([
   {
@@ -19,7 +19,8 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "/",
-            element: <IndexPage />,
+            element: <IndexLayout />,
+            children: [{ path: "/", element: <IndexPage /> }],
           },
           {
             path: "profile",

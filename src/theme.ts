@@ -1,9 +1,13 @@
 import { ThemeConfig } from "antd";
 
 export const theme: ThemeConfig = {
-    components: {
-        Layout: {
-            colorBgHeader: 'red'
-        }
-    }
-} 
+  token: {
+    colorBgLayout: "#f5f5f5",
+    colorBgContainer: "#ffffff",
+  },
+  components: {
+    Layout: {
+      colorBgHeader: "red",
+    },
+  },
+};
