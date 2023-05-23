@@ -1,9 +1,9 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { httpBaseQuery } from "../../services/axios";
+import { httpBaseQuery } from "@/services/axios";
 import { SubmitApplicationStatusInfo } from "./types";
 
-export const submitApplicationScreenApi = createApi({
-  reducerPath: "submitApplicationScreenApi",
+export const candidateIndexPageApi = createApi({
+  reducerPath: "candidateIndexPageApi",
   baseQuery: httpBaseQuery(),
   tagTypes: ["submitApplicationStatus"],
   endpoints: (builder) => ({
@@ -30,4 +30,4 @@ export const submitApplicationScreenApi = createApi({
 export const {
   useGetSubmitApplicationStatusQuery,
   useSubmitApplicationStatusMutation,
-} = submitApplicationScreenApi;
+} = candidateIndexPageApi;

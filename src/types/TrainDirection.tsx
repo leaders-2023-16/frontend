@@ -1,5 +1,3 @@
-import { IUser } from "../../types/User";
-
 export enum TrainDirection {
   IT_CITY = 1,
   MEDIA_CITY,
@@ -29,22 +27,3 @@ export const TrainDirectionByName = {
   "city-economic": TrainDirection.CITY_ECONOMIC,
   "hr-city": TrainDirection.HR_CITY,
 };
-
-export enum SubmitApplicationStatus {
-  PENDING = "pending",
-  REJECTED = "rejected",
-  NEXT_STAGE = "next_stage",
-  APPROVED = "approved",
-}
-
-export interface SubmitApplicationStatusInfo {
-  status?: SubmitApplicationStatus;
-  status_changed_at?: string;
-
-  status_changed_by?: IUser;
-  applicant: IUser;
-
-  created_at?: string;
-  is_recommended: boolean;
-  direction?: number;
-}

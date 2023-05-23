@@ -6,7 +6,7 @@ import { Navigate, Outlet } from "react-router-dom";
 export const UnAuthorizedLayout = () => {
   const user = useAppSelector(selectAuth);
 
-  if (user.isLoggedIn) {
+  if (user) {
     return <Navigate to="/" replace={true} />;
   }
 

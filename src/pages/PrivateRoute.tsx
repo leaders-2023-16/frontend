@@ -5,7 +5,7 @@ import { history } from "../helpers/history";
 import { Role } from "../store/auth/types";
 
 export const PrivateRoute = ({ admin }: { admin?: boolean }) => {
-  const { isLoggedIn, user } = useAppSelector(selectAuth);
+  const { user } = useAppSelector(selectAuth);
   //   if (!isLoggedIn) {
   //     // not logged in so redirect to login page with the return url
   //     return <Navigate to="/login" state={{ from: history.location }} />;

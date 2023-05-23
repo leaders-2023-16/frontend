@@ -1,20 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import tokenService from "../../services/tokenService";
-import { User, AuthState } from "./types";
+import { User } from "./types";
 import { loginAsync, registerAsync, logoutAsync } from "./api";
 
 const user: User = tokenService.getUser();
-const initialState: AuthState = user.access
-  ? {
-      isLoggedIn: true,
-      user: user,
-      error: "",
-    }
-  : {
-      isLoggedIn: false,
-      user: undefined,
-      error: "",
-    };
+const initialState = {
+  isLoadingSignIn: false,
+
+  user: user as User | undefined,
+  error: undefined as string | undefined,
+};
 
 export const authSlice = createSlice({
   name: "auth",
@@ -32,8 +27,11 @@ export const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(loginAsync.pending, (state) => {
+        state.isLoadingSignIn = true;
+      })
       .addCase(loginAsync.fulfilled, (state, { payload }) => {
-        state.isLoggedIn = true;
+        state.isLoadingSignIn = false;
         state.user = {
           access: payload.access,
           refresh: payload.refresh,
@@ -42,13 +40,12 @@ export const authSlice = createSlice({
         state.error = "";
       })
       .addCase(loginAsync.rejected, (state) => {
-        state.isLoggedIn = false;
+        state.isLoadingSignIn = false;
       })
       .addCase(registerAsync.fulfilled, (state) => {
         state.error = "";
       })
       .addCase(logoutAsync.fulfilled, (state) => {
-        state.isLoggedIn = false;
         state.user = undefined;
         state.error = "";
       });

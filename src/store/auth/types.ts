@@ -9,12 +9,6 @@ export interface User {
   user_id: string;
 }
 
-export type AuthState = {
-  isLoggedIn: boolean;
-  user?: User;
-  error: string;
-};
-
 export type UserCredentials = {
   username: string;
   password: string;
