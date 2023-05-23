@@ -7,6 +7,7 @@ import { AuthorizedLayout } from "./layouts/AuthorizedLayout";
 import { UnAuthorizedLayout } from "./layouts/UnAuthorizedLayout";
 import { IndexPage } from "./pages/Index";
 import { CreateVacancyPage } from "./pages/CreateVacancy";
+import { VacanciesPage } from "./pages/Vacancies";
 
 export const router = createBrowserRouter([
   {
@@ -21,10 +22,13 @@ export const router = createBrowserRouter([
             path: "/",
             element: <IndexPage />,
           },
-
           {
             path: "create-vacancy",
             element: <CreateVacancyPage />,
+          },
+          {
+            path: "vacancies",
+            element: <VacanciesPage />,
           },
           {
             path: "profile",
