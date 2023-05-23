@@ -1,18 +1,17 @@
-
 export enum Role {
   ADMIN,
-  USER
+  USER,
 }
 
 export interface User {
   access: string;
   refresh: string;
-  role: Role
+  user_id: string;
 }
 
 export type AuthState = {
   isLoggedIn: boolean;
-  user: User;
+  user?: User;
   error: string;
 };
 

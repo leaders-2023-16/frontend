@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
-import { Layout } from "antd";
+import { Col, Layout, Row } from "antd";
+import { Container } from "../Container";
 
 export const LayoutPage = () => {
   return (
@@ -8,7 +9,9 @@ export const LayoutPage = () => {
         <Layout.Header>header</Layout.Header>
         <Layout>
           <Layout.Content style={{ padding: "18px 36px" }}>
-            <Outlet />
+            <Container>
+              <Outlet />
+            </Container>
           </Layout.Content>
         </Layout>
         <Layout.Footer>footer</Layout.Footer>
