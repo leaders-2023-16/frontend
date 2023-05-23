@@ -12,7 +12,7 @@ import { SubmitApplicationStatus } from "./Store/types";
 export const Content = () => {
   const user = useAppSelector(selectAuthUser);
   const { data, isLoading } = useGetSubmitApplicationStatusQuery(
-    user?.user_id || ""
+    user?.id.toString() || ""
   );
 
   return (

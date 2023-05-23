@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import tokenService from "../../services/tokenService";
-import { User } from "./types";
+import tokenService, { IUserWithCreds } from "../../services/tokenService";
 import { loginAsync, registerAsync, logoutAsync } from "./api";
+import { IUser } from "@/types/User";
 
-const user: User = tokenService.getUser();
+const userWithCreds: IUserWithCreds = tokenService.getUser();
 const initialState = {
   isLoadingSignIn: false,
 
-  user: user as User | undefined,
+  user: userWithCreds.user as IUser | undefined,
   error: undefined as string | undefined,
 };
 
@@ -18,12 +18,6 @@ export const authSlice = createSlice({
     setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
     },
-    refreshToken: (state, { payload }) => {
-      if (state.user) {
-        state.user.access = payload.acess;
-        state.user.refresh = payload.refresh;
-      }
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -32,11 +26,7 @@ export const authSlice = createSlice({
       })
       .addCase(loginAsync.fulfilled, (state, { payload }) => {
         state.isLoadingSignIn = false;
-        state.user = {
-          access: payload.access,
-          refresh: payload.refresh,
-          user_id: payload.user_id,
-        };
+        state.user = payload.user;
         state.error = "";
       })
       .addCase(loginAsync.rejected, (state) => {

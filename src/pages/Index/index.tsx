@@ -1,10 +1,15 @@
+import { useAppSelector } from "@/store";
 import { CandidateIndexPage } from "./Candidate";
 
 import { Navigate } from "react-router-dom";
+import { selectAuthUser } from "@/store/auth/selectors";
+import { UserRole } from "@/types/User";
 
 export const IndexPage = () => {
-  const isCandidate = false;
-  const isPersonnel = true;
+  const user = useAppSelector(selectAuthUser);
+
+  const isCandidate = user?.role === UserRole.CANDIDATE;
+  const isPersonnel = user?.role === UserRole.PERSONNEL;
 
   if (isCandidate) {
     return <CandidateIndexPage />;

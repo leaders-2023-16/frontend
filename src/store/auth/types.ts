@@ -3,12 +3,6 @@ export enum Role {
   USER,
 }
 
-export interface User {
-  access: string;
-  refresh: string;
-  user_id: string;
-}
-
 export type UserCredentials = {
   username: string;
   password: string;
