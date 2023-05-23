@@ -1,0 +1,128 @@
+import { Button, DatePicker, Divider, Input, InputNumber, Select, Space, Typography } from "antd"
+import { FC, useEffect, useState } from "react"
+import { TraineeProfileType } from "../../store/traineeProfile/types"
+import { DeleteFilled } from "@ant-design/icons"
+import { useProfileEdit } from "./hooks"
+import TextArea from "antd/es/input/TextArea"
+import dayjs from "dayjs"
+import Title from "antd/es/typography/Title"
+
+type ProfileEditType = Partial<TraineeProfileType> & { onChange: (data: Partial<TraineeProfileType>) => void }
+
+export const ProfileEdit: FC<ProfileEditType> = ({
+    onChange,
+    ...data
+}) => {
+    const { editingObj, link, work, educations, bio } = useProfileEdit({ onChange, ...data })
+    return (
+        <>
+            <Title level={4}>Ссылки:{!link.value.length && '  -'}</Title>
+
+            {editingObj.links?.map(el => (
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <Space>
+                        <Typography.Text>{el.url}</Typography.Text>
+                        <DeleteFilled
+                            onClick={() => link.onDelete(el.url)}
+                            style={{ color: '#ef3b3b' }} />
+                    </Space>
+                </div>
+            ))}
+            {(editingObj.links || []).length < 5 && (
+                <Input
+                    status={link.error && 'error'}
+                    placeholder="Добавьте ссылку"
+                    value={link.value}
+                    onChange={(e) => link.onChange(e.target.value)}
+                    onPressEnter={link.onAdd} />)}
+            {/*////////////////////////////////////////////////////////////////////*/}
+            <Typography.Title level={3}>Образование:</Typography.Title>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {educations.value.map((el, idx) => (
+                    <>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                            <Space>
+                                <Typography.Text>Название:</Typography.Text>
+                                <Input value={el.name} onChange={(e) => educations.onChange(idx, 'name', e.target.value)} placeholder={'Введите название'} />
+                            </Space>
+                            <Space>
+                                <Typography.Text>Специлизация:</Typography.Text>
+                                <Input value={el.specialization} onChange={(e) => educations.onChange(idx, 'specialization', e.target.value)} placeholder={'Введите специлизацию'} />
+                            </Space>
+                            <Space>
+                                <Typography.Text>Степень:</Typography.Text>
+                                <Select
+                                    defaultValue="Bachelor"
+                                    style={{ width: 120 }}
+                                    onChange={(e) => educations.onChange(idx, 'degree', e)}
+                                    options={[
+                                        { value: 'Bachelor', label: 'Бакалавр' },
+                                        { value: 'Master', label: 'Магистр' },
+                                        { value: 'Doctorate', label: 'Доктор' },
+                                    ]}
+                                />
+                            </Space>
+                            <Space>
+                                <Typography.Text>Годы обучения:</Typography.Text>
+                                <Space>
+                                    <InputNumber value={el.start_year} min="1900" max controls={false} onChange={(e) => educations.onChange(idx, 'start_year', e || '')} placeholder={'Начало'} />
+                                    &nbsp;-&nbsp;
+                                    <InputNumber value={el.end_year || ""} controls={false} onChange={(e) => educations.onChange(idx, 'end_year', e || '')} placeholder={'Окончание'} />
+                                </Space>
+                            </Space>
+                        </div>
+                        <Button style={{ width: '90px' }} danger onClick={() => educations.onDelete(idx)}>Удалить</Button>
+                        {educations.value.length - 1 !== idx && <Divider style={{ margin: '4px 0' }} />}
+                    </>
+                ))}
+            </div>
+            <Button onClick={educations.onAdd}>Добавить</Button>
+            {/*////////////////////////////////////////////////////////////////////*/}
+            <Typography.Title level={3}>Опыт работы:</Typography.Title>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {work.value.map((el, idx) => (
+                    <>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                            <Space>
+                                <Typography.Text>Название организации:</Typography.Text>
+                                <Input value={el.employer} placeholder={'Введите название'} />
+                            </Space>
+                            <Space>
+                                <Typography.Text>Должность:</Typography.Text>
+                                <Input value={el.position} placeholder={'Введите должность'} />
+                            </Space>
+                            <Space>
+                                <Typography.Text>Описание:</Typography.Text>
+                                <Input value={el.description} placeholder={'Введите описание'} />
+                            </Space>
+                            <Space>
+                                <Typography.Text>Стаж:</Typography.Text>
+                                <Space>
+                                    <DatePicker value={el.start_date ? dayjs(el.start_date) : null} placeholder={'Начало'} />
+                                    &nbsp;-&nbsp;
+                                    <DatePicker value={el.end_date ? dayjs(el.end_date) : null} placeholder={'Окончание'} />
+                                </Space>
+                            </Space>
+                        </div>
+                        <Button style={{ width: '90px' }} danger onClick={() => work.onDelete(idx)}>Удалить</Button>
+                        {work.value.length - 1 !== idx && <Divider style={{ margin: '4px 0' }} />}
+                    </>
+                ))}
+            </div>
+            <Button onClick={work.onAdd}>Добавить</Button>
+
+            {/* <Typography.Title level={3}>Опыт работы:
+                {!editingObj.work_experiences?.length && '  -'}
+            </Typography.Title>
+            {editingObj.work_experiences?.map(work => (<>
+                <Typography.Paragraph>Название: {work.employer}</Typography.Paragraph>
+                <Typography.Paragraph>Должность: {work.position}</Typography.Paragraph>
+                <Typography.Paragraph>Дата работы: {work.start_date} - {work.end_date}</Typography.Paragraph>
+                <Typography.Paragraph>Описание: {work.description}</Typography.Paragraph>
+
+            </>))} */}
+            <Typography.Title level={3}>О себе</Typography.Title>
+            <TextArea rows={10} value={bio.value} onChange={(e) => bio.onChange(e.target.value)}></TextArea>
+        </>
+    )
+}

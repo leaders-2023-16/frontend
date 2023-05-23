@@ -1,7 +1,7 @@
 export enum Degree {
   Bachelor = 'Bachelor',
-  Master = ' Master',
-  Doctorate = ' Doctorate'
+  Master = 'Master',
+  Doctorate = 'Doctorate'
 }
 
 export type WorkExperiences = {
@@ -15,19 +15,31 @@ export type WorkExperiences = {
 export type Education = {
   name: string;
   type: string;
-  start_date: string;
-  end_date: string | null;
+  start_year: string;
+  end_year: string | null;
   specialization: string;
-  degree: Degree;
+  degree: 'Master' | 'Bachelor' | 'Doctorate';
   description: string | null;
 }
 
-export type TraineeProfileState = {
+export type Citizenship = {
+  id: number;
+  name: string;
+}
+
+export type TraineeProfileType = {
   user_id: string;
-  citizenship: number | null;
+  first_name: string;
+  last_name: string;
+  email: string;
+  citizenship: Citizenship | null;
   bio: string;
   phone_number: string | null;
   links: { url: string }[];
   educations: Education[]
   work_experiences: WorkExperiences[]
+}
+
+export type UpdateTraineeProfile = Omit<TraineeProfileType, 'citizenship'> & {
+  citizenship: number
 }

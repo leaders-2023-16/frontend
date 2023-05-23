@@ -2,21 +2,17 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { authActions } from ".";
 import authService from "../../services/authService";
-import { AuthState, UserRegister, UserCredentials, User } from "./types";
+import { UserRegister, UserCredentials, User } from "./types";
 
-export const registerAsync = createAsyncThunk<AuthState, UserRegister>(
+export const registerAsync = createAsyncThunk<User, UserRegister>(
     'auth/register',
-    async (userRegister: UserRegister, thunkApi) => {
+    async (userRegister: UserRegister, { dispatch, rejectWithValue }) => {
         if (userRegister.password !== userRegister.passwordConf) {
-            thunkApi.dispatch(authActions.setError(`Your password doesn't match`));
-            return thunkApi.rejectWithValue(`Your password doesn't match`);
+            dispatch(authActions.setError({field: 'password', value: `Your password doesn't match`}));
+            return rejectWithValue(`Your password doesn't match`);
         }
         try {
-            const response = await authService.register(
-                userRegister.username,
-                userRegister.email,
-                userRegister.password
-            );
+            const response = await authService.register(userRegister);
 
             if (response.status === 200) {
                 return response;
@@ -25,18 +21,18 @@ export const registerAsync = createAsyncThunk<AuthState, UserRegister>(
             const error = _error as Error | AxiosError;
             console.error(error);
             if (axios.isAxiosError(error)) {
-                thunkApi.dispatch(authActions.setError(error.response?.data.message));
-                return thunkApi.rejectWithValue(error.response?.data.message);
+                dispatch(authActions.setError(error.response?.data.message));
+                return rejectWithValue(error.response?.data.message);
             }
-            thunkApi.dispatch(authActions.setError(error.message));
-            return thunkApi.rejectWithValue(error.message);
+            dispatch(authActions.setError({field: 'username', value: error.message}));
+            return rejectWithValue(error.message);
         }
     }
 );
 
 export const loginAsync = createAsyncThunk<User, UserCredentials>(
     'auth/login',
-    async (userCredentials: UserCredentials, thunkApi) => {
+    async (userCredentials: UserCredentials, { dispatch, rejectWithValue }) => {
         try {
             const response = await authService.login(
                 userCredentials.username,
@@ -49,11 +45,11 @@ export const loginAsync = createAsyncThunk<User, UserCredentials>(
             const error = _error as Error | AxiosError;
             console.error(error);
             if (axios.isAxiosError(error)) {
-                thunkApi.dispatch(authActions.setError(error.response?.data.message));
-                return thunkApi.rejectWithValue(error.response?.data.message);
+                dispatch(authActions.setError(error.response?.data.message));
+                return rejectWithValue(error.response?.data.message);
             }
-            thunkApi.dispatch(authActions.setError(error.message));
-            return thunkApi.rejectWithValue(error.message);
+            dispatch(authActions.setError({field: 'password', value: error.message}));
+            return rejectWithValue(error.message);
         }
     }
 );

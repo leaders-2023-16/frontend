@@ -12,7 +12,7 @@ const initialState: AuthState = user.access
     }
     : {
         isLoggedIn: false,
-        user: { access: '', refresh: '', role: Role.USER },
+        user: { access: '', refresh: '', user_id: 0, role: Role.USER },
         error: ''
     };
 
@@ -20,7 +20,7 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        setError: (state, action: PayloadAction<string>) => {
+        setError: (state, action: PayloadAction<AuthState['error']>) => {
             state.error = action.payload;
         },
         refreshToken: (state, { payload }) => {
@@ -32,19 +32,21 @@ export const authSlice = createSlice({
         builder
             .addCase(loginAsync.fulfilled, (state, { payload }) => {
                 state.isLoggedIn = true;
-                state.user = { access: payload.access, refresh: payload.refresh, role: Role.USER }
-                state.error = '';
+                state.user = { ...payload, role: Role.USER }
+                state.error = undefined;
             })
             .addCase(loginAsync.rejected, (state) => {
                 state.isLoggedIn = false;
             })
-            .addCase(registerAsync.fulfilled, (state) => {
-                state.error = '';
+            .addCase(registerAsync.fulfilled, (state, { payload }) => {
+                state.isLoggedIn = true;
+                state.user = { ...payload, role: Role.USER }
+                state.error = undefined;
             })
             .addCase(logoutAsync.fulfilled, (state) => {
                 state.isLoggedIn = false;
-                state.user = { access: '', refresh: '', role: Role.USER };
-                state.error = '';
+                state.user = { access: '', refresh: '', user_id: 0, role: Role.USER };
+                state.error = undefined;
             });
     }
 });

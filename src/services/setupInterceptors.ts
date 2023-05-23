@@ -32,11 +32,7 @@ const setup = (store: Store) => {
                     originalConfig._retry = true;
                     try {
                         const token = TokenService.getLocalRefreshToken();
-                        const rs = await axios.get('v1/auth/refresh', {
-                            headers: {
-                                Authorization: `Bearer ${token}`
-                            }
-                        });
+                        const rs = await axios.post('v1/auth/refresh', { refresh: token });
                         dispatch(authActions.refreshToken(rs.data));
                         TokenService.updateLocalAccessToken(rs.data.access);
                         TokenService.updateLocalRefreshToken(rs.data.refresh);

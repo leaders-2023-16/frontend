@@ -7,13 +7,14 @@ export enum Role {
 export interface User {
   access: string;
   refresh: string;
+  user_id: number;
   role: Role
 }
 
 export type AuthState = {
   isLoggedIn: boolean;
   user: User;
-  error: string;
+  error?: {field: string, value: string };
 };
 
 export type UserCredentials = {
@@ -23,7 +24,8 @@ export type UserCredentials = {
 
 export type UserRegister = {
   username: string;
-  email: string;
+  first_name: string;
+  last_name: string;
   password: string;
   passwordConf: string;
 };
