@@ -1,10 +1,10 @@
 export enum UserRole {
-  F = "F",
-  T = "T",
-  M = "M",
-  P = "P",
-  C = "C",
-  A = "A",
+  CANDIDATE = "F",
+  TRAINEE = "T",
+  MENTOR = "M",
+  PERSONNEL = "P",
+  CURATOR = "C",
+  ADMIN = "A",
 }
 
 export interface IUserDepartment {
@@ -13,11 +13,13 @@ export interface IUserDepartment {
 }
 
 export interface IUser {
-  email: string;
+  id: number;
+
+  email?: string;
   role: UserRole;
 
-  first_name: string;
-  last_name: string;
+  first_name?: string;
+  last_name?: string;
 
-  department: IUserDepartment;
+  department?: IUserDepartment;
 }

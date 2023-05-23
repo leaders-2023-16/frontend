@@ -5,8 +5,9 @@ import { SignUp } from "./pages/SignUpPage";
 import { ProfilePage } from "./pages/profile/ProfilePage";
 import { AuthorizedLayout } from "./layouts/AuthorizedLayout";
 import { UnAuthorizedLayout } from "./layouts/UnAuthorizedLayout";
-import { IndexLayout } from "./pages/index/IndexLayout";
-import { IndexPage } from "./pages/index/IndexPage";
+import { IndexPage } from "./pages/Index";
+import { CreateVacancyPage } from "./pages/CreateVacancy";
+import { VacanciesPage } from "./pages/Vacancies";
 
 export const router = createBrowserRouter([
   {
@@ -19,8 +20,15 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "/",
-            element: <IndexLayout />,
-            children: [{ path: "/", element: <IndexPage /> }],
+            element: <IndexPage />,
+          },
+          {
+            path: "create-vacancy",
+            element: <CreateVacancyPage />,
+          },
+          {
+            path: "vacancies",
+            element: <VacanciesPage />,
           },
           {
             path: "profile",

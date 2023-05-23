@@ -1,17 +1,18 @@
 import React from "react";
 
 import { App, Button, Col, Select } from "antd";
-import { useAppDispatch, useAppSelector } from "../../../../store";
-import { getSelectedDirectionTrain } from "../../../../store/submitApplicationScreen/selectors";
-import { submitApplicationScreenActions } from "../../../../store/submitApplicationScreen";
+import { useAppDispatch, useAppSelector } from "@/store";
+
+import Title from "antd/es/typography/Title";
+import Paragraph from "antd/es/typography/Paragraph";
+import { useSubmitApplicationStatusMutation } from "../Store/api";
+import { getSelectedDirectionTrain } from "../Store/selectors";
+import { candidateIndexPageActions } from "../Store";
 import {
   TrainDirection,
   TrainDirectionByName,
   TrainDirectionName,
-} from "../../../../store/submitApplicationScreen/types";
-import Title from "antd/es/typography/Title";
-import Paragraph from "antd/es/typography/Paragraph";
-import { useSubmitApplicationStatusMutation } from "../../../../store/submitApplicationScreen/api";
+} from "@/types/TrainDirection";
 
 export const SubmitApplicationForm = () => {
   const dispatch = useAppDispatch();
@@ -23,9 +24,7 @@ export const SubmitApplicationForm = () => {
 
   const handleChange = React.useCallback(
     (value: string) => {
-      dispatch(
-        submitApplicationScreenActions.selectDirectionTrain(value as any)
-      );
+      dispatch(candidateIndexPageActions.selectDirectionTrain(value as any));
     },
     [dispatch]
   );

@@ -15,7 +15,7 @@ export const TemplateWithMenu: React.FC<TemplateWithMenuProps> = ({
     <Col
       style={{
         display: "grid",
-        gridTemplateColumns: "220px 1fr",
+        gridTemplateColumns: "270px 1fr",
       }}
     >
       <Col style={{ marginRight: "20px" }}>

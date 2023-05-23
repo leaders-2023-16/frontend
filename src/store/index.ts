@@ -3,25 +3,24 @@ import { counterReducer } from "./counter";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { authReducer } from "./auth";
 import { traineeProfileApi } from "./traineeProfile";
-import { submitApplicationScreenReducer } from "./submitApplicationScreen";
-import { submitApplicationScreenApi } from "./submitApplicationScreen/api";
+import { candidateIndexPageReducer } from "@/pages/Index/Candidate/Store";
+import { candidateIndexPageApi } from "@/pages/Index/Candidate/Store/api";
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     auth: authReducer,
 
-    submitApplicationScreen: submitApplicationScreenReducer,
+    candidateIndexPage: candidateIndexPageReducer,
 
     [traineeProfileApi.reducerPath]: traineeProfileApi.reducer,
-    [submitApplicationScreenApi.reducerPath]:
-      submitApplicationScreenApi.reducer,
+    [candidateIndexPageApi.reducerPath]: candidateIndexPageApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       // redux api
       traineeProfileApi.middleware,
-      submitApplicationScreenApi.middleware
+      candidateIndexPageApi.middleware
     ),
 });
 

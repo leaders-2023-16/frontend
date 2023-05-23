@@ -1,4 +1,10 @@
-import { User } from "../store/auth/types";
+import { IUser } from "@/types/User";
+
+export interface IUserWithCreds {
+  access: string;
+  refresh: string;
+  user: IUser;
+}
 
 class TokenService {
   getLocalRefreshToken() {
@@ -24,17 +30,19 @@ class TokenService {
   }
 
   getUser() {
-    const userJson = localStorage.getItem('user');
-    const user = (userJson !== null ? JSON.parse(userJson) : {}) as User;
+    const userJson = localStorage.getItem("user");
+    const user = (
+      userJson !== null ? JSON.parse(userJson) : {}
+    ) as IUserWithCreds;
     return user;
   }
 
-  setUser(user: User) {
-    localStorage.setItem('user', JSON.stringify(user));
+  setUser(user: IUserWithCreds) {
+    localStorage.setItem("user", JSON.stringify(user));
   }
 
   removeUser() {
-    localStorage.removeItem('user');
+    localStorage.removeItem("user");
   }
 }
 

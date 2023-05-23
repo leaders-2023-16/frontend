@@ -1,12 +1,13 @@
 import React from "react";
 import { useAppSelector } from "../store";
-import { selectAuth } from "../store/auth/selectors";
+import { selectAuthUser } from "../store/auth/selectors";
 import { Navigate, Outlet } from "react-router-dom";
 
 export const AuthorizedLayout = () => {
-  const user = useAppSelector(selectAuth);
+  const user = useAppSelector(selectAuthUser);
+  console.log(user);
 
-  if (!user.isLoggedIn) {
+  if (!user) {
     return <Navigate to="/login" replace={true} />;
   }
 

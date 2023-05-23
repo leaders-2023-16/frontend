@@ -1,7 +1,6 @@
+import { TrainDirectionByName } from "@/types/TrainDirection";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-
-import { TrainDirectionByName } from "./types";
 
 const initialState = {
   selectedDirectionTrain: undefined as
@@ -9,8 +8,8 @@ const initialState = {
     | undefined,
 };
 
-export const submitApplicationScreenSlice = createSlice({
-  name: "submitApplicationScreen",
+export const candidateIndexPageSlice = createSlice({
+  name: "candidateIndexPage",
   initialState,
   reducers: {
     selectDirectionTrain: (
@@ -24,6 +23,6 @@ export const submitApplicationScreenSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
-  actions: submitApplicationScreenActions,
-  reducer: submitApplicationScreenReducer,
-} = submitApplicationScreenSlice;
+  actions: candidateIndexPageActions,
+  reducer: candidateIndexPageReducer,
+} = candidateIndexPageSlice;

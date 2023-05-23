@@ -1,5 +1,4 @@
 import { Steps } from "antd";
-import React from "react";
 
 export const Menu = () => {
   return (

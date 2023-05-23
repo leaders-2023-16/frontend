@@ -1,20 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import tokenService from "../../services/tokenService";
-import { User, AuthState } from "./types";
+import tokenService, { IUserWithCreds } from "../../services/tokenService";
 import { loginAsync, registerAsync, logoutAsync } from "./api";
+import { IUser } from "@/types/User";
 
-const user: User = tokenService.getUser();
-const initialState: AuthState = user.access
-  ? {
-      isLoggedIn: true,
-      user: user,
-      error: "",
-    }
-  : {
-      isLoggedIn: false,
-      user: undefined,
-      error: "",
-    };
+const userWithCreds: IUserWithCreds = tokenService.getUser();
+const initialState = {
+  isLoadingSignIn: false,
+
+  user: userWithCreds.user as IUser | undefined,
+  error: undefined as string | undefined,
+};
 
 export const authSlice = createSlice({
   name: "auth",
@@ -23,32 +18,24 @@ export const authSlice = createSlice({
     setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
     },
-    refreshToken: (state, { payload }) => {
-      if (state.user) {
-        state.user.access = payload.acess;
-        state.user.refresh = payload.refresh;
-      }
-    },
   },
   extraReducers: (builder) => {
     builder
+      .addCase(loginAsync.pending, (state) => {
+        state.isLoadingSignIn = true;
+      })
       .addCase(loginAsync.fulfilled, (state, { payload }) => {
-        state.isLoggedIn = true;
-        state.user = {
-          access: payload.access,
-          refresh: payload.refresh,
-          user_id: payload.user_id,
-        };
+        state.isLoadingSignIn = false;
+        state.user = payload.user;
         state.error = "";
       })
       .addCase(loginAsync.rejected, (state) => {
-        state.isLoggedIn = false;
+        state.isLoadingSignIn = false;
       })
       .addCase(registerAsync.fulfilled, (state) => {
         state.error = "";
       })
       .addCase(logoutAsync.fulfilled, (state) => {
-        state.isLoggedIn = false;
         state.user = undefined;
         state.error = "";
       });
