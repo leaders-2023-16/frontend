@@ -8,6 +8,8 @@ import { UnAuthorizedLayout } from "./layouts/UnAuthorizedLayout";
 import { IndexPage } from "./pages/Index";
 import { CreateVacancyPage } from "./pages/CreateVacancy";
 import { VacanciesPage } from "./pages/Vacancies";
+import { IntershipApplicationsPage } from "./pages/IntershipApplications";
+import { DetailedIntershipApplicationPage } from "./pages/DetailedIntershipApplication";
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +24,17 @@ export const router = createBrowserRouter([
             path: "/",
             element: <IndexPage />,
           },
+
+          {
+            path: "intership-applications",
+            element: <IntershipApplicationsPage />,
+          },
+
+          {
+            path: "intership-applications/:applicationId",
+            element: <DetailedIntershipApplicationPage />,
+          },
+
           {
             path: "create-vacancy",
             element: <CreateVacancyPage />,

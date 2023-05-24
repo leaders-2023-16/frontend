@@ -1,8 +1,10 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation, useNavigation } from "react-router-dom";
 import { Col, Layout, Row } from "antd";
 import { Container } from "../Container";
 
 export const LayoutPage = () => {
+  const location = useLocation();
+  console.log(location);
   return (
     <>
       <Layout style={{ minHeight: "100vh" }}>

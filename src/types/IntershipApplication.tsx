@@ -1,14 +1,16 @@
-import { IUser } from "@/types/User";
+import { IUser } from "./User";
 
-export enum SubmitApplicationStatus {
+export enum IntershipApplicationStatus {
   PENDING = "pending",
   REJECTED = "rejected",
-  NEXT_STAGE = "next_stage",
+  NEXT_STAGE = "next-stage",
   APPROVED = "approved",
 }
 
-export interface SubmitApplicationStatusInfo {
-  status?: SubmitApplicationStatus;
+export interface IIntershipApplication {
+  _id: string;
+
+  status?: IntershipApplicationStatus;
   status_changed_at?: string;
 
   status_changed_by?: IUser;
