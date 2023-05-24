@@ -1,11 +1,10 @@
-import { UpdateTraineeProfile } from "@/store/traineeProfile/types";
+import { IPatchTraineeProfile } from "@/types/TraineeProfile";
 
-export const validate = (editingObj: Partial<UpdateTraineeProfile>) => {
+export const validate = (editingObj: IPatchTraineeProfile) => {
   if (
     editingObj.educations?.length &&
     !editingObj.educations?.every(
-      (e) =>
-        e.name && e.start_year && (e.type !== "school" && e.specialization)
+      (e) => e.name && e.start_year && e.type !== "school" && e.specialization
     )
   ) {
     return false;

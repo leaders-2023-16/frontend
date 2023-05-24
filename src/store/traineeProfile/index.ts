@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { httpBaseQuery } from "../../services/axios";
-import { ITraineeProfile } from "@/types/TraineeProfile";
+import { IPatchTraineeProfile, ITraineeProfile } from "@/types/TraineeProfile";
 
 export const traineeProfileApi = createApi({
   reducerPath: "traineeProfileApi",
@@ -16,7 +16,7 @@ export const traineeProfileApi = createApi({
     }),
     updateTraineeProfileById: builder.mutation<
       ITraineeProfile,
-      { id: number; data: Partial<ITraineeProfile> }
+      { id: number; data: Partial<IPatchTraineeProfile> }
     >({
       query: ({ id, data }) => ({
         url: `v1/users/trainee-profiles/${id}/`,

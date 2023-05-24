@@ -1,6 +1,7 @@
 import { Space, Typography } from "antd";
 import { FC } from "react";
-import { TraineeProfileType } from "../../store/traineeProfile/types";
+
+import { ITraineeProfile } from "@/types/TraineeProfile";
 
 const { Title, Paragraph, Link } = Typography;
 
@@ -9,7 +10,7 @@ const SEX_TO_LABEL = {
   F: "Женский",
 };
 
-export const TraineeProfileView: FC<TraineeProfileType> = ({
+export const TraineeProfileView: FC<ITraineeProfile> = ({
   educations,
   work_experiences,
   bio,

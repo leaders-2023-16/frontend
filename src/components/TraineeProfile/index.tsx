@@ -10,11 +10,9 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { App, Button, Col, Row, Space, Spin, Typography } from "antd";
 import { TraineeProfileView } from "./Profile";
 import { ProfileEdit } from "./ProfileEdit";
-import {
-  TraineeProfileType,
-  UpdateTraineeProfile,
-} from "../../store/traineeProfile/types";
+
 import { validate } from "./utils";
+import { IPatchTraineeProfile } from "@/types/TraineeProfile";
 
 const antIcon = <LoadingOutlined style={{ fontSize: 48 }} spin />;
 
@@ -24,11 +22,9 @@ export const TraineeProfile = () => {
   const { data, isLoading } = useGetTraineeProfileByIdQuery(userId);
   const [updateData] = useUpdateTraineeProfileByIdMutation();
   const [isEditing, setIsEditing] = useState(!!params.get("edit"));
-  const [editingObj, setEditingObj] = useState<Partial<UpdateTraineeProfile>>(
-    {}
-  );
+  const [editingObj, setEditingObj] = useState<IPatchTraineeProfile>({} as any);
   const { notification } = App.useApp();
-  const handleChange = useCallback((data: Partial<UpdateTraineeProfile>) => {
+  const handleChange = useCallback((data: IPatchTraineeProfile) => {
     setEditingObj(data);
   }, []);
 

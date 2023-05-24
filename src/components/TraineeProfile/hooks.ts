@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
+
 import {
-  Degree,
-  Education,
-  TraineeProfileType,
-  UpdateTraineeProfile,
-  WorkExperiences,
-} from "../../store/traineeProfile/types";
-type ProfileEditType = Partial<TraineeProfileType> & {
-  onChange: (data: Partial<UpdateTraineeProfile>) => void;
+  IPatchTraineeProfile,
+  ITraineeProfile,
+  TraineeProfileDegree,
+  TraineeProfileEducation,
+  TraineeProfileSex,
+  TraineeProfileWorkExperiences,
+} from "@/types/TraineeProfile";
+type ProfileEditType = Partial<ITraineeProfile> & {
+  onChange: (data: IPatchTraineeProfile) => void;
   countries: { id: number; name: string }[];
 };
 
@@ -16,7 +18,7 @@ export const useProfileEdit = ({
   countries,
   ...data
 }: ProfileEditType) => {
-  const [editingObj, setEditingObj] = useState<Partial<UpdateTraineeProfile>>({
+  const [editingObj, setEditingObj] = useState<IPatchTraineeProfile>({
     ...JSON.parse(JSON.stringify(data)),
     citizenship: 471,
   });
@@ -46,7 +48,7 @@ export const useProfileEdit = ({
   const handleAddLink = () => {
     if (
       !link.match(
-        /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+        /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g
       )
     ) {
       setLinkError("Неккоректная ссылка");
@@ -91,14 +93,13 @@ export const useProfileEdit = ({
     setEditingObj((p) => ({
       ...p,
       educations: [
-        ...(p.educations || []),
         {
-          degree: Degree.Bachelor,
+          degree: TraineeProfileDegree.Bachelor,
           description: "",
-          end_year: "",
+          end_year: undefined,
           name: "",
           specialization: "",
-          start_year: "",
+          start_year: new Date().getFullYear(),
           type: "school",
         },
       ],
@@ -117,7 +118,7 @@ export const useProfileEdit = ({
 
   const changeWork = (
     idx: number,
-    field: keyof WorkExperiences,
+    field: keyof TraineeProfileWorkExperiences,
     value: string
   ) => {
     const works = [...(editingObj.work_experiences || [])];
@@ -126,33 +127,31 @@ export const useProfileEdit = ({
 
     works.splice(idx, 1, workCopy);
     setEditingObj((p) => ({ ...p, work_experiences: works }));
-
-  }
+  };
 
   const handleChangeEducation = (
     idx: number,
-    field: keyof Education,
+    field: keyof TraineeProfileEducation,
     value: string
   ) => {
     const educations = [...(editingObj.educations || [])];
-    const educationCopy = { ...educations[idx] };
+    const educationCopy = {
+      ...educations[idx],
+    };
 
     if (field === "type" && value === "school") {
       educationCopy.specialization = "";
     }
 
     if (field === "degree") {
-      educationCopy[field] = value as Degree;
+      educationCopy[field] = value as TraineeProfileDegree;
     } else {
-      educationCopy[field] = value;
+      (educationCopy as any)[field] = value;
     }
     educations.splice(idx, 1, educationCopy);
     setEditingObj((p) => ({ ...p, educations }));
   };
-  const handleChangeSex = (sex: string) => {
-    if (sex === "N") {
-      setEditingObj((p) => ({ ...p, sex: null }));
-    }
+  const handleChangeSex = (sex?: TraineeProfileSex) => {
     setEditingObj((p) => ({ ...p, sex }));
   };
 
@@ -170,7 +169,7 @@ export const useProfileEdit = ({
       value: editingObj.work_experiences || [],
       onAdd: addNewWork,
       onDelete: deleteWork,
-      onChange: changeWork
+      onChange: changeWork,
     },
     educations: {
       value: editingObj.educations || [],
