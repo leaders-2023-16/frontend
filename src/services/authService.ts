@@ -1,3 +1,4 @@
+import { UserRegister } from '../store/auth/types';
 import { http as axios } from './axios';
 import TokenService from './tokenService';
 
@@ -21,14 +22,19 @@ class AuthService {
         TokenService.removeUser();
     }
 
-    async register(username: string, email: string, password: string) {
+    async register({ first_name, last_name, password, username }: UserRegister) {
         return axios
             .post('v1/auth/sign-up', {
                 username,
-                email,
+                first_name,
+                last_name,
                 password
             })
             .then((response) => {
+                if (response.data.access) {
+                    TokenService.setUser(response.data);
+                }
+
                 return response.data;
             });
     }

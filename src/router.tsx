@@ -1,11 +1,11 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import { LayoutPage } from "./components/Layout";
+import { IndexPage } from "./pages/Index";
 import { Login } from "./pages/LoginPage";
 import { SignUp } from "./pages/SignUpPage";
-import { ProfilePage } from "./pages/profile/ProfilePage";
+import { TraineeProfilePage } from "./pages/traineeProfile/ProfilePage";
 import { AuthorizedLayout } from "./layouts/AuthorizedLayout";
 import { UnAuthorizedLayout } from "./layouts/UnAuthorizedLayout";
-import { IndexPage } from "./pages/Index";
 import { CreateVacancyPage } from "./pages/CreateVacancy";
 import { VacanciesPage } from "./pages/Vacancies";
 import { IntershipApplicationsPage } from "./pages/IntershipApplications";
@@ -45,7 +45,7 @@ export const router = createBrowserRouter([
           },
           {
             path: "profile",
-            element: <ProfilePage />,
+            element: <TraineeProfilePage />,
           },
         ],
       },

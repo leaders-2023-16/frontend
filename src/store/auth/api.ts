@@ -13,13 +13,9 @@ export const registerAsync = createAsyncThunk<any, UserRegister>(
       return thunkApi.rejectWithValue(`Your password doesn't match`);
     }
     try {
-      const response = await authService.register(
-        userRegister.username,
-        userRegister.email,
-        userRegister.password
-      );
+      const response = await authService.register(userRegister);
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         return response;
       }
     } catch (_error) {
