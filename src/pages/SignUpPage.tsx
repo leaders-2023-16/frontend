@@ -10,6 +10,7 @@ export const SignUp = () => {
 
   const onSubmit = useCallback(
     async (values: UserRegister) => {
+      console.log(values);
       const res = await dispatch(registerAsync(values));
       if (res.meta.requestStatus === "fulfilled")
         message.success("Успешная регистрация", 2);

@@ -15,9 +15,7 @@ export const registerAsync = createAsyncThunk<any, UserRegister>(
     try {
       const response = await authService.register(userRegister);
 
-      if (response.status === 201) {
-        return response;
-      }
+      return response;
     } catch (_error) {
       const error = _error as Error | AxiosError;
       console.error(error);

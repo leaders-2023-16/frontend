@@ -16,7 +16,7 @@ export const Content = () => {
   });
 
   return (
-    <Spin tip="Loading..." spinning={!data || isLoading}>
+    <Spin tip="Loading..." spinning={isLoading}>
       {!data ? (
         <SubmitApplicationForm />
       ) : data.status === IntershipApplicationStatus.PENDING ? (

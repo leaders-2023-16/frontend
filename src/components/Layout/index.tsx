@@ -48,7 +48,9 @@ export const LayoutPage = () => {
                       items,
                     }}
                   >
-                    <Typography.Text>Имя Фамилия</Typography.Text>
+                    <Typography.Text>
+                      {user.first_name} {user.last_name}
+                    </Typography.Text>
                   </Dropdown>
                 </>
               ) : (
