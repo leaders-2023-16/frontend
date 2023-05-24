@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import {
   Degree,
   Education,
@@ -6,7 +6,6 @@ import {
   UpdateTraineeProfile,
   WorkExperiences,
 } from "../../store/traineeProfile/types";
-import { isNil, omitBy, pickBy } from "lodash";
 type ProfileEditType = Partial<TraineeProfileType> & {
   onChange: (data: Partial<UpdateTraineeProfile>) => void;
   countries: { id: number; name: string }[];
