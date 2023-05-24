@@ -1,14 +1,14 @@
-import TokenService from './tokenService';
-import { http as axios } from './axios';
-import { authActions } from '../store/auth';
-import { Store } from '@reduxjs/toolkit';
+import TokenService from "./tokenService";
+import { http as axios } from "./axios";
+import { Store } from "@reduxjs/toolkit";
+import { authActions } from "@/store/auth";
 
 const setup = (store: Store) => {
     axios.interceptors.request.use(
         (config) => {
             const token = TokenService.getLocalAccessToken();
             if (token) {
-                config.headers['Authorization'] = 'Bearer ' + token; // for Spring Boot back-end
+                config.headers["Authorization"] = "Bearer " + token; // for Spring Boot back-end
                 //config.headers['x-access-token'] = token; // for Node.js Express back-end
             }
             return config;
@@ -19,6 +19,8 @@ const setup = (store: Store) => {
     );
 
     const { dispatch } = store;
+
+    // const { dispatch } = store;
     axios.interceptors.response.use(
         (res) => {
             return res;
@@ -33,7 +35,7 @@ const setup = (store: Store) => {
                     try {
                         const token = TokenService.getLocalRefreshToken();
                         const rs = await axios.post('v1/auth/refresh', { refresh: token });
-                        dispatch(authActions.refreshToken(rs.data));
+                        // dispatch(authActions.refreshToken(rs.data));
                         TokenService.updateLocalAccessToken(rs.data.access);
                         TokenService.updateLocalRefreshToken(rs.data.refresh);
 

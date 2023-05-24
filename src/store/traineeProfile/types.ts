@@ -38,6 +38,8 @@ export type TraineeProfileType = {
   links: { url: string }[];
   educations: Education[]
   work_experiences: WorkExperiences[]
+  birth_date: string;
+  sex: string | null;
 }
 
 export type UpdateTraineeProfile = Omit<TraineeProfileType, 'citizenship'> & {

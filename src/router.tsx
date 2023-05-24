@@ -1,11 +1,13 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import { LayoutPage } from "./components/Layout";
-import { IndexPage } from "./pages/IndexPage";
+import { IndexPage } from "./pages/Index";
 import { Login } from "./pages/LoginPage";
 import { SignUp } from "./pages/SignUpPage";
 import { TraineeProfilePage } from "./pages/traineeProfile/ProfilePage";
 import { AuthorizedLayout } from "./layouts/AuthorizedLayout";
 import { UnAuthorizedLayout } from "./layouts/UnAuthorizedLayout";
+import { CreateVacancyPage } from "./pages/CreateVacancy";
+import { VacanciesPage } from "./pages/Vacancies";
 
 export const router = createBrowserRouter([
   {
@@ -19,6 +21,14 @@ export const router = createBrowserRouter([
           {
             path: "/",
             element: <IndexPage />,
+          },
+          {
+            path: "create-vacancy",
+            element: <CreateVacancyPage />,
+          },
+          {
+            path: "vacancies",
+            element: <VacanciesPage />,
           },
           {
             path: "profile",

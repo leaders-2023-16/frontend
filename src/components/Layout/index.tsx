@@ -5,8 +5,10 @@ import { selectAuth } from "../../store/auth/selectors";
 import { logoutAsync } from "../../store/auth/api";
 import { useCallback, useMemo } from "react";
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
+import { Container } from "../Container";
+
 export const LayoutPage = () => {
-  const { isLoggedIn } = useAppSelector(selectAuth)
+  const { user } = useAppSelector(selectAuth)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
@@ -34,7 +36,7 @@ export const LayoutPage = () => {
           <Row justify={'space-between'}>
             <Col>Лого</Col>
             <Col>{
-              isLoggedIn ? (<>
+              !!user ? (<>
                 <Dropdown menu={{
                   items
                 }}
@@ -52,7 +54,9 @@ export const LayoutPage = () => {
         </Layout.Header>
         <Layout>
           <Layout.Content style={{ padding: "18px 36px" }}>
-            <Outlet />
+            <Container>
+              <Outlet />
+            </Container>
           </Layout.Content>
         </Layout>
         <Layout.Footer>footer</Layout.Footer>

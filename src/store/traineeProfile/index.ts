@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
-import { TraineeProfileType } from './types'
+import { TraineeProfileType, UpdateTraineeProfile } from './types'
 import { httpBaseQuery } from '../../services/axios'
 
 export const traineeProfileApi = createApi({
@@ -11,7 +11,7 @@ export const traineeProfileApi = createApi({
             query: (user_id) => ({ url: `v1/users/trainee-profiles/${user_id}/`, method: 'GET' }),
             providesTags: ['traineeProfile']
         }),
-        updateTraineeProfileById: builder.mutation<TraineeProfileType, { id: number, data: Partial<TraineeProfileType> }>({
+        updateTraineeProfileById: builder.mutation<TraineeProfileType, { id: number, data: Partial<UpdateTraineeProfile> }>({
             query: ({ id, data }) => ({ url: `v1/users/trainee-profiles/${id}/`, method: "PATCH", data }),
             invalidatesTags: ['traineeProfile']
         })
