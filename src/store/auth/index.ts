@@ -6,7 +6,6 @@ import { IUser } from "@/types/User";
 const userWithCreds: IUserWithCreds = tokenService.getUser();
 const initialState = {
   isLoadingSignIn: false,
-
   user: userWithCreds.user as IUser | undefined,
   error: undefined as string | undefined,
 };
@@ -17,7 +16,7 @@ export const authSlice = createSlice({
   reducers: {
     setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
-    },
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -32,8 +31,9 @@ export const authSlice = createSlice({
       .addCase(loginAsync.rejected, (state) => {
         state.isLoadingSignIn = false;
       })
-      .addCase(registerAsync.fulfilled, (state) => {
+      .addCase(registerAsync.fulfilled, (state, { payload }) => {
         state.error = "";
+        state.user = payload.user;
       })
       .addCase(logoutAsync.fulfilled, (state) => {
         state.user = undefined;

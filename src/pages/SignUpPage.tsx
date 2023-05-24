@@ -1,46 +1,69 @@
-import { useCallback, useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { loginAsync } from "../store/auth/api";
-import { useAppDispatch, useAppSelector } from "../store";
-import { Input, Checkbox, Button, Form } from "antd";
-import { useNavigate } from "react-router-dom";
-import { selectAuth } from "../store/auth/selectors";
-import { onlyRoles } from "@/HOCs/onlyRole";
-import { UserRole } from "@/types/User";
+import { useCallback, useState } from 'react';
+import { registerAsync } from '../store/auth/api';
+import { useAppDispatch } from '../store';
+import { Input, Checkbox, Button, Form, App } from 'antd';
+import { UserRegister } from '../store/auth/types';
 
-export const SignUp = onlyRoles([UserRole.CANDIDATE], () => {
-  const dispatch = useAppDispatch();
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<{ email: string; password: string }>({
-    mode: "onBlur",
-  });
+export const SignUp = () => {
+    const dispatch = useAppDispatch();
+    const { message } = App.useApp();
 
-  const onSubmit = useCallback(
-    ({ email, password }: { email: string; password: string }) => {
-      dispatch(loginAsync({ password, username: email }));
-    },
-    [dispatch]
-  );
+    const onSubmit = useCallback(
+        async (values: UserRegister) => {
+            const res = await dispatch(registerAsync(values));
+            if (res.meta.requestStatus === 'fulfilled')
+                message.success('Успешная регистрация', 2)
+        },
+        [dispatch, message]
+    );
 
-  return (
-    <Form
-      name="basic"
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 16 }}
-      style={{ maxWidth: 600, margin: "auto" }}
-      initialValues={{ remember: true }}
-      onFinish={onSubmit}
-    >
-      <Form.Item
-        label="Username"
-        name="username"
-        rules={[{ required: true, message: "Please input your username!" }]}
-      >
-        <Input />
-      </Form.Item>
+    return (
+        <Form
+            name="basic"
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
+            style={{ maxWidth: 600, margin: 'auto' }}
+            initialValues={{ remember: true }} 
+            onFinish={onSubmit}
+            autoComplete='off'
+        >
+            <Form.Item
+                label="Имя"
+                name="first_name"
+                rules={[{ required: true, message: 'Please input your username!' }]}
+            >
+                <Input />
+            </Form.Item>
+
+            <Form.Item
+                label="Фамилия"
+                name="last_name"
+                rules={[{ required: true, message: 'Please input your password!' }]}
+            >
+                <Input />
+            </Form.Item>
+            <Form.Item
+                label="Почта"
+                name="username"
+                rules={[{ required: true, message: 'Please input your username!' }]}
+            >
+                <Input />
+            </Form.Item>
+
+            <Form.Item
+                label="Пароль"
+                name="password"
+                rules={[{ required: true, message: 'Please input your password!' }]}
+            >
+                <Input.Password autoComplete='newpassword' />
+            </Form.Item>
+            <Form.Item
+                label="Подтвердите пароль"
+                name="passwordConf"
+                rules={[{ required: true, message: 'Please input your password!' }]}
+            >
+                <Input.Password autoComplete='newpassword' />
+            </Form.Item>
 
       <Form.Item
         label="Password"

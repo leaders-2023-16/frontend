@@ -8,7 +8,7 @@ export const Login = () => {
 
   const onSubmit = useCallback(
     async ({ username, password }: { username: string; password: string }) => {
-      await dispatch(loginAsync({ password, username: username }));
+      await dispatch(loginAsync({ password, username }));
     },
     [dispatch]
   );
