@@ -59,3 +59,9 @@ export interface ITraineeProfile {
   cv_score?: number;
   test_score?: number;
 }
+
+export type IPatchTraineeProfile = Partial<
+  Omit<ITraineeProfile, "citizenship">
+> & {
+  citizenship?: number;
+};

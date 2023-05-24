@@ -3,25 +3,25 @@ import {
   DatePicker,
   Divider,
   Input,
-  InputNumber,
   Select,
   Space,
   Typography,
 } from "antd";
-import { FC, useEffect, useState } from "react";
-import {
-  TraineeProfileType,
-  UpdateTraineeProfile,
-} from "../../store/traineeProfile/types";
+import { FC } from "react";
+
 import { DeleteFilled } from "@ant-design/icons";
 import { useProfileEdit } from "./hooks";
 import TextArea from "antd/es/input/TextArea";
 import dayjs from "dayjs";
 import Title from "antd/es/typography/Title";
-import { useGetCountiresQuery } from "@/store/dictionary";
+import {
+  IPatchTraineeProfile,
+  ITraineeProfile,
+  TraineeProfileSex,
+} from "@/types/TraineeProfile";
 
-type ProfileEditType = Partial<TraineeProfileType> & {
-  onChange: (data: Partial<UpdateTraineeProfile>) => void;
+type ProfileEditType = Partial<ITraineeProfile> & {
+  onChange: (data: IPatchTraineeProfile) => void;
 };
 
 export const ProfileEdit: FC<ProfileEditType> = ({ onChange, ...data }) => {
@@ -36,7 +36,7 @@ export const ProfileEdit: FC<ProfileEditType> = ({ onChange, ...data }) => {
         <Select
           defaultValue={sex.value || "N"}
           style={{ width: 120, marginTop: "16px" }}
-          onChange={(e) => sex.onChange(e)}
+          onChange={(e) => sex.onChange(e as TraineeProfileSex)}
           options={[
             { value: "M", label: "Мужской" },
             { value: "F", label: "Женский" },
@@ -139,7 +139,11 @@ export const ProfileEdit: FC<ProfileEditType> = ({ onChange, ...data }) => {
                 <Space>
                   <DatePicker
                     picker="year"
-                    value={el.start_year ? dayjs(el.start_year.toString(), "YYYY") : null}
+                    value={
+                      el.start_year
+                        ? dayjs(el.start_year.toString(), "YYYY")
+                        : null
+                    }
                     onChange={(e) =>
                       educations.onChange(
                         idx,
@@ -152,7 +156,9 @@ export const ProfileEdit: FC<ProfileEditType> = ({ onChange, ...data }) => {
                   &nbsp;-&nbsp;
                   <DatePicker
                     picker="year"
-                    value={el.end_year ? dayjs(el.end_year.toString(), "YYYY") : null}
+                    value={
+                      el.end_year ? dayjs(el.end_year.toString(), "YYYY") : null
+                    }
                     format={"YYYY"}
                     onChange={(e) =>
                       educations.onChange(
