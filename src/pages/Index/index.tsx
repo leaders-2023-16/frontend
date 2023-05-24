@@ -10,11 +10,14 @@ export const IndexPage = () => {
 
   const isCandidate = user?.role === UserRole.CANDIDATE;
   const isPersonnel = user?.role === UserRole.PERSONNEL;
+  const isCurator = user?.role === UserRole.CURATOR;
 
   if (isCandidate) {
     return <CandidateIndexPage />;
   } else if (isPersonnel) {
     return <Navigate to="/create-vacancy" replace={true} />;
+  } else if (isCurator) {
+    return <Navigate to="/intership-applications" replace={true} />;
   } else {
     return null;
   }

@@ -16,7 +16,7 @@ export const authSlice = createSlice({
   reducers: {
     setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -32,6 +32,8 @@ export const authSlice = createSlice({
         state.isLoadingSignIn = false;
       })
       .addCase(registerAsync.fulfilled, (state, { payload }) => {
+        console.log(payload);
+
         state.error = "";
         state.user = payload.user;
       })

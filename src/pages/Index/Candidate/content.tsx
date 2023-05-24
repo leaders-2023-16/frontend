@@ -6,20 +6,20 @@ import { selectAuthUser } from "@/store/auth/selectors";
 
 import { SubmitApplicationForm } from "./Views/SubmitApplicationForm";
 import { WaitingApplicationStatus } from "./Views/WaitingApplicationStatus";
-import { useGetSubmitApplicationStatusQuery } from "./Store/api";
-import { SubmitApplicationStatus } from "./Store/types";
+import { IntershipApplicationStatus } from "@/types/IntershipApplication";
+import { useGetIntershipApplicationQuery } from "@/store/intershipApplications/api";
 
 export const Content = () => {
   const user = useAppSelector(selectAuthUser);
-  const { data, isLoading } = useGetSubmitApplicationStatusQuery(
-    user?.id.toString() || ""
-  );
+  const { data, isLoading } = useGetIntershipApplicationQuery(user?.id || 0, {
+    skip: !user?.id,
+  });
 
   return (
-    <Spin tip="Loading..." spinning={!data || isLoading}>
+    <Spin tip="Loading..." spinning={isLoading}>
       {!data ? (
         <SubmitApplicationForm />
-      ) : data.status === SubmitApplicationStatus.PENDING ? (
+      ) : data.status === IntershipApplicationStatus.PENDING ? (
         <WaitingApplicationStatus />
       ) : !data.status ? (
         <SubmitApplicationForm />

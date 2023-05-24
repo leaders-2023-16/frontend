@@ -5,7 +5,6 @@ import { useAppDispatch, useAppSelector } from "@/store";
 
 import Title from "antd/es/typography/Title";
 import Paragraph from "antd/es/typography/Paragraph";
-import { useSubmitApplicationStatusMutation } from "../Store/api";
 import { getSelectedDirectionTrain } from "../Store/selectors";
 import { candidateIndexPageActions } from "../Store";
 import {
@@ -13,14 +12,14 @@ import {
   TrainDirectionByName,
   TrainDirectionName,
 } from "@/types/TrainDirection";
+import { useSubmitIntershipApplicationMutation } from "@/store/intershipApplications/api";
 
 export const SubmitApplicationForm = () => {
   const dispatch = useAppDispatch();
   const { notification } = App.useApp();
 
   const selectedDirectionTrain = useAppSelector(getSelectedDirectionTrain);
-
-  const [mutate, { isLoading }] = useSubmitApplicationStatusMutation();
+  const [mutate, { isLoading }] = useSubmitIntershipApplicationMutation();
 
   const handleChange = React.useCallback(
     (value: string) => {

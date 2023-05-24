@@ -1,7 +1,7 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { registerAsync } from "../store/auth/api";
 import { useAppDispatch } from "../store";
-import { Input, Checkbox, Button, Form, App } from "antd";
+import { Input, Button, Form, App } from "antd";
 import { UserRegister } from "../store/auth/types";
 
 export const SignUp = () => {
@@ -10,6 +10,7 @@ export const SignUp = () => {
 
   const onSubmit = useCallback(
     async (values: UserRegister) => {
+      console.log(values);
       const res = await dispatch(registerAsync(values));
       if (res.meta.requestStatus === "fulfilled")
         message.success("Успешная регистрация", 2);
@@ -63,22 +64,6 @@ export const SignUp = () => {
         rules={[{ required: true, message: "Please input your password!" }]}
       >
         <Input.Password autoComplete="newpassword" />
-      </Form.Item>
-
-      <Form.Item
-        label="Password"
-        name="password"
-        rules={[{ required: true, message: "Please input your password!" }]}
-      >
-        <Input.Password />
-      </Form.Item>
-
-      <Form.Item
-        name="remember"
-        valuePropName="checked"
-        wrapperCol={{ offset: 8, span: 16 }}
-      >
-        <Checkbox>Remember me</Checkbox>
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>

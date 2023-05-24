@@ -4,7 +4,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { authReducer } from "./auth";
 import { traineeProfileApi } from "./traineeProfile";
 import { candidateIndexPageReducer } from "@/pages/Index/Candidate/Store";
-import { candidateIndexPageApi } from "@/pages/Index/Candidate/Store/api";
+import { intershipApplicationsApi } from "./intershipApplications/api";
 import { dictionaryApi } from "./dictionary";
 
 export const store = configureStore({
@@ -16,13 +16,13 @@ export const store = configureStore({
 
     [dictionaryApi.reducerPath]: dictionaryApi.reducer,
     [traineeProfileApi.reducerPath]: traineeProfileApi.reducer,
-    [candidateIndexPageApi.reducerPath]: candidateIndexPageApi.reducer,
+    [intershipApplicationsApi.reducerPath]: intershipApplicationsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       // redux api
       traineeProfileApi.middleware,
-      candidateIndexPageApi.middleware,
+      intershipApplicationsApi.middleware,
       dictionaryApi.middleware
     ),
 });
