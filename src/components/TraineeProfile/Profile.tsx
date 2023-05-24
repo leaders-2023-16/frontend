@@ -24,11 +24,14 @@ export const TraineeProfileView: FC<TraineeProfileType> = ({
 }) => {
   return (
     <>
-      <Title level={5}>
-        Пол: {SEX_TO_LABEL[sex as "M" | "F"] || "Не указано"}
-      </Title>
+      <Space>
+        <Typography.Text>
+          Пол: {sex ? SEX_TO_LABEL[sex as "M" | "F"] : "Не указано"}
+        </Typography.Text>
+        <Typography.Text>Гражданство: </Typography.Text>
+      </Space>
       <Title level={5}>Дата рождения: {birth_date || "Не указано"}</Title>
-      <Title level={4}>Ссылки:{!links?.length && "  -"}</Title>
+      <Title level={5}>Ссылки:{!links?.length && "  -"}</Title>
       <Space direction="vertical">
         {links.map((l) => (
           <>
@@ -38,7 +41,7 @@ export const TraineeProfileView: FC<TraineeProfileType> = ({
           </>
         ))}
       </Space>
-      <Title level={4}>Образование:{!educations.length && "  -"}</Title>
+      <Title level={5}>Образование:{!educations.length && "  -"}</Title>
       {educations.map((ed) => (
         <>
           <Paragraph>
@@ -57,7 +60,7 @@ export const TraineeProfileView: FC<TraineeProfileType> = ({
         </>
       ))}
 
-      <Title level={4}>
+      <Title level={5}>
         Опыт работы:
         {!work_experiences.length && "  -"}
       </Title>
@@ -72,7 +75,7 @@ export const TraineeProfileView: FC<TraineeProfileType> = ({
         </>
       ))}
 
-      <Title level={4}>О себе</Title>
+      <Title level={5}>О себе</Title>
       <Paragraph>{bio}</Paragraph>
     </>
   );

@@ -32,10 +32,10 @@ export const ProfileEdit: FC<ProfileEditType> = ({ onChange, ...data }) => {
   return (
     <>
       <Space>
-        <Typography.Text>Пол: </Typography.Text>
+        <Typography.Title level={5}>Пол: </Typography.Title>
         <Select
           defaultValue={sex.value || "N"}
-          style={{ width: 120 }}
+          style={{ width: 120, marginTop: "16px" }}
           onChange={(e) => sex.onChange(e)}
           options={[
             { value: "M", label: "Мужской" },
@@ -43,12 +43,10 @@ export const ProfileEdit: FC<ProfileEditType> = ({ onChange, ...data }) => {
             { value: "N", label: "Не указано" },
           ]}
         />
-      </Space>
-      <Space>
-        <Typography.Text>Гражданство: </Typography.Text>
+        <Typography.Title level={5}>Гражданство: </Typography.Title>
         <Select
           defaultValue={citizenship.value || 0}
-          style={{ width: 120 }}
+          style={{ width: 120, marginTop: "16px" }}
           onChange={(e) => citizenship.onChange(e)}
           options={countries?.map(({ id, name }) => ({
             value: id,
@@ -57,7 +55,7 @@ export const ProfileEdit: FC<ProfileEditType> = ({ onChange, ...data }) => {
         />
       </Space>
 
-      <Title level={4}>Ссылки:{!link.value.length && "  -"}</Title>
+      <Title level={5}>Ссылки:{!link.value.length && "  -"}</Title>
 
       {editingObj.links?.map((el) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
@@ -81,7 +79,7 @@ export const ProfileEdit: FC<ProfileEditType> = ({ onChange, ...data }) => {
         />
       )}
       {/*////////////////////////////////////////////////////////////////////*/}
-      <Typography.Title level={3}>Образование:</Typography.Title>
+      <Typography.Title level={5}>Образование:</Typography.Title>
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         {educations.value.map((el, idx) => (
           <>
@@ -141,7 +139,7 @@ export const ProfileEdit: FC<ProfileEditType> = ({ onChange, ...data }) => {
                 <Space>
                   <DatePicker
                     picker="year"
-                    value={el.start_year ? dayjs(el.start_year, "YYYY") : null}
+                    value={el.start_year ? dayjs(el.start_year.toString(), "YYYY") : null}
                     onChange={(e) =>
                       educations.onChange(
                         idx,
@@ -154,7 +152,8 @@ export const ProfileEdit: FC<ProfileEditType> = ({ onChange, ...data }) => {
                   &nbsp;-&nbsp;
                   <DatePicker
                     picker="year"
-                    value={el.end_year ? dayjs(el.end_year, "YYYY") : null}
+                    value={el.end_year ? dayjs(el.end_year.toString(), "YYYY") : null}
+                    format={"YYYY"}
                     onChange={(e) =>
                       educations.onChange(
                         idx,
@@ -192,7 +191,7 @@ export const ProfileEdit: FC<ProfileEditType> = ({ onChange, ...data }) => {
       </div>
       <Button onClick={educations.onAdd}>Добавить</Button>
       {/*////////////////////////////////////////////////////////////////////*/}
-      <Typography.Title level={3}>Опыт работы:</Typography.Title>
+      <Typography.Title level={5}>Опыт работы:</Typography.Title>
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         {work.value.map((el, idx) => (
           <>
@@ -279,7 +278,7 @@ export const ProfileEdit: FC<ProfileEditType> = ({ onChange, ...data }) => {
       </div>
       <Button onClick={work.onAdd}>Добавить</Button>
 
-      {/* <Typography.Title level={3}>Опыт работы:
+      {/* <Typography.Title level={5}>Опыт работы:
                 {!editingObj.work_experiences?.length && '  -'}
             </Typography.Title>
             {editingObj.work_experiences?.map(work => (<>
@@ -289,7 +288,7 @@ export const ProfileEdit: FC<ProfileEditType> = ({ onChange, ...data }) => {
                 <Typography.Paragraph>Описание: {work.description}</Typography.Paragraph>
 
             </>))} */}
-      <Typography.Title level={3}>О себе</Typography.Title>
+      <Typography.Title level={5}>О себе</Typography.Title>
       <TextArea
         rows={10}
         value={bio.value}
