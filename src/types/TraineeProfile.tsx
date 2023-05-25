@@ -15,7 +15,7 @@ export enum TraineeProfileDegree {
   Doctorate = "Doctorate",
 }
 
-export interface TraineeProfileWorkExperiences {
+export interface TraineeProfileWorkExperience {
   employer: string;
   position: string;
   start_date: string;
@@ -49,7 +49,7 @@ export interface ITraineeProfile {
   phone_number?: string;
   links: TraineeProfileLink[];
   educations: TraineeProfileEducation[];
-  work_experiences: TraineeProfileWorkExperiences[];
+  work_experiences: TraineeProfileWorkExperience[];
   first_name: string;
   last_name: string;
   email?: string;
