@@ -11,7 +11,7 @@ export const Content = () => {
   const navigate = useNavigate();
 
   const handlePress = React.useCallback(
-    (id: string) => {
+    (id: number) => {
       navigate(`/intership-applications/${id}`);
     },
     [navigate]
