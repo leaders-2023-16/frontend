@@ -1,16 +1,50 @@
-import { httpBaseQuery } from '@/services/axios'
-import { createApi } from '@reduxjs/toolkit/query/react'
+import { httpBaseQuery } from "@/services/axios";
+import { ICountry } from "@/types/Country";
+import { createApi } from "@reduxjs/toolkit/query/react";
 
 export const dictionaryApi = createApi({
-    reducerPath: 'dictionaryApi',
-    baseQuery: httpBaseQuery(),
-    endpoints: (builder) => ({
-        getCountires: builder.query<{id: number, name: string}[], void>({
-            query: () => ({ url: `v1/countries/`, method: 'GET' }),
-        }),
-        getDepartments: builder.query<{id: number, name: string}[], void>({
-            query: () => ({ url: `v1/departments/`, method: "GET" }),
-        })
+  reducerPath: "dictionaryApi",
+  baseQuery: httpBaseQuery(),
+  tagTypes: ["countries"],
+  endpoints: (builder) => ({
+    getCountires: builder.query<ICountry[], void>({
+      query: () => ({ url: `v1/countries/`, method: "GET" }),
+      transformResponse: (response: GetCountriesResponse) => response.results,
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({
+                type: "countries" as const,
+                id,
+              })),
+              { type: "countries", id: "LIST" },
+            ]
+          : [{ type: "countries", id: "LIST" }],
     }),
-})
-export const { useGetCountiresQuery, useGetDepartmentsQuery } = dictionaryApi
+
+    getCountryById: builder.query<ICountry, number>({
+      query: (countryId) => ({
+        url: `v1/countries/${countryId}`,
+        method: "GET",
+      }),
+      providesTags: (result, error, applicantId) => [
+        { type: "countries", id: applicantId },
+      ],
+    }),
+
+    getDepartments: builder.query<{ id: number; name: string }[], void>({
+      query: () => ({ url: `v1/departments/`, method: "GET" }),
+    }),
+  }),
+});
+
+export const {
+  useGetCountiresQuery,
+  useGetCountryByIdQuery,
+  useGetDepartmentsQuery,
+} = dictionaryApi;
+
+interface GetCountriesResponse {
+  results: ICountry[];
+  total: number;
+}

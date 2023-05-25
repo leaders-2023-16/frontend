@@ -8,7 +8,7 @@ export enum IntershipApplicationStatus {
 }
 
 export interface IIntershipApplication {
-  _id: string;
+  _id: number;
 
   status?: IntershipApplicationStatus;
   status_changed_at?: string;

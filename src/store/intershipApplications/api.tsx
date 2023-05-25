@@ -46,7 +46,7 @@ export const intershipApplicationsApi = createApi({
 
     getIntershipApplication: builder.query<IIntershipApplication, number>({
       query: (applicantId) => ({
-        url: `v1/internship-applications/${applicantId}`,
+        url: `v1/internship-applications/${applicantId}/`,
         method: "GET",
       }),
       transformResponse: (response: GetDetailedIntershipApplicationResponse) =>
@@ -69,12 +69,12 @@ export const intershipApplicationsApi = createApi({
 
     updateIntershipApplication: builder.mutation<
       IIntershipApplication,
-      Pick<IIntershipApplication, "status" | "direction"> & {
+      Partial<Pick<IIntershipApplication, "status" | "direction">> & {
         applicantId: number;
       }
     >({
       query: ({ applicantId, ...data }) => ({
-        url: `v1/internship-applications/${applicantId}`,
+        url: `v1/internship-applications/${applicantId}/`,
         method: "PATCH",
         data,
       }),
