@@ -1,18 +1,99 @@
-import { TrainDirection, TrainDirectionName } from "@/types/TrainDirection";
-import { Avatar, Button, Col, Form, Input, Row, Select } from "antd";
+import React from "react";
+
+import { useCreateVacancyMutation } from "@/store/vacancies/api";
+import {
+  TrainDirection,
+  TrainDirectionByName,
+  TrainDirectionName,
+} from "@/types/TrainDirection";
+import { App, Avatar, Button, Col, Form, Input, Row, Select, Spin } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import Title from "antd/es/typography/Title";
 
 import type { CustomTagProps } from "rc-select/lib/BaseSelect";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { getPersonnelCreateVacancyForm } from "./Store/selectors";
+import { personnelCreateVacancyPageActions } from "./Store";
+import { VacancyStatus, VacancyTestTaskType } from "@/types/Vacancy";
 
 export const Content = () => {
   const [form] = Form.useForm();
+
+  const { notification } = App.useApp();
+
+  const dispatch = useAppDispatch();
+  const { position, description, direction, test_task } = useAppSelector(
+    getPersonnelCreateVacancyForm
+  );
+  const [mutate, { isLoading }] = useCreateVacancyMutation();
+
+  const handleChangeDirection = React.useCallback(
+    (value: string) => {
+      dispatch(personnelCreateVacancyPageActions.setDirection(value));
+    },
+    [dispatch]
+  );
+
+  const handleChangePosition = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      dispatch(personnelCreateVacancyPageActions.setPosition(e.target.value));
+    },
+    [dispatch]
+  );
+
+  const handleChangeDescription = React.useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      dispatch(
+        personnelCreateVacancyPageActions.setDescription(e.target.value)
+      );
+    },
+    [dispatch]
+  );
+
+  const handleChangeTestTask = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      dispatch(personnelCreateVacancyPageActions.setTestTask(e.target.value));
+    },
+    [dispatch]
+  );
+
+  const handlePressCreate = () => {
+    if (
+      position.length === 0 ||
+      description.length === 0 ||
+      test_task.length === 0
+    ) {
+      notification.error({
+        message: "Форма заполнена неверно",
+        description: "Пожалуйста, заполните все поля формы",
+      });
+      return;
+    }
+
+    mutate({
+      required_qualifications: [],
+      name: position,
+      description,
+      direction: (TrainDirectionByName as any)[direction],
+      status: VacancyStatus.PENDING,
+      mentor: 9,
+      test_task: {
+        type: VacancyTestTaskType.TEXT,
+        title: "Тестовое задание",
+        description: test_task,
+      },
+    });
+  };
 
   return (
     <Col>
       <Form layout={"vertical"} form={form}>
         <Form.Item label="Должность">
-          <Input placeholder="Введите должность ..." />
+          <Input
+            placeholder="Введите должность ..."
+            value={position}
+            onChange={handleChangePosition}
+          />
         </Form.Item>
 
         <Form.Item label="Направление стажировки">
@@ -20,6 +101,8 @@ export const Content = () => {
             showSearch
             placeholder="Выберите направление стажировки"
             optionFilterProp="children"
+            value={direction}
+            onChange={handleChangeDirection}
             filterOption={(input, option) =>
               (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
             }
@@ -63,7 +146,12 @@ export const Content = () => {
         <Title level={5}>Описание вакансии</Title>
 
         <Form.Item>
-          <TextArea placeholder="Описание вакансии ..." rows={10} />
+          <TextArea
+            placeholder="Описание вакансии ..."
+            value={description}
+            onChange={handleChangeDescription}
+            rows={10}
+          />
         </Form.Item>
 
         <Form.Item label="Занятость">
@@ -108,10 +196,16 @@ export const Content = () => {
 
         <Title level={5}>Тестовое задание</Title>
         <Form.Item>
-          <Input placeholder="Введите ссылку на тестовое задание ..." />
+          <Input
+            placeholder="Введите ссылку на тестовое задание ..."
+            value={test_task}
+            onChange={handleChangeTestTask}
+          />
         </Form.Item>
 
-        <Button type="primary">Создать</Button>
+        <Button type="primary" onClick={handlePressCreate} loading={isLoading}>
+          Создать
+        </Button>
       </Form>
     </Col>
   );
