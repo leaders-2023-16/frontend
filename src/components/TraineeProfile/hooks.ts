@@ -6,7 +6,7 @@ import {
   TraineeProfileDegree,
   TraineeProfileEducation,
   TraineeProfileSex,
-  TraineeProfileWorkExperiences,
+  TraineeProfileWorkExperience,
 } from "@/types/TraineeProfile";
 type ProfileEditType = Partial<ITraineeProfile> & {
   onChange: (data: IPatchTraineeProfile) => void;
@@ -118,7 +118,7 @@ export const useProfileEdit = ({
 
   const changeWork = (
     idx: number,
-    field: keyof TraineeProfileWorkExperiences,
+    field: keyof TraineeProfileWorkExperience,
     value: string
   ) => {
     const works = [...(editingObj.work_experiences || [])];
