@@ -1,6 +1,5 @@
 import React from "react";
 import { Col, List, Row } from "antd";
-import { useGetVacanciesQuery } from "@/store/vacancies/api";
 import { useNavigate } from "react-router-dom";
 import { useGetVacancyResponsesQuery } from "@/store/vacancyResponse/api";
 
