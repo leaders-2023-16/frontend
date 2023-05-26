@@ -7,10 +7,14 @@ import { Actions } from "./Views/Actions";
 import { useAppSelector } from "@/store";
 import { getCuratorDetailedVacancyStore } from "./Store/selectors";
 import { EditForm } from "./Views/EditForm";
+import { useDispatch } from "react-redux";
+import { curatorDetailedVacancyPageActions } from "./Store";
 
 export const Content = () => {
   const { vacancyId } = useParams();
   const { isEditing } = useAppSelector(getCuratorDetailedVacancyStore);
+
+  const dispatch = useDispatch();
 
   const { data, isLoading, isError } = useGetVacancyByIdQuery(
     parseInt(vacancyId || ""),
@@ -18,6 +22,12 @@ export const Content = () => {
       skip: !vacancyId,
     }
   );
+
+  React.useEffect(() => {
+    return () => {
+      dispatch(curatorDetailedVacancyPageActions.reset());
+    };
+  }, [dispatch]);
 
   if (isError) {
     return <Navigate to="/vacancies" />;

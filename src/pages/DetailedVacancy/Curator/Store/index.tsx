@@ -46,6 +46,10 @@ export const curatorDetailedVacancyPageSlice = createSlice({
     setTestTask: (state, { payload }: PayloadAction<string>) => {
       state.form.test_task = payload.trimStart();
     },
+
+    reset: (state) => {
+      return initialState;
+    },
   },
 });
 
