@@ -2,7 +2,7 @@ import { onlyRoles } from "@/HOCs/onlyRole";
 import { TraineeProfile } from "../../components/TraineeProfile";
 import { Row, Col } from "antd";
 import { UserRole } from "@/types/User";
-export const TraineeProfilePage = onlyRoles([UserRole.CANDIDATE], () => {
+export const TraineeProfilePage = onlyRoles([UserRole.CANDIDATE, UserRole.TRAINEE], () => {
   return (
     <>
       <Row gutter={[24, 24]} wrap justify={"center"}>

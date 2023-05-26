@@ -18,6 +18,7 @@ export const store = configureStore({
     personnelCreateVacancyPage: personnelCreateVacancyPageReducer,
 
     [dictionaryApi.reducerPath]: dictionaryApi.reducer,
+    [vacanciesApi.reducerPath]: vacanciesApi.reducer,
     [traineeProfileApi.reducerPath]: traineeProfileApi.reducer,
     [intershipApplicationsApi.reducerPath]: intershipApplicationsApi.reducer,
     [vacanciesApi.reducerPath]: vacanciesApi.reducer,
@@ -26,6 +27,7 @@ export const store = configureStore({
     getDefaultMiddleware().concat(
       // redux api
       traineeProfileApi.middleware,
+      vacanciesApi.middleware,
       intershipApplicationsApi.middleware,
       dictionaryApi.middleware,
       vacanciesApi.middleware
