@@ -1,5 +1,5 @@
 import { httpBaseQuery } from "@/services/axios";
-import { IVacancy } from "@/types/Vacancy";
+import { IVacancy, IVacancyTestTask } from "@/types/Vacancy";
 import { createApi } from "@reduxjs/toolkit/query/react";
 
 export const vacanciesApi = createApi({
@@ -46,18 +46,27 @@ export const vacanciesApi = createApi({
       invalidatesTags: [{ type: "vacancies", id: "LIST" }],
     }),
 
+    getVacancyById: builder.query<IVacancy, number>({
+      query: (id) => ({
+        url: `v1/vacancies/${id}/`,
+        method: "GET",
+      }),
+      providesTags: (result, error, id) => [{ type: "vacancies", id }],
+    }),
+
     updateVacancy: builder.mutation<
       IVacancy,
       Partial<
         Pick<
           Required<IVacancy>,
-          | "required_qualifications"
-          | "name"
-          | "description"
-          | "status"
-          | "test_task"
+          "required_qualifications" | "name" | "description" | "status"
         >
-      > & { id: number; direction: number; mentor: number }
+      > & {
+        id: number;
+        direction?: number;
+        mentor?: number;
+        test_task?: Omit<IVacancyTestTask, "id">;
+      }
     >({
       query: ({ id, ...data }) => ({
         url: `v1/vacancies/${id}/`,
@@ -75,6 +84,7 @@ export const {
   useGetVacanciesQuery,
   useUpdateVacancyMutation,
   useCreateVacancyMutation,
+  useGetVacancyByIdQuery,
 } = vacanciesApi;
 
 interface GetVacanciesParams {

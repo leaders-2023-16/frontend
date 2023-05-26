@@ -1,42 +1,40 @@
 import React from "react";
-
-import { useCreateVacancyMutation } from "@/store/vacancies/api";
+import { useAppDispatch, useAppSelector } from "@/store";
 import {
   TrainDirection,
   TrainDirectionByName,
   TrainDirectionName,
 } from "@/types/TrainDirection";
-import { App, Avatar, Button, Col, Form, Input, Row, Select } from "antd";
+import { App, Button, Col, Form, Input, Row, Select, Typography } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import Title from "antd/es/typography/Title";
+import { getCuratorDetailedVacancyStore } from "../Store/selectors";
+import { curatorDetailedVacancyPageActions } from "../Store";
+import { useUpdateVacancyMutation } from "@/store/vacancies/api";
+import { IVacancy, VacancyTestTaskType } from "@/types/Vacancy";
 
-import type { CustomTagProps } from "rc-select/lib/BaseSelect";
-import { useAppDispatch, useAppSelector } from "@/store";
-import { getPersonnelCreateVacancyForm } from "./Store/selectors";
-import { personnelCreateVacancyPageActions } from "./Store";
-import { VacancyStatus, VacancyTestTaskType } from "@/types/Vacancy";
-
-export const Content = () => {
-  const [form] = Form.useForm();
-
+interface EditFormProps {
+  vacancy: IVacancy;
+}
+export const EditForm: React.FC<EditFormProps> = ({ vacancy }) => {
   const { notification } = App.useApp();
-
   const dispatch = useAppDispatch();
-  const { position, description, direction, test_task } = useAppSelector(
-    getPersonnelCreateVacancyForm
-  );
-  const [mutate, { isLoading }] = useCreateVacancyMutation();
+
+  const {
+    form: { position, direction, description, test_task },
+  } = useAppSelector(getCuratorDetailedVacancyStore);
+
+  const [mutate, { isLoading }] = useUpdateVacancyMutation();
 
   const handleChangeDirection = React.useCallback(
     (value: string) => {
-      dispatch(personnelCreateVacancyPageActions.setDirection(value));
+      dispatch(curatorDetailedVacancyPageActions.setDirection(value));
     },
     [dispatch]
   );
 
   const handleChangePosition = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      dispatch(personnelCreateVacancyPageActions.setPosition(e.target.value));
+      dispatch(curatorDetailedVacancyPageActions.setPosition(e.target.value));
     },
     [dispatch]
   );
@@ -44,7 +42,7 @@ export const Content = () => {
   const handleChangeDescription = React.useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       dispatch(
-        personnelCreateVacancyPageActions.setDescription(e.target.value)
+        curatorDetailedVacancyPageActions.setDescription(e.target.value)
       );
     },
     [dispatch]
@@ -52,12 +50,12 @@ export const Content = () => {
 
   const handleChangeTestTask = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      dispatch(personnelCreateVacancyPageActions.setTestTask(e.target.value));
+      dispatch(curatorDetailedVacancyPageActions.setTestTask(e.target.value));
     },
     [dispatch]
   );
 
-  const handlePressCreate = () => {
+  const handlePressSave = () => {
     if (
       position.length === 0 ||
       description.length === 0 ||
@@ -71,23 +69,29 @@ export const Content = () => {
     }
 
     mutate({
+      id: vacancy.id,
       required_qualifications: [],
       name: position,
       description,
       direction: (TrainDirectionByName as any)[direction],
-      status: VacancyStatus.PENDING,
       mentor: 9,
-      test_task: {
-        type: VacancyTestTaskType.TEXT,
-        title: "Тестовое задание",
-        description: test_task,
-      },
+      test_task: vacancy.test_task
+        ? {
+            type: VacancyTestTaskType.TEXT,
+            title: "Тестовое задание",
+            description: test_task,
+          }
+        : {
+            type: VacancyTestTaskType.TEXT,
+            title: "Тестовое задание",
+            description: test_task,
+          },
     });
   };
 
   return (
     <Col>
-      <Form layout={"vertical"} form={form}>
+      <Form layout={"vertical"}>
         <Form.Item label="Должность">
           <Input
             placeholder="Введите должность ..."
@@ -143,7 +147,7 @@ export const Content = () => {
           />
         </Form.Item>
 
-        <Title level={5}>Описание вакансии</Title>
+        <Typography.Title level={5}>Описание вакансии</Typography.Title>
 
         <Form.Item>
           <TextArea
@@ -181,8 +185,8 @@ export const Content = () => {
         <Form.Item label="Задачи">
           <Select mode="tags" placeholder="Какие задачи предстоит решать" />
         </Form.Item>
-
-        <Title level={5}>Наставник</Title>
+        {/* 
+        <Typography.Title level={5}>Наставник</Typography.Title>
         <Form.Item>
           <Select
             mode="multiple"
@@ -192,9 +196,9 @@ export const Content = () => {
             placeholder="Выберите наставника ..."
             options={options}
           />
-        </Form.Item>
+        </Form.Item> */}
 
-        <Title level={5}>Тестовое задание</Title>
+        <Typography.Title level={5}>Тестовое задание</Typography.Title>
         <Form.Item>
           <Input
             placeholder="Введите ссылку на тестовое задание ..."
@@ -202,43 +206,16 @@ export const Content = () => {
             onChange={handleChangeTestTask}
           />
         </Form.Item>
-
-        <Button type="primary" onClick={handlePressCreate} loading={isLoading}>
-          Создать
-        </Button>
       </Form>
+
+      <Row style={{ marginTop: "20px" }}>
+        <Col flex={1}></Col>
+        <Row>
+          <Button type="primary" loading={isLoading} onClick={handlePressSave}>
+            Сохранить
+          </Button>
+        </Row>
+      </Row>
     </Col>
-  );
-};
-
-const options = [{ value: "Иванов Иван" }];
-
-const tagRender = (props: CustomTagProps) => {
-  const { label, onClose } = props;
-  const onPreventMouseDown = (event: React.MouseEvent<HTMLSpanElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    onClose();
-  };
-  return (
-    <Row
-      style={{
-        margin: "3px",
-        alignItems: "center",
-        padding: "2px",
-        borderRadius: "10px",
-        border: "1px solid #C4C4C4",
-      }}
-      onClick={onPreventMouseDown}
-    >
-      <Avatar
-        style={{ backgroundColor: "black", verticalAlign: "middle" }}
-        size="small"
-      >
-        {label?.toString().at(0)}
-      </Avatar>
-      <span style={{ marginLeft: "10px", marginRight: "5px" }}>{label}</span>
-    </Row>
   );
 };
