@@ -183,7 +183,7 @@ export const ProfileEdit: FC<ProfileEditType> = ({ onChange, ...data }) => {
               </Space>
             </div>
             <Button
-              style={{ width: "90px" }}
+              style={{ width: "115px" }}
               danger
               onClick={() => educations.onDelete(idx)}
             >
@@ -195,7 +195,7 @@ export const ProfileEdit: FC<ProfileEditType> = ({ onChange, ...data }) => {
           </>
         ))}
       </div>
-      <Button onClick={educations.onAdd}>Добавить</Button>
+      <Button onClick={educations.onAdd} style={{marginTop: '8px'}}>Добавить</Button>
       {/*////////////////////////////////////////////////////////////////////*/}
       <Typography.Title level={5}>Опыт работы:</Typography.Title>
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -270,7 +270,7 @@ export const ProfileEdit: FC<ProfileEditType> = ({ onChange, ...data }) => {
               </Space>
             </div>
             <Button
-              style={{ width: "90px" }}
+              style={{ width: "115px" }}
               danger
               onClick={() => work.onDelete(idx)}
             >
@@ -282,7 +282,7 @@ export const ProfileEdit: FC<ProfileEditType> = ({ onChange, ...data }) => {
           </>
         ))}
       </div>
-      <Button onClick={work.onAdd}>Добавить</Button>
+      <Button onClick={work.onAdd} style={{marginTop: '8px'}}>Добавить</Button>
 
       {/* <Typography.Title level={5}>Опыт работы:
                 {!editingObj.work_experiences?.length && '  -'}

@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Link, Navigate, Outlet, useNavigate } from "react-router-dom";
 import { Button, Col, Dropdown, Layout, Row, Space, Typography } from "antd";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { selectAuth } from "../../store/auth/selectors";
@@ -6,6 +6,8 @@ import { logoutAsync } from "../../store/auth/api";
 import { useCallback, useMemo } from "react";
 import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
 import { Container } from "../Container";
+import logo from "../../assets/logo.svg";
+import { Tabs } from "./Tabs";
 
 export const LayoutPage = () => {
   const { user } = useAppSelector(selectAuth);
@@ -38,8 +40,13 @@ export const LayoutPage = () => {
     <>
       <Layout style={{ minHeight: "100vh" }}>
         <Layout.Header>
-          <Row justify={"space-between"}>
-            <Col>Лого</Col>
+          <Row justify={"space-between"} align={"middle"}>
+            <Col style={{ display: "flex" }}>
+              <img src={logo} />
+            </Col>
+            <Col>
+              <Tabs role={user?.role} />
+            </Col>
             <Col>
               {user ? (
                 <>
@@ -56,9 +63,11 @@ export const LayoutPage = () => {
               ) : (
                 <>
                   <Space>
-                    <Button onClick={() => navigate("/login")}>Войти</Button>
                     <Button onClick={() => navigate("/signup")}>
                       Зарегистрироваться
+                    </Button>
+                    <Button type="primary" onClick={() => navigate("/login")}>
+                      Войти
                     </Button>
                   </Space>
                 </>
@@ -73,7 +82,7 @@ export const LayoutPage = () => {
             </Container>
           </Layout.Content>
         </Layout>
-        <Layout.Footer>footer</Layout.Footer>
+        {/* <Layout.Footer>footer</Layout.Footer> */}
       </Layout>
     </>
   );

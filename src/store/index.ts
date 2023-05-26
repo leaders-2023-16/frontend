@@ -6,6 +6,7 @@ import { traineeProfileApi } from "./traineeProfile";
 import { candidateIndexPageReducer } from "@/pages/Index/Candidate/Store";
 import { intershipApplicationsApi } from "./intershipApplications/api";
 import { dictionaryApi } from "./dictionary";
+import { vacanciesApi } from "./vacancies";
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     candidateIndexPage: candidateIndexPageReducer,
 
     [dictionaryApi.reducerPath]: dictionaryApi.reducer,
+    [vacanciesApi.reducerPath]: vacanciesApi.reducer,
     [traineeProfileApi.reducerPath]: traineeProfileApi.reducer,
     [intershipApplicationsApi.reducerPath]: intershipApplicationsApi.reducer,
   },
@@ -22,6 +24,7 @@ export const store = configureStore({
     getDefaultMiddleware().concat(
       // redux api
       traineeProfileApi.middleware,
+      vacanciesApi.middleware,
       intershipApplicationsApi.middleware,
       dictionaryApi.middleware
     ),
