@@ -10,6 +10,7 @@ import { CreateVacancyPage } from "./pages/CreateVacancy";
 import { VacanciesPage } from "./pages/Vacancies";
 import { IntershipApplicationsPage } from "./pages/IntershipApplications";
 import { DetailedIntershipApplicationPage } from "./pages/DetailedIntershipApplication";
+import { DetailedVacancyPage } from "./pages/DetailedVacancy";
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ export const router = createBrowserRouter([
           {
             path: "vacancies",
             element: <VacanciesPage />,
+          },
+          {
+            path: "vacancies/:vacancyId",
+            element: <DetailedVacancyPage />,
           },
           {
             path: "profile",
