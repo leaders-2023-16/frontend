@@ -1,21 +1,17 @@
 import React from "react";
 import { Col, List, Row } from "antd";
-import { useGetVacanciesQuery } from "@/store/vacancies/api";
 import { useNavigate } from "react-router-dom";
-import { VacancyStatus } from "@/types/Vacancy";
+import { useGetVacancyResponsesQuery } from "@/store/vacancyResponse/api";
 
 export const Content = () => {
   const [page, setPage] = React.useState(1);
-  const { data, isLoading } = useGetVacanciesQuery({
-    page,
-    status: VacancyStatus.PUBLISHED,
-  });
+  const { data, isLoading } = useGetVacancyResponsesQuery({ page });
 
   const navigate = useNavigate();
 
   const handlePress = React.useCallback(
     (id: number) => {
-      navigate(`/vacancies/${id}`);
+      navigate(`/vacancy-responses/${id}`);
     },
     [navigate]
   );
@@ -33,8 +29,8 @@ export const Content = () => {
       renderItem={(item) => (
         <List.Item key={item.id} onClick={() => handlePress(item.id)}>
           <Row>
-            <Col flex={1}>{item.name}</Col>
-            <Col>{item.status}</Col>
+            <Col flex={1}>{item.vacancy.name}</Col>
+            <Col>{item.approved_by_mentor}</Col>
           </Row>
         </List.Item>
       )}

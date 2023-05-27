@@ -10,6 +10,9 @@ import { vacanciesApi } from "./vacancies/api";
 import { personnelCreateVacancyPageReducer } from "@/pages/CreateVacancy/Personnel/Store";
 import { curatorDetailedVacancyPageReducer } from "@/pages/DetailedVacancy/Curator/Store";
 import { vacancyResponsesApi } from "./vacancyResponse/api";
+import { traineeDetailedVacancyPageReducer } from "@/pages/DetailedVacancy/Trainee/Store";
+import { personnelDetailedVacancyPageReducer } from "@/pages/DetailedVacancy/Personnel/Store";
+import { usersApi } from "./users/api";
 
 export const store = configureStore({
   reducer: {
@@ -19,12 +22,15 @@ export const store = configureStore({
     candidateIndexPage: candidateIndexPageReducer,
     personnelCreateVacancyPage: personnelCreateVacancyPageReducer,
     curatorDetailedVacancyPage: curatorDetailedVacancyPageReducer,
+    traineeDetailedVacancyPage: traineeDetailedVacancyPageReducer,
+    personnelDetailedVacancyPage: personnelDetailedVacancyPageReducer,
 
     [dictionaryApi.reducerPath]: dictionaryApi.reducer,
     [traineeProfileApi.reducerPath]: traineeProfileApi.reducer,
     [intershipApplicationsApi.reducerPath]: intershipApplicationsApi.reducer,
     [vacanciesApi.reducerPath]: vacanciesApi.reducer,
     [vacancyResponsesApi.reducerPath]: vacancyResponsesApi.reducer,
+    [usersApi.reducerPath]: usersApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -33,7 +39,8 @@ export const store = configureStore({
       intershipApplicationsApi.middleware,
       dictionaryApi.middleware,
       vacanciesApi.middleware,
-      vacancyResponsesApi.middleware
+      vacancyResponsesApi.middleware,
+      usersApi.middleware
     ),
 });
 

@@ -5,12 +5,24 @@ import {
   TrainDirectionByName,
   TrainDirectionName,
 } from "@/types/TrainDirection";
-import { App, Button, Col, Form, Input, Row, Select, Typography } from "antd";
+import {
+  App,
+  Button,
+  Col,
+  Form,
+  Input,
+  Row,
+  Select,
+  Spin,
+  Typography,
+} from "antd";
 import TextArea from "antd/es/input/TextArea";
-import { getCuratorDetailedVacancyStore } from "../Store/selectors";
-import { curatorDetailedVacancyPageActions } from "../Store";
 import { useUpdateVacancyMutation } from "@/store/vacancies/api";
 import { IVacancy, VacancyTestTaskType } from "@/types/Vacancy";
+import { getPersonnelDetailedVacancyStore } from "../Store/selectors";
+import { personnelDetailedVacancyPageActions } from "../Store";
+import Title from "antd/es/typography/Title";
+import { useGetFreeMentorsQuery } from "@/store/users/api";
 
 interface EditFormProps {
   vacancy: IVacancy;
@@ -20,21 +32,31 @@ export const EditForm: React.FC<EditFormProps> = ({ vacancy }) => {
   const dispatch = useAppDispatch();
 
   const {
-    form: { position, direction, description, test_task, schedule, skills },
-  } = useAppSelector(getCuratorDetailedVacancyStore);
+    form: {
+      position,
+      direction,
+      description,
+      test_task,
+      schedule,
+      skills,
+      mentor,
+    },
+  } = useAppSelector(getPersonnelDetailedVacancyStore);
 
+  const { data: mentors, isLoading: isLoadingMentors } =
+    useGetFreeMentorsQuery();
   const [mutate, { isLoading }] = useUpdateVacancyMutation();
 
   const handleChangeDirection = React.useCallback(
     (value: string) => {
-      dispatch(curatorDetailedVacancyPageActions.setDirection(value));
+      dispatch(personnelDetailedVacancyPageActions.setDirection(value));
     },
     [dispatch]
   );
 
   const handleChangePosition = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      dispatch(curatorDetailedVacancyPageActions.setPosition(e.target.value));
+      dispatch(personnelDetailedVacancyPageActions.setPosition(e.target.value));
     },
     [dispatch]
   );
@@ -42,7 +64,7 @@ export const EditForm: React.FC<EditFormProps> = ({ vacancy }) => {
   const handleChangeDescription = React.useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       dispatch(
-        curatorDetailedVacancyPageActions.setDescription(e.target.value)
+        personnelDetailedVacancyPageActions.setDescription(e.target.value)
       );
     },
     [dispatch]
@@ -50,21 +72,28 @@ export const EditForm: React.FC<EditFormProps> = ({ vacancy }) => {
 
   const handleChangeTestTask = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      dispatch(curatorDetailedVacancyPageActions.setTestTask(e.target.value));
+      dispatch(personnelDetailedVacancyPageActions.setTestTask(e.target.value));
     },
     [dispatch]
   );
 
   const handleChangeSchedule = React.useCallback(
     (value: string) => {
-      dispatch(curatorDetailedVacancyPageActions.setSchedule(value as any));
+      dispatch(personnelDetailedVacancyPageActions.setSchedule(value as any));
     },
     [dispatch]
   );
 
   const handleChangeSkills = React.useCallback(
     (value: string[]) => {
-      dispatch(curatorDetailedVacancyPageActions.setSkills(value));
+      dispatch(personnelDetailedVacancyPageActions.setSkills(value));
+    },
+    [dispatch]
+  );
+
+  const handleChangeMentor = React.useCallback(
+    (id: number) => {
+      dispatch(personnelDetailedVacancyPageActions.setMentor(id));
     },
     [dispatch]
   );
@@ -87,23 +116,18 @@ export const EditForm: React.FC<EditFormProps> = ({ vacancy }) => {
         id: vacancy.id,
         required_qualifications: skills,
         schedule,
+        mentor,
         name: position,
         description,
         direction: (TrainDirectionByName as any)[direction],
-        test_task: vacancy.test_task
-          ? {
-              type: VacancyTestTaskType.TEXT,
-              title: "Тестовое задание",
-              description: test_task,
-            }
-          : {
-              type: VacancyTestTaskType.TEXT,
-              title: "Тестовое задание",
-              description: test_task,
-            },
+        test_task: {
+          type: VacancyTestTaskType.TEXT,
+          title: "Тестовое задание",
+          description: test_task,
+        },
       }).unwrap();
 
-      dispatch(curatorDetailedVacancyPageActions.reset());
+      dispatch(personnelDetailedVacancyPageActions.reset());
     } catch (e) {
       notification.open({
         type: "error",
@@ -113,6 +137,9 @@ export const EditForm: React.FC<EditFormProps> = ({ vacancy }) => {
     }
   };
 
+  const currentMentors = vacancy.mentor
+    ? [...(mentors || []), vacancy.mentor]
+    : mentors || [];
   return (
     <Col>
       <Form layout={"vertical"}>
@@ -211,6 +238,23 @@ export const EditForm: React.FC<EditFormProps> = ({ vacancy }) => {
             onChange={handleChangeSkills}
             value={skills}
           />
+        </Form.Item>
+
+        <Title level={5}>Наставник</Title>
+        <Form.Item>
+          <Spin spinning={isLoadingMentors}>
+            <Select
+              showArrow
+              style={{ width: "100%" }}
+              placeholder="Выберите наставника ..."
+              options={currentMentors.map((mentor) => ({
+                label: mentor.first_name + " " + mentor.last_name,
+                value: mentor.id,
+              }))}
+              onChange={handleChangeMentor}
+              value={mentor}
+            />
+          </Spin>
         </Form.Item>
 
         <Typography.Title level={5}>Тестовое задание</Typography.Title>

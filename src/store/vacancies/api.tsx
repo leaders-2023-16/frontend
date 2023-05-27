@@ -1,5 +1,5 @@
 import { httpBaseQuery } from "@/services/axios";
-import { IVacancy, IVacancyTestTask } from "@/types/Vacancy";
+import { IVacancy, IVacancyTestTask, VacancyStatus } from "@/types/Vacancy";
 import { createApi } from "@reduxjs/toolkit/query/react";
 
 export const vacanciesApi = createApi({
@@ -8,10 +8,18 @@ export const vacanciesApi = createApi({
   tagTypes: ["vacancies"],
   endpoints: (builder) => ({
     getVacancies: builder.query<IVacancy[], GetVacanciesParams>({
-      query: (params) => ({
-        url: `v1/vacancies/?limit=10&offset=${(params.page - 1) * 10}`,
-        method: "GET",
-      }),
+      query: (params) => {
+        let url = `v1/vacancies/?limit=10&offset=${(params.page - 1) * 10}`;
+
+        if (params.status) {
+          url += `&status=${params.status}`;
+        }
+
+        return {
+          url,
+          method: "GET",
+        };
+      },
       transformResponse: (response: GetVacanciesResponse) => response.results,
       providesTags: (result, error, arg) =>
         result
@@ -28,7 +36,7 @@ export const vacanciesApi = createApi({
       IVacancy,
       Pick<
         Required<IVacancy>,
-        "required_qualifications" | "name" | "description" | "status"
+        "name" | "description" | "status" | "schedule"
       > & {
         direction: number;
         mentor: number;
@@ -36,6 +44,7 @@ export const vacanciesApi = createApi({
           Required<IVacancy>["test_task"],
           "title" | "description" | "type"
         >;
+        required_qualifications: string[];
       }
     >({
       query: (data) => ({
@@ -57,15 +66,13 @@ export const vacanciesApi = createApi({
     updateVacancy: builder.mutation<
       IVacancy,
       Partial<
-        Pick<
-          Required<IVacancy>,
-          "required_qualifications" | "name" | "description" | "status"
-        >
+        Pick<Required<IVacancy>, "name" | "description" | "status" | "schedule">
       > & {
         id: number;
         direction?: number;
         mentor?: number;
         test_task?: Omit<IVacancyTestTask, "id">;
+        required_qualifications?: string[];
       }
     >({
       query: ({ id, ...data }) => ({
@@ -89,6 +96,7 @@ export const {
 
 interface GetVacanciesParams {
   page: number;
+  status?: VacancyStatus;
 }
 
 interface GetVacanciesResponse {

@@ -12,10 +12,24 @@ export const vacancyResponsesApi = createApi({
       IVacancyResponse[],
       GetVacancyResponseParams
     >({
-      query: (params) => ({
-        url: `v1/vacancy-response/?limit=10&offset=${(params.page - 1) * 10}`,
-        method: "GET",
-      }),
+      query: (params) => {
+        let url = `v1/vacancy-response/?limit=10&offset=${
+          (params.page - 1) * 10
+        }`;
+
+        if (typeof params.approvedByMentor === "boolean") {
+          url += `&approved_by_mentor=${params.approvedByMentor}`;
+        }
+
+        if (typeof params.approvedByApplicant === "boolean") {
+          url += `&approved_by_applicant=${params.approvedByApplicant}`;
+        }
+
+        return {
+          url,
+          method: "GET",
+        };
+      },
       transformResponse: (response: GetVacancyResponseResponse) =>
         response.results,
       providesTags: (result, error, arg) =>
@@ -29,27 +43,16 @@ export const vacancyResponsesApi = createApi({
             ]
           : [{ type: "vacanсyResponses", id: "LIST" }],
     }),
-    // createVacancy: builder.mutation<
-    //   IVacancy,
-    //   Pick<
-    //     Required<IVacancy>,
-    //     "required_qualifications" | "name" | "description" | "status"
-    //   > & {
-    //     direction: number;
-    //     mentor: number;
-    //     test_task: Pick<
-    //       Required<IVacancy>["test_task"],
-    //       "title" | "description" | "type"
-    //     >;
-    //   }
-    // >({
-    //   query: (data) => ({
-    //     url: `v1/vacancies/`,
-    //     method: "POST",
-    //     data,
-    //   }),
-    //   invalidatesTags: [{ type: "vacancies", id: "LIST" }],
-    // }),
+    respondVacancy: builder.mutation<IVacancyResponse, ResponseVacancyResponse>(
+      {
+        query: (data) => ({
+          url: `v1/vacancy-response/`,
+          method: "POST",
+          data,
+        }),
+        invalidatesTags: [{ type: "vacanсyResponses", id: "LIST" }],
+      }
+    ),
 
     getVacancyResponseById: builder.query<IVacancyResponse, number>({
       query: (id) => ({
@@ -59,10 +62,27 @@ export const vacancyResponsesApi = createApi({
       providesTags: (result, error, id) => [{ type: "vacanсyResponses", id }],
     }),
 
+    getVacancyResponseByVacancyId: builder.query<IVacancyResponse, number>({
+      query: (id) => ({
+        url: `v1/vacancy-response/${id}/by-vacancy`,
+        method: "GET",
+      }),
+      providesTags: (result, error, id) =>
+        result
+          ? [{ type: "vacanсyResponses", id: result.id }]
+          : [{ type: "vacanсyResponses" }],
+    }),
+
     updateVacancyResponse: builder.mutation<
       IVacancy,
       Partial<
-        Pick<Required<IVacancyResponse>, "text_answer" | "covering_letter">
+        Pick<
+          Required<IVacancyResponse>,
+          | "text_answer"
+          | "covering_letter"
+          | "approved_by_mentor"
+          | "approved_by_applicant"
+        >
       > & { id: number }
     >({
       query: ({ id, ...data }) => ({
@@ -81,13 +101,28 @@ export const {
   useGetVacancyResponseByIdQuery,
   useGetVacancyResponsesQuery,
   useUpdateVacancyResponseMutation,
+  useGetVacancyResponseByVacancyIdQuery,
+  useRespondVacancyMutation,
 } = vacancyResponsesApi;
 
 interface GetVacancyResponseParams {
   page: number;
+
+  approvedByApplicant?: boolean;
+  approvedByMentor?: boolean;
 }
 
 interface GetVacancyResponseResponse {
   results: IVacancyResponse[];
   total: number;
 }
+
+type ResponseVacancyResponse = Partial<
+  Pick<
+    IVacancyResponse,
+    | "text_answer"
+    | "covering_letter"
+    | "approved_by_mentor"
+    | "approved_by_applicant"
+  >
+> & { vacancy: number };

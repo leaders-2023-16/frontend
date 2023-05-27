@@ -12,11 +12,12 @@ const initialState = {
     test_task: "",
     schedule: VacancySchedule.FULL_TIME,
     skills: [] as string[],
+    mentor: undefined as number | undefined,
   },
 };
 
-export const curatorDetailedVacancyPageSlice = createSlice({
-  name: "curatorDetailedVacancyPageSlice",
+export const personnelDetailedVacancyPageSlice = createSlice({
+  name: "personnelDetailedVacancyPageSlice",
   initialState,
   reducers: {
     setIsEditMode: (state, { payload }: PayloadAction<boolean>) => {
@@ -39,6 +40,8 @@ export const curatorDetailedVacancyPageSlice = createSlice({
       state.form.skills = payload.vacancy.required_qualifications.map(
         (skill) => skill.name
       );
+
+      state.form.mentor = payload.vacancy.mentor?.id;
     },
 
     setPosition: (state, { payload }: PayloadAction<string>) => {
@@ -59,6 +62,9 @@ export const curatorDetailedVacancyPageSlice = createSlice({
     setSkills: (state, { payload }: PayloadAction<string[]>) => {
       state.form.skills = payload;
     },
+    setMentor: (state, { payload }: PayloadAction<number>) => {
+      state.form.mentor = payload;
+    },
 
     reset: (state) => {
       return initialState;
@@ -67,9 +73,9 @@ export const curatorDetailedVacancyPageSlice = createSlice({
 });
 
 export const {
-  actions: curatorDetailedVacancyPageActions,
-  reducer: curatorDetailedVacancyPageReducer,
-} = curatorDetailedVacancyPageSlice;
+  actions: personnelDetailedVacancyPageActions,
+  reducer: personnelDetailedVacancyPageReducer,
+} = personnelDetailedVacancyPageSlice;
 
 interface MoveToEditModeParams {
   vacancy: IVacancy;
