@@ -17,7 +17,7 @@ import {
 } from "antd";
 import { getCuratorDetailedIntershipApplicationFormState } from "../Store/selectors";
 import { curatorDetailedIntershipApplicationPageActions } from "../Store";
-import { TraineeProfileStatus } from "@/types/TraineeProfile";
+import { TraineeProfileTestStatus } from "@/types/TraineeProfile";
 
 interface SelectionFormProps {
   applicaion: IIntershipApplication;
@@ -171,12 +171,12 @@ export const SelectionForm: React.FC<SelectionFormProps> = ({ applicaion }) => {
           testing_platform_password,
           test_score,
 
-          status:
+          test_status:
             typeof test_passed === "boolean"
               ? test_passed
-                ? TraineeProfileStatus.PASSED
-                : TraineeProfileStatus.FAILED
-              : TraineeProfileStatus.IN_PROGRESS,
+                ? TraineeProfileTestStatus.PASSED
+                : TraineeProfileTestStatus.FAILED
+              : TraineeProfileTestStatus.IN_PROGRESS,
         },
       }).unwrap();
     } catch (e) {

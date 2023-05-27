@@ -14,6 +14,7 @@ import { traineeDetailedVacancyPageReducer } from "@/pages/DetailedVacancy/Train
 import { personnelDetailedVacancyPageReducer } from "@/pages/DetailedVacancy/Personnel/Store";
 import { usersApi } from "./users/api";
 import { curatorDetailedIntershipApplicationPageReducer } from "@/pages/DetailedIntershipApplication/Curator/Store";
+import { curatorInternshipApplicationPageReducer } from "@/pages/IntershipApplications/Curator/Store";
 
 export const store = configureStore({
   reducer: {
@@ -27,6 +28,7 @@ export const store = configureStore({
     personnelDetailedVacancyPage: personnelDetailedVacancyPageReducer,
     curatorDetailedIntershipApplicationPage:
       curatorDetailedIntershipApplicationPageReducer,
+    curatorInternshipApplicationPage: curatorInternshipApplicationPageReducer,
 
     [dictionaryApi.reducerPath]: dictionaryApi.reducer,
     [traineeProfileApi.reducerPath]: traineeProfileApi.reducer,

@@ -60,10 +60,15 @@ export const Content = () => {
         pagination={{
           onChange: setPage,
           pageSize: 10,
+          defaultCurrent: 1,
+          total: data?.count,
         }}
-        dataSource={data}
+        dataSource={data?.results}
         renderItem={(item) => (
-          <List.Item key={item._id} onClick={() => handlePress(item._id)}>
+          <List.Item
+            key={item.applicant.id}
+            onClick={() => handlePress(item.applicant.id)}
+          >
             <Row>
               <Col flex={1}>
                 {item.applicant.first_name} {item.applicant.last_name}
