@@ -20,7 +20,7 @@ export const EditForm: React.FC<EditFormProps> = ({ vacancy }) => {
   const dispatch = useAppDispatch();
 
   const {
-    form: { position, direction, description, test_task },
+    form: { position, direction, description, test_task, schedule, skills },
   } = useAppSelector(getCuratorDetailedVacancyStore);
 
   const [mutate, { isLoading }] = useUpdateVacancyMutation();
@@ -55,7 +55,21 @@ export const EditForm: React.FC<EditFormProps> = ({ vacancy }) => {
     [dispatch]
   );
 
-  const handlePressSave = () => {
+  const handleChangeSchedule = React.useCallback(
+    (value: string) => {
+      dispatch(curatorDetailedVacancyPageActions.setSchedule(value as any));
+    },
+    [dispatch]
+  );
+
+  const handleChangeSkills = React.useCallback(
+    (value: string[]) => {
+      dispatch(curatorDetailedVacancyPageActions.setSkills(value));
+    },
+    [dispatch]
+  );
+
+  const handlePressSave = async () => {
     if (
       position.length === 0 ||
       description.length === 0 ||
@@ -68,25 +82,36 @@ export const EditForm: React.FC<EditFormProps> = ({ vacancy }) => {
       return;
     }
 
-    mutate({
-      id: vacancy.id,
-      required_qualifications: [],
-      name: position,
-      description,
-      direction: (TrainDirectionByName as any)[direction],
-      mentor: 9,
-      test_task: vacancy.test_task
-        ? {
-            type: VacancyTestTaskType.TEXT,
-            title: "Тестовое задание",
-            description: test_task,
-          }
-        : {
-            type: VacancyTestTaskType.TEXT,
-            title: "Тестовое задание",
-            description: test_task,
-          },
-    });
+    try {
+      await mutate({
+        id: vacancy.id,
+        required_qualifications: skills,
+        schedule,
+        name: position,
+        description,
+        direction: (TrainDirectionByName as any)[direction],
+        mentor: 9,
+        test_task: vacancy.test_task
+          ? {
+              type: VacancyTestTaskType.TEXT,
+              title: "Тестовое задание",
+              description: test_task,
+            }
+          : {
+              type: VacancyTestTaskType.TEXT,
+              title: "Тестовое задание",
+              description: test_task,
+            },
+      }).unwrap();
+
+      dispatch(curatorDetailedVacancyPageActions.reset());
+    } catch (e) {
+      notification.open({
+        type: "error",
+        message: "Ошибка выполнения запроса",
+        description: "Попробуйте еще раз, или повторите позже",
+      });
+    }
   };
 
   return (
@@ -167,36 +192,27 @@ export const EditForm: React.FC<EditFormProps> = ({ vacancy }) => {
             }
             options={[
               {
-                value: 20,
+                value: "part-time",
                 label: "20ч в неделю",
               },
               {
-                value: 40,
+                value: "full-time",
                 label: "40ч в неделю",
               },
             ]}
+            value={schedule}
+            onChange={handleChangeSchedule}
           />
         </Form.Item>
 
         <Form.Item label="Навыки">
-          <Select mode="tags" placeholder="Напишите необходимые навыки" />
-        </Form.Item>
-
-        <Form.Item label="Задачи">
-          <Select mode="tags" placeholder="Какие задачи предстоит решать" />
-        </Form.Item>
-        {/* 
-        <Typography.Title level={5}>Наставник</Typography.Title>
-        <Form.Item>
           <Select
-            mode="multiple"
-            showArrow
-            tagRender={tagRender}
-            style={{ width: "100%" }}
-            placeholder="Выберите наставника ..."
-            options={options}
+            mode="tags"
+            placeholder="Напишите необходимые навыки"
+            onChange={handleChangeSkills}
+            value={skills}
           />
-        </Form.Item> */}
+        </Form.Item>
 
         <Typography.Title level={5}>Тестовое задание</Typography.Title>
         <Form.Item>

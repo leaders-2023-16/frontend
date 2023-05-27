@@ -58,15 +58,13 @@ export const vacanciesApi = createApi({
     updateVacancy: builder.mutation<
       IVacancy,
       Partial<
-        Pick<
-          Required<IVacancy>,
-          "required_qualifications" | "name" | "description" | "status"
-        >
+        Pick<Required<IVacancy>, "name" | "description" | "status" | "schedule">
       > & {
         id: number;
         direction?: number;
         mentor?: number;
         test_task?: Omit<IVacancyTestTask, "id">;
+        required_qualifications?: string[];
       }
     >({
       query: ({ id, ...data }) => ({

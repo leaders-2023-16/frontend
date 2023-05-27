@@ -105,7 +105,7 @@ export const Content = () => {
     }
 
     try {
-      const res = await mutate({
+      await mutate({
         required_qualifications: skills,
         schedule,
         name: position,
