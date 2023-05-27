@@ -7,6 +7,7 @@ export const vacancyResponsesApi = createApi({
   reducerPath: "vacancyResponsesApi",
   baseQuery: httpBaseQuery(),
   tagTypes: ["vacanсyResponses", "detailedVacancyResponse"],
+  refetchOnMountOrArgChange: true,
   endpoints: (builder) => ({
     getVacancyResponses: builder.query<
       GetVacancyResponseResponse,

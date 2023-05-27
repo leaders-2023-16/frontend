@@ -6,6 +6,9 @@ export const traineeProfileApi = createApi({
   reducerPath: "traineeProfileApi",
   baseQuery: httpBaseQuery(),
   tagTypes: ["traineeProfile"],
+
+  refetchOnMountOrArgChange: true,
+
   endpoints: (builder) => ({
     getTraineeProfileById: builder.query<ITraineeProfile, number>({
       query: (user_id) => ({

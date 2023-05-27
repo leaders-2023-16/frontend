@@ -11,6 +11,8 @@ export const intershipApplicationsApi = createApi({
   baseQuery: httpBaseQuery(),
   tagTypes: ["intershipApplications"],
 
+  refetchOnMountOrArgChange: true,
+
   endpoints: (builder) => ({
     getIntershipApplications: builder.query<
       IIntershipApplication[],
