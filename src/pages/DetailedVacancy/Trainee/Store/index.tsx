@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   testAnswer: "",
+  coverLetter: "",
 };
 
 export const traineeDetailedVacancyPageSlice = createSlice({
@@ -9,7 +10,11 @@ export const traineeDetailedVacancyPageSlice = createSlice({
   initialState,
   reducers: {
     setTestAnswer: (state, { payload }: PayloadAction<string>) => {
-      state.testAnswer = payload;
+      state.testAnswer = payload.trimStart();
+    },
+
+    setCoverLetter: (state, { payload }: PayloadAction<string>) => {
+      state.coverLetter = payload.trimStart();
     },
 
     reset: () => {

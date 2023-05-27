@@ -1,17 +1,27 @@
 import React from "react";
 
 import { useGetVacancyByIdQuery } from "@/store/vacancies/api";
-import { Col, Row, Spin, Typography } from "antd";
-import { Navigate, useParams } from "react-router-dom";
+import { Button, Col, Divider, Row, Spin, Typography } from "antd";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { traineeDetailedVacancyPageActions } from "./Store";
+import { useGetVacancyResponseByVacancyIdQuery } from "@/store/vacancyResponse/api";
+import { ResponseForm } from "./Views/ResponseForm";
 
 export const Content = () => {
   const { vacancyId } = useParams();
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { data, isLoading, isError } = useGetVacancyByIdQuery(
+    parseInt(vacancyId || ""),
+    {
+      skip: !vacancyId,
+    }
+  );
+
+  const { data: vacancyResponse } = useGetVacancyResponseByVacancyIdQuery(
     parseInt(vacancyId || ""),
     {
       skip: !vacancyId,
@@ -23,6 +33,14 @@ export const Content = () => {
       dispatch(traineeDetailedVacancyPageActions.reset());
     };
   }, [dispatch]);
+
+  const handlePressGoToResponse = React.useCallback(() => {
+    if (!vacancyResponse) {
+      return;
+    }
+
+    navigate(`/vacancy-responses/${vacancyResponse.id}`);
+  }, [vacancyResponse, navigate]);
 
   if (isError) {
     return <Navigate to="/vacancies" />;
@@ -77,6 +95,14 @@ export const Content = () => {
         <Typography.Title level={4}>Тестовое задание</Typography.Title>
         <Typography.Title level={5}>{data?.test_task?.title}</Typography.Title>
         <Typography.Text>{data?.test_task?.description}</Typography.Text>
+
+        <Divider />
+
+        {vacancyResponse ? (
+          <Button onClick={handlePressGoToResponse}>Перейти к отклику</Button>
+        ) : data ? (
+          <ResponseForm vacancy={data} />
+        ) : null}
       </Col>
     </Spin>
   );

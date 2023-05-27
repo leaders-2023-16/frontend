@@ -28,7 +28,7 @@ export const vacanciesApi = createApi({
       IVacancy,
       Pick<
         Required<IVacancy>,
-        "required_qualifications" | "name" | "description" | "status"
+        "name" | "description" | "status" | "schedule"
       > & {
         direction: number;
         mentor: number;
@@ -36,6 +36,7 @@ export const vacanciesApi = createApi({
           Required<IVacancy>["test_task"],
           "title" | "description" | "type"
         >;
+        required_qualifications: string[];
       }
     >({
       query: (data) => ({

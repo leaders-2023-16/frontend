@@ -6,7 +6,7 @@ import {
   TrainDirectionByName,
   TrainDirectionName,
 } from "@/types/TrainDirection";
-import { App, Avatar, Button, Col, Form, Input, Row, Select } from "antd";
+import { App, Avatar, Button, Col, Form, Input, Row, Select, Spin } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import Title from "antd/es/typography/Title";
 
@@ -15,16 +15,28 @@ import { useAppDispatch, useAppSelector } from "@/store";
 import { getPersonnelCreateVacancyForm } from "./Store/selectors";
 import { personnelCreateVacancyPageActions } from "./Store";
 import { VacancyStatus, VacancyTestTaskType } from "@/types/Vacancy";
+import { useGetUsersQuery } from "@/store/users/api";
+import { UserRole } from "@/types/User";
 
 export const Content = () => {
   const [form] = Form.useForm();
 
   const { notification } = App.useApp();
 
+  const { data: mentors, isLoading: isLoadingMentors } = useGetUsersQuery({
+    role: UserRole.MENTOR,
+  });
+
   const dispatch = useAppDispatch();
-  const { position, description, direction, test_task } = useAppSelector(
-    getPersonnelCreateVacancyForm
-  );
+  const {
+    position,
+    description,
+    direction,
+    test_task,
+    mentor,
+    skills,
+    schedule,
+  } = useAppSelector(getPersonnelCreateVacancyForm);
   const [mutate, { isLoading }] = useCreateVacancyMutation();
 
   const handleChangeDirection = React.useCallback(
@@ -57,11 +69,33 @@ export const Content = () => {
     [dispatch]
   );
 
-  const handlePressCreate = () => {
+  const handleChangeMentor = React.useCallback(
+    (id: number) => {
+      dispatch(personnelCreateVacancyPageActions.setMentor(id));
+    },
+    [dispatch]
+  );
+
+  const handleChangeSchedule = React.useCallback(
+    (value: string) => {
+      dispatch(personnelCreateVacancyPageActions.setSchedule(value as any));
+    },
+    [dispatch]
+  );
+
+  const handleChangeSkills = React.useCallback(
+    (value: string[]) => {
+      dispatch(personnelCreateVacancyPageActions.setSkills(value));
+    },
+    [dispatch]
+  );
+
+  const handlePressCreate = async () => {
     if (
       position.length === 0 ||
       description.length === 0 ||
-      test_task.length === 0
+      test_task.length === 0 ||
+      !mentor
     ) {
       notification.error({
         message: "Форма заполнена неверно",
@@ -70,20 +104,37 @@ export const Content = () => {
       return;
     }
 
-    mutate({
-      required_qualifications: [],
-      name: position,
-      description,
-      direction: (TrainDirectionByName as any)[direction],
-      status: VacancyStatus.PENDING,
-      mentor: 15,
-      test_task: {
-        type: VacancyTestTaskType.TEXT,
-        title: "Тестовое задание",
-        description: test_task,
-      },
-    });
+    try {
+      const res = await mutate({
+        required_qualifications: skills,
+        schedule,
+        name: position,
+        description,
+        direction: (TrainDirectionByName as any)[direction],
+        status: VacancyStatus.PENDING,
+        mentor,
+        test_task: {
+          type: VacancyTestTaskType.TEXT,
+          title: "Тестовое задание",
+          description: test_task,
+        },
+      }).unwrap();
+
+      dispatch(personnelCreateVacancyPageActions.reset());
+    } catch (e) {
+      notification.open({
+        type: "error",
+        message: "Ошибка выполнения запроса",
+        description: "Попробуйте еще раз, или повторите позже",
+      });
+    }
   };
+
+  React.useEffect(() => {
+    return () => {
+      dispatch(personnelCreateVacancyPageActions.reset());
+    };
+  }, [dispatch]);
 
   return (
     <Col>
@@ -163,35 +214,43 @@ export const Content = () => {
             }
             options={[
               {
-                value: 20,
+                value: "part-time",
                 label: "20ч в неделю",
               },
               {
-                value: 40,
+                value: "full-time",
                 label: "40ч в неделю",
               },
             ]}
+            value={schedule}
+            onChange={handleChangeSchedule}
           />
         </Form.Item>
 
         <Form.Item label="Навыки">
-          <Select mode="tags" placeholder="Напишите необходимые навыки" />
-        </Form.Item>
-
-        <Form.Item label="Задачи">
-          <Select mode="tags" placeholder="Какие задачи предстоит решать" />
+          <Select
+            mode="tags"
+            placeholder="Напишите необходимые навыки"
+            onChange={handleChangeSkills}
+            value={skills}
+          />
         </Form.Item>
 
         <Title level={5}>Наставник</Title>
         <Form.Item>
-          <Select
-            mode="multiple"
-            showArrow
-            tagRender={tagRender}
-            style={{ width: "100%" }}
-            placeholder="Выберите наставника ..."
-            options={options}
-          />
+          <Spin spinning={isLoadingMentors}>
+            <Select
+              showArrow
+              style={{ width: "100%" }}
+              placeholder="Выберите наставника ..."
+              options={(mentors || []).map((mentor) => ({
+                label: mentor.first_name + " " + mentor.last_name,
+                value: mentor.id,
+              }))}
+              onChange={handleChangeMentor}
+              value={mentor}
+            />
+          </Spin>
         </Form.Item>
 
         <Title level={5}>Тестовое задание</Title>
@@ -208,37 +267,5 @@ export const Content = () => {
         </Button>
       </Form>
     </Col>
-  );
-};
-
-const options = [{ value: "Иванов Иван" }];
-
-const tagRender = (props: CustomTagProps) => {
-  const { label, onClose } = props;
-  const onPreventMouseDown = (event: React.MouseEvent<HTMLSpanElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    onClose();
-  };
-  return (
-    <Row
-      style={{
-        margin: "3px",
-        alignItems: "center",
-        padding: "2px",
-        borderRadius: "10px",
-        border: "1px solid #C4C4C4",
-      }}
-      onClick={onPreventMouseDown}
-    >
-      <Avatar
-        style={{ backgroundColor: "black", verticalAlign: "middle" }}
-        size="small"
-      >
-        {label?.toString().at(0)}
-      </Avatar>
-      <span style={{ marginLeft: "10px", marginRight: "5px" }}>{label}</span>
-    </Row>
   );
 };
