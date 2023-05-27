@@ -6,16 +6,18 @@ import { useGetIntershipApplicationsQuery } from "@/store/intershipApplications/
 import { Filters } from "./Views/Filters";
 import { useAppSelector } from "@/store";
 import { getCuratorInternshipApplicationsPageState } from "./Store/selectors";
+import { IntershipApplicationStatus } from "@/types/IntershipApplication";
 
 export const Content = () => {
   const [page, setPage] = React.useState(1);
 
-  const { onlyRecommended } = useAppSelector(
+  const { onlyRecommended, onlyWithoutAction } = useAppSelector(
     getCuratorInternshipApplicationsPageState
   );
   const { data, isLoading } = useGetIntershipApplicationsQuery({
     page,
     is_recommended: onlyRecommended ? true : undefined,
+    status: onlyWithoutAction ? IntershipApplicationStatus.PENDING : undefined,
   });
 
   const navigate = useNavigate();
