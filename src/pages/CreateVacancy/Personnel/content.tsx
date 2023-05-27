@@ -10,22 +10,19 @@ import { App, Avatar, Button, Col, Form, Input, Row, Select, Spin } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import Title from "antd/es/typography/Title";
 
-import type { CustomTagProps } from "rc-select/lib/BaseSelect";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { getPersonnelCreateVacancyForm } from "./Store/selectors";
 import { personnelCreateVacancyPageActions } from "./Store";
 import { VacancyStatus, VacancyTestTaskType } from "@/types/Vacancy";
-import { useGetUsersQuery } from "@/store/users/api";
-import { UserRole } from "@/types/User";
+import { useGetFreeMentorsQuery } from "@/store/users/api";
 
 export const Content = () => {
   const [form] = Form.useForm();
 
   const { notification } = App.useApp();
 
-  const { data: mentors, isLoading: isLoadingMentors } = useGetUsersQuery({
-    role: UserRole.MENTOR,
-  });
+  const { data: mentors, isLoading: isLoadingMentors } =
+    useGetFreeMentorsQuery();
 
   const dispatch = useAppDispatch();
   const {

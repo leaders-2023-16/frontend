@@ -5,12 +5,24 @@ import {
   TrainDirectionByName,
   TrainDirectionName,
 } from "@/types/TrainDirection";
-import { App, Button, Col, Form, Input, Row, Select, Typography } from "antd";
+import {
+  App,
+  Button,
+  Col,
+  Form,
+  Input,
+  Row,
+  Select,
+  Spin,
+  Typography,
+} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useUpdateVacancyMutation } from "@/store/vacancies/api";
 import { IVacancy, VacancyTestTaskType } from "@/types/Vacancy";
 import { getPersonnelDetailedVacancyStore } from "../Store/selectors";
 import { personnelDetailedVacancyPageActions } from "../Store";
+import Title from "antd/es/typography/Title";
+import { useGetFreeMentorsQuery } from "@/store/users/api";
 
 interface EditFormProps {
   vacancy: IVacancy;
@@ -20,9 +32,19 @@ export const EditForm: React.FC<EditFormProps> = ({ vacancy }) => {
   const dispatch = useAppDispatch();
 
   const {
-    form: { position, direction, description, test_task },
+    form: {
+      position,
+      direction,
+      description,
+      test_task,
+      schedule,
+      skills,
+      mentor,
+    },
   } = useAppSelector(getPersonnelDetailedVacancyStore);
 
+  const { data: mentors, isLoading: isLoadingMentors } =
+    useGetFreeMentorsQuery();
   const [mutate, { isLoading }] = useUpdateVacancyMutation();
 
   const handleChangeDirection = React.useCallback(
@@ -55,7 +77,28 @@ export const EditForm: React.FC<EditFormProps> = ({ vacancy }) => {
     [dispatch]
   );
 
-  const handlePressSave = () => {
+  const handleChangeSchedule = React.useCallback(
+    (value: string) => {
+      dispatch(personnelDetailedVacancyPageActions.setSchedule(value as any));
+    },
+    [dispatch]
+  );
+
+  const handleChangeSkills = React.useCallback(
+    (value: string[]) => {
+      dispatch(personnelDetailedVacancyPageActions.setSkills(value));
+    },
+    [dispatch]
+  );
+
+  const handleChangeMentor = React.useCallback(
+    (id: number) => {
+      dispatch(personnelDetailedVacancyPageActions.setMentor(id));
+    },
+    [dispatch]
+  );
+
+  const handlePressSave = async () => {
     if (
       position.length === 0 ||
       description.length === 0 ||
@@ -68,27 +111,35 @@ export const EditForm: React.FC<EditFormProps> = ({ vacancy }) => {
       return;
     }
 
-    mutate({
-      id: vacancy.id,
-      required_qualifications: [],
-      name: position,
-      description,
-      direction: (TrainDirectionByName as any)[direction],
-      mentor: 14,
-      test_task: vacancy.test_task
-        ? {
-            type: VacancyTestTaskType.TEXT,
-            title: "Тестовое задание",
-            description: test_task,
-          }
-        : {
-            type: VacancyTestTaskType.TEXT,
-            title: "Тестовое задание",
-            description: test_task,
-          },
-    });
+    try {
+      await mutate({
+        id: vacancy.id,
+        required_qualifications: skills,
+        schedule,
+        mentor,
+        name: position,
+        description,
+        direction: (TrainDirectionByName as any)[direction],
+        test_task: {
+          type: VacancyTestTaskType.TEXT,
+          title: "Тестовое задание",
+          description: test_task,
+        },
+      }).unwrap();
+
+      dispatch(personnelDetailedVacancyPageActions.reset());
+    } catch (e) {
+      notification.open({
+        type: "error",
+        message: "Ошибка выполнения запроса",
+        description: "Попробуйте еще раз, или повторите позже",
+      });
+    }
   };
 
+  const currentMentors = vacancy.mentor
+    ? [...(mentors || []), vacancy.mentor]
+    : mentors || [];
   return (
     <Col>
       <Form layout={"vertical"}>
@@ -167,36 +218,44 @@ export const EditForm: React.FC<EditFormProps> = ({ vacancy }) => {
             }
             options={[
               {
-                value: 20,
+                value: "part-time",
                 label: "20ч в неделю",
               },
               {
-                value: 40,
+                value: "full-time",
                 label: "40ч в неделю",
               },
             ]}
+            value={schedule}
+            onChange={handleChangeSchedule}
           />
         </Form.Item>
 
         <Form.Item label="Навыки">
-          <Select mode="tags" placeholder="Напишите необходимые навыки" />
+          <Select
+            mode="tags"
+            placeholder="Напишите необходимые навыки"
+            onChange={handleChangeSkills}
+            value={skills}
+          />
         </Form.Item>
 
-        <Form.Item label="Задачи">
-          <Select mode="tags" placeholder="Какие задачи предстоит решать" />
-        </Form.Item>
-        {/* 
-        <Typography.Title level={5}>Наставник</Typography.Title>
+        <Title level={5}>Наставник</Title>
         <Form.Item>
-          <Select
-            mode="multiple"
-            showArrow
-            tagRender={tagRender}
-            style={{ width: "100%" }}
-            placeholder="Выберите наставника ..."
-            options={options}
-          />
-        </Form.Item> */}
+          <Spin spinning={isLoadingMentors}>
+            <Select
+              showArrow
+              style={{ width: "100%" }}
+              placeholder="Выберите наставника ..."
+              options={currentMentors.map((mentor) => ({
+                label: mentor.first_name + " " + mentor.last_name,
+                value: mentor.id,
+              }))}
+              onChange={handleChangeMentor}
+              value={mentor}
+            />
+          </Spin>
+        </Form.Item>
 
         <Typography.Title level={5}>Тестовое задание</Typography.Title>
         <Form.Item>

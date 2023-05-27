@@ -1,5 +1,5 @@
 import React from "react";
-import { useAppDispatch, useAppSelector } from "@/store";
+import { useAppDispatch } from "@/store";
 import { IVacancy, VacancyStatus } from "@/types/Vacancy";
 import { Button, Col, Row } from "antd";
 import { personnelDetailedVacancyPageActions } from "../Store";
@@ -14,13 +14,18 @@ export const Actions: React.FC<ActionsProps> = ({ vacancy }) => {
     dispatch(personnelDetailedVacancyPageActions.moveToEditMode({ vacancy }));
   }, [dispatch, vacancy]);
 
-  if (vacancy.status === VacancyStatus.REJECTED) {
-    <Row style={{ marginTop: "20px" }}>
-      <Col flex={1}></Col>
-      <Row>
-        <Button onClick={handlePressEdit}>Редактировать</Button>
+  if (
+    vacancy.status === VacancyStatus.REJECTED ||
+    vacancy.status === VacancyStatus.PENDING
+  ) {
+    return (
+      <Row style={{ marginTop: "20px" }}>
+        <Col flex={1}></Col>
+        <Row>
+          <Button onClick={handlePressEdit}>Редактировать</Button>
+        </Row>
       </Row>
-    </Row>;
+    );
   }
 
   return null;

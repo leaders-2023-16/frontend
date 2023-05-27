@@ -16,12 +16,12 @@ export const Actions: React.FC<ActionsProps> = ({ vacancy }) => {
 
   const [mutate, { isLoading }] = useUpdateVacancyMutation();
 
-  const handlePressReject = React.useCallback(() => {
-    mutate({ id: vacancy.id, status: VacancyStatus.REJECTED });
+  const handlePressReturn = React.useCallback(() => {
+    mutate({ id: vacancy.id, status: VacancyStatus.PENDING });
   }, [mutate, vacancy.id]);
 
   const handlePressPublish = React.useCallback(() => {
-    mutate({ id: vacancy.id, status: VacancyStatus.REJECTED });
+    mutate({ id: vacancy.id, status: VacancyStatus.PUBLISHED });
   }, [mutate, vacancy.id]);
 
   const handlePressEdit = React.useCallback(() => {
@@ -44,6 +44,10 @@ export const Actions: React.FC<ActionsProps> = ({ vacancy }) => {
       <Row style={{ marginTop: "20px" }}>
         <Col flex={1}></Col>
         <Row>
+          <Button danger onClick={handlePressReturn} loading={isLoading}>
+            Вернуть на рассмотрение
+          </Button>
+          <Col style={{ width: "10px" }} />
           <Button loading={isLoading} onClick={handlePressEdit}>
             Редактировать
           </Button>

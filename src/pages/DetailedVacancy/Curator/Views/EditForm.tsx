@@ -90,7 +90,6 @@ export const EditForm: React.FC<EditFormProps> = ({ vacancy }) => {
         name: position,
         description,
         direction: (TrainDirectionByName as any)[direction],
-        mentor: 9,
         test_task: vacancy.test_task
           ? {
               type: VacancyTestTaskType.TEXT,

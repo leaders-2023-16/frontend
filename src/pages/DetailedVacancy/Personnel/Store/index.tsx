@@ -1,5 +1,5 @@
 import { TrainDirection, TrainDirectionName } from "@/types/TrainDirection";
-import { IVacancy } from "@/types/Vacancy";
+import { IVacancy, VacancySchedule } from "@/types/Vacancy";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -10,6 +10,9 @@ const initialState = {
     description: "",
     direction: TrainDirectionName[TrainDirection.IT_CITY],
     test_task: "",
+    schedule: VacancySchedule.FULL_TIME,
+    skills: [] as string[],
+    mentor: undefined as number | undefined,
   },
 };
 
@@ -32,6 +35,13 @@ export const personnelDetailedVacancyPageSlice = createSlice({
         payload.vacancy.direction.id
       ];
       state.form.test_task = payload.vacancy.test_task?.description || "";
+      state.form.schedule =
+        payload.vacancy.schedule || VacancySchedule.FULL_TIME;
+      state.form.skills = payload.vacancy.required_qualifications.map(
+        (skill) => skill.name
+      );
+
+      state.form.mentor = payload.vacancy.mentor?.id;
     },
 
     setPosition: (state, { payload }: PayloadAction<string>) => {
@@ -45,6 +55,15 @@ export const personnelDetailedVacancyPageSlice = createSlice({
     },
     setTestTask: (state, { payload }: PayloadAction<string>) => {
       state.form.test_task = payload.trimStart();
+    },
+    setSchedule: (state, { payload }: PayloadAction<VacancySchedule>) => {
+      state.form.schedule = payload;
+    },
+    setSkills: (state, { payload }: PayloadAction<string[]>) => {
+      state.form.skills = payload;
+    },
+    setMentor: (state, { payload }: PayloadAction<number>) => {
+      state.form.mentor = payload;
     },
 
     reset: (state) => {
