@@ -11,7 +11,7 @@ export const Content = () => {
 
   const handlePress = React.useCallback(
     (id: number) => {
-      navigate(`/vacancy-response/${id}`);
+      navigate(`/vacancy-responses/${id}`);
     },
     [navigate]
   );

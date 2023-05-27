@@ -2,10 +2,14 @@ import React from "react";
 import { Col, List, Row } from "antd";
 import { useGetVacanciesQuery } from "@/store/vacancies/api";
 import { useNavigate } from "react-router-dom";
+import { VacancyStatus } from "@/types/Vacancy";
 
 export const Content = () => {
   const [page, setPage] = React.useState(1);
-  const { data, isLoading } = useGetVacanciesQuery({ page });
+  const { data, isLoading } = useGetVacanciesQuery({
+    page,
+    status: VacancyStatus.PUBLISHED,
+  });
 
   const navigate = useNavigate();
 

@@ -35,7 +35,7 @@ export const ResponseForm: React.FC<ResponseFormProps> = ({ vacancy }) => {
     [dispatch]
   );
 
-  const handlePressRespond = React.useCallback(() => {
+  const handlePressRespond = React.useCallback(async () => {
     if (testAnswer.length === 0) {
       notification.error({
         message: "Ошибка валидации",
@@ -45,12 +45,22 @@ export const ResponseForm: React.FC<ResponseFormProps> = ({ vacancy }) => {
       return;
     }
 
-    mutate({
-      vacancy: vacancy.id,
-      text_answer: testAnswer,
-      covering_letter: coverLetter,
-    });
-  }, [notification, mutate, vacancy, testAnswer, coverLetter]);
+    try {
+      await mutate({
+        vacancy: vacancy.id,
+        text_answer: testAnswer,
+        covering_letter: coverLetter,
+      }).unwrap();
+
+      dispatch(traineeDetailedVacancyPageActions.reset());
+    } catch (e) {
+      notification.open({
+        type: "error",
+        message: "Ошибка выполнения запроса",
+        description: "Попробуйте еще раз, или повторите позже",
+      });
+    }
+  }, [notification, mutate, vacancy, testAnswer, coverLetter, dispatch]);
 
   return (
     <Form layout={"vertical"}>

@@ -12,10 +12,24 @@ export const vacancyResponsesApi = createApi({
       IVacancyResponse[],
       GetVacancyResponseParams
     >({
-      query: (params) => ({
-        url: `v1/vacancy-response/?limit=10&offset=${(params.page - 1) * 10}`,
-        method: "GET",
-      }),
+      query: (params) => {
+        let url = `v1/vacancy-response/?limit=10&offset=${
+          (params.page - 1) * 10
+        }`;
+
+        if (typeof params.approvedByMentor === "boolean") {
+          url += `&approved_by_mentor=${params.approvedByMentor}`;
+        }
+
+        if (typeof params.approvedByApplicant === "boolean") {
+          url += `&approved_by_applicant=${params.approvedByApplicant}`;
+        }
+
+        return {
+          url,
+          method: "GET",
+        };
+      },
       transformResponse: (response: GetVacancyResponseResponse) =>
         response.results,
       providesTags: (result, error, arg) =>
@@ -62,7 +76,13 @@ export const vacancyResponsesApi = createApi({
     updateVacancyResponse: builder.mutation<
       IVacancy,
       Partial<
-        Pick<Required<IVacancyResponse>, "text_answer" | "covering_letter">
+        Pick<
+          Required<IVacancyResponse>,
+          | "text_answer"
+          | "covering_letter"
+          | "approved_by_mentor"
+          | "approved_by_applicant"
+        >
       > & { id: number }
     >({
       query: ({ id, ...data }) => ({
@@ -87,6 +107,9 @@ export const {
 
 interface GetVacancyResponseParams {
   page: number;
+
+  approvedByApplicant?: boolean;
+  approvedByMentor?: boolean;
 }
 
 interface GetVacancyResponseResponse {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, List, Row } from "antd";
+import { Col, List, Row, Typography } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useGetVacancyResponsesQuery } from "@/store/vacancyResponse/api";
 
@@ -11,7 +11,7 @@ export const Content = () => {
 
   const handlePress = React.useCallback(
     (id: number) => {
-      navigate(`/vacancies/${id}`);
+      navigate(`/vacancy-responses/${id}`);
     },
     [navigate]
   );
@@ -29,8 +29,21 @@ export const Content = () => {
       renderItem={(item) => (
         <List.Item key={item.id} onClick={() => handlePress(item.id)}>
           <Row>
-            <Col flex={1}>{item.vacancy.name}</Col>
-            <Col>{item.approved_by_mentor}</Col>
+            <Col flex={1}>
+              <Col>
+                <Typography.Text>
+                  {item.applicant.first_name} {item.applicant.last_name}
+                </Typography.Text>
+              </Col>
+              <Typography.Text>{item.vacancy.name}</Typography.Text>
+            </Col>
+            <Col>
+              {typeof item.approved_by_mentor === "boolean"
+                ? item.approved_by_mentor
+                  ? "Приглашен"
+                  : "Отлонен"
+                : "На рассмотрении"}
+            </Col>
           </Row>
         </List.Item>
       )}

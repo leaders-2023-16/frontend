@@ -12,7 +12,7 @@ export const Content = () => {
 
   const handlePress = React.useCallback(
     (id: number) => {
-      navigate(`/vacancy-response/${id}`);
+      navigate(`/vacancy-responses/${id}`);
     },
     [navigate]
   );
@@ -31,7 +31,13 @@ export const Content = () => {
         <List.Item key={item.id} onClick={() => handlePress(item.id)}>
           <Row>
             <Col flex={1}>{item.vacancy.name}</Col>
-            <Col>{item.approved_by_mentor}</Col>
+            <Col>
+              {typeof item.approved_by_mentor === "boolean"
+                ? item.approved_by_mentor
+                  ? "Приглашен"
+                  : "Отлонен"
+                : "На рассмотрении"}
+            </Col>
           </Row>
         </List.Item>
       )}

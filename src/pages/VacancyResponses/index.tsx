@@ -7,7 +7,7 @@ import { MentorVacancyResponsesPage } from "./Mentor";
 import { PersonnelVacancyResponsePage } from "./Personnel";
 
 export const VacancyResponsesPage = onlyRoles(
-  [UserRole.TRAINEE, UserRole.MENTOR, UserRole.PERSONNEL],
+  [UserRole.TRAINEE, UserRole.MENTOR, UserRole.CURATOR],
   () => {
     const user = useAppSelector(selectAuthUser);
 
@@ -19,8 +19,6 @@ export const VacancyResponsesPage = onlyRoles(
       return <TraineeVacancyResponsePage />;
     } else if (user.role === UserRole.MENTOR) {
       return <MentorVacancyResponsesPage />;
-    } else if (user.role === UserRole.PERSONNEL) {
-      return <PersonnelVacancyResponsePage />;
     }
 
     return null;

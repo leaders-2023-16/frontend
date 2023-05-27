@@ -1,5 +1,5 @@
 import { httpBaseQuery } from "@/services/axios";
-import { IVacancy, IVacancyTestTask } from "@/types/Vacancy";
+import { IVacancy, IVacancyTestTask, VacancyStatus } from "@/types/Vacancy";
 import { createApi } from "@reduxjs/toolkit/query/react";
 
 export const vacanciesApi = createApi({
@@ -8,10 +8,18 @@ export const vacanciesApi = createApi({
   tagTypes: ["vacancies"],
   endpoints: (builder) => ({
     getVacancies: builder.query<IVacancy[], GetVacanciesParams>({
-      query: (params) => ({
-        url: `v1/vacancies/?limit=10&offset=${(params.page - 1) * 10}`,
-        method: "GET",
-      }),
+      query: (params) => {
+        let url = `v1/vacancies/?limit=10&offset=${(params.page - 1) * 10}`;
+
+        if (params.status) {
+          url += `&status=${params.status}`;
+        }
+
+        return {
+          url,
+          method: "GET",
+        };
+      },
       transformResponse: (response: GetVacanciesResponse) => response.results,
       providesTags: (result, error, arg) =>
         result
@@ -88,6 +96,7 @@ export const {
 
 interface GetVacanciesParams {
   page: number;
+  status?: VacancyStatus;
 }
 
 interface GetVacanciesResponse {
