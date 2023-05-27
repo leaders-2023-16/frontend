@@ -24,8 +24,10 @@ export const Content = () => {
       pagination={{
         onChange: setPage,
         pageSize: 10,
+        defaultCurrent: 1,
+        total: data?.count,
       }}
-      dataSource={data}
+      dataSource={data?.results}
       renderItem={(item) => (
         <List.Item key={item.id} onClick={() => handlePress(item.id)}>
           <Row>

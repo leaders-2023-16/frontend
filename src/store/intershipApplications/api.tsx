@@ -1,6 +1,9 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { httpBaseQuery } from "@/services/axios";
-import { IIntershipApplication } from "@/types/IntershipApplication";
+import {
+  IIntershipApplication,
+  IntershipApplicationStatus,
+} from "@/types/IntershipApplication";
 
 export const intershipApplicationsApi = createApi({
   reducerPath: "intershipApplicationsApi",
@@ -19,7 +22,11 @@ export const intershipApplicationsApi = createApi({
         }`;
 
         if (params.is_recommended) {
-          url += "is_recommended=true";
+          url += "&is_recommended=true";
+        }
+
+        if (params.status) {
+          url += `&status=${params.status}`;
         }
 
         return {
@@ -101,6 +108,7 @@ export const {
 
 interface GetIntershipApplicationsParams {
   is_recommended?: true;
+  status?: IntershipApplicationStatus;
   page: number;
 }
 

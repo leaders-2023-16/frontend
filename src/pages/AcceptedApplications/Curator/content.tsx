@@ -6,12 +6,17 @@ import {
   useEndUpSelectionMutation,
   useGetIntershipApplicationsQuery,
 } from "@/store/intershipApplications/api";
+import { IntershipApplicationStatus } from "@/types/IntershipApplication";
 
 export const Content = () => {
   const [page, setPage] = React.useState(1);
   const { notification } = App.useApp();
 
-  const { data, isLoading } = useGetIntershipApplicationsQuery({ page });
+  const { data, isLoading } = useGetIntershipApplicationsQuery({
+    page,
+    status: IntershipApplicationStatus.NEXT_STAGE,
+  });
+
   const [mutate, { isLoading: isStoppingSelection }] =
     useEndUpSelectionMutation();
 

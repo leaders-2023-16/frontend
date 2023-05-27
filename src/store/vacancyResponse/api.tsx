@@ -6,10 +6,10 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 export const vacancyResponsesApi = createApi({
   reducerPath: "vacancyResponsesApi",
   baseQuery: httpBaseQuery(),
-  tagTypes: ["vacanсyResponses"],
+  tagTypes: ["vacanсyResponses", "detailedVacancyResponse"],
   endpoints: (builder) => ({
     getVacancyResponses: builder.query<
-      IVacancyResponse[],
+      GetVacancyResponseResponse,
       GetVacancyResponseParams
     >({
       query: (params) => {
@@ -25,23 +25,16 @@ export const vacancyResponsesApi = createApi({
           url += `&approved_by_applicant=${params.approvedByApplicant}`;
         }
 
+        if (params.vacancy) {
+          url += `&vacancy=${params.vacancy}`;
+        }
+
         return {
           url,
           method: "GET",
         };
       },
-      transformResponse: (response: GetVacancyResponseResponse) =>
-        response.results,
-      providesTags: (result, error, arg) =>
-        result
-          ? [
-              ...result.map(({ id }) => ({
-                type: "vacanсyResponses" as const,
-                id,
-              })),
-              { type: "vacanсyResponses", id: "LIST" },
-            ]
-          : [{ type: "vacanсyResponses", id: "LIST" }],
+      providesTags: (result, error, arg) => ["vacanсyResponses"],
     }),
     respondVacancy: builder.mutation<IVacancyResponse, ResponseVacancyResponse>(
       {
@@ -50,7 +43,7 @@ export const vacancyResponsesApi = createApi({
           method: "POST",
           data,
         }),
-        invalidatesTags: [{ type: "vacanсyResponses", id: "LIST" }],
+        invalidatesTags: ["vacanсyResponses", "detailedVacancyResponse"],
       }
     ),
 
@@ -59,7 +52,7 @@ export const vacancyResponsesApi = createApi({
         url: `v1/vacancy-response/${id}/`,
         method: "GET",
       }),
-      providesTags: (result, error, id) => [{ type: "vacanсyResponses", id }],
+      providesTags: ["detailedVacancyResponse"],
     }),
 
     getVacancyResponseByVacancyId: builder.query<IVacancyResponse, number>({
@@ -67,10 +60,7 @@ export const vacancyResponsesApi = createApi({
         url: `v1/vacancy-response/${id}/by-vacancy`,
         method: "GET",
       }),
-      providesTags: (result, error, id) =>
-        result
-          ? [{ type: "vacanсyResponses", id: result.id }]
-          : [{ type: "vacanсyResponses" }],
+      providesTags: ["detailedVacancyResponse"],
     }),
 
     updateVacancyResponse: builder.mutation<
@@ -90,9 +80,14 @@ export const vacancyResponsesApi = createApi({
         method: "PATCH",
         data,
       }),
-      invalidatesTags: (result, error, params) => [
-        { type: "vacanсyResponses", id: params.id },
-      ],
+      invalidatesTags: ["detailedVacancyResponse"],
+    }),
+
+    approveByCurator: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `v1/vacancy-response/${id}/approve/`,
+        method: "POST",
+      }),
     }),
   }),
 });
@@ -103,6 +98,7 @@ export const {
   useUpdateVacancyResponseMutation,
   useGetVacancyResponseByVacancyIdQuery,
   useRespondVacancyMutation,
+  useApproveByCuratorMutation,
 } = vacancyResponsesApi;
 
 interface GetVacancyResponseParams {
@@ -110,11 +106,13 @@ interface GetVacancyResponseParams {
 
   approvedByApplicant?: boolean;
   approvedByMentor?: boolean;
+
+  vacancy?: number;
 }
 
 interface GetVacancyResponseResponse {
   results: IVacancyResponse[];
-  total: number;
+  count: number;
 }
 
 type ResponseVacancyResponse = Partial<

@@ -14,6 +14,7 @@ import { DetailedVacancyPage } from "./pages/DetailedVacancy";
 import { VacancyResponsesPage } from "./pages/VacancyResponses";
 import { DetailedVacancyResposePage } from "./pages/DetailedVacancyResponse";
 import { AcceptedApplicationsPage } from "./pages/AcceptedApplications";
+import { WorkPlacesPage } from "./pages/WorkPlaces";
 
 export const router = createBrowserRouter([
   {
@@ -37,6 +38,11 @@ export const router = createBrowserRouter([
           {
             path: "accepted-applications",
             element: <AcceptedApplicationsPage />,
+          },
+
+          {
+            path: "work-places",
+            element: <WorkPlacesPage />,
           },
 
           {

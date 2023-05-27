@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useGetVacancyByIdQuery } from "@/store/vacancies/api";
-import { Col, Row, Spin, Typography } from "antd";
+import { Col, Divider, Row, Spin, Typography } from "antd";
 import { Navigate, useParams } from "react-router-dom";
 import { Actions } from "./Views/Actions";
 import { useAppSelector } from "@/store";
@@ -9,6 +9,11 @@ import { getCuratorDetailedVacancyStore } from "./Store/selectors";
 import { EditForm } from "./Views/EditForm";
 import { useDispatch } from "react-redux";
 import { curatorDetailedVacancyPageActions } from "./Store";
+import {
+  useGetVacancyResponseByVacancyIdQuery,
+  useGetVacancyResponsesQuery,
+} from "@/store/vacancyResponse/api";
+import { Responses } from "./Views/Responses";
 
 export const Content = () => {
   const { vacancyId } = useParams();
@@ -86,6 +91,15 @@ export const Content = () => {
         <Typography.Title level={4}>Тестовое задание</Typography.Title>
         <Typography.Title level={5}>{data?.test_task?.title}</Typography.Title>
         <Typography.Text>{data?.test_task?.description}</Typography.Text>
+
+        <Divider />
+
+        <Typography.Title level={4}>Отклики</Typography.Title>
+        {data ? (
+          <Responses vacancy={data} />
+        ) : (
+          <Typography.Text>-</Typography.Text>
+        )}
 
         {data && <Actions vacancy={data} />}
       </Col>
