@@ -43,7 +43,7 @@ export interface TraineeProfileLink {
 }
 
 export interface ITraineeProfile {
-  user_id: string;
+  user_id: number;
   citizenship?: TraineeProfileCitizenship;
   bio?: string;
   phone_number?: string;
@@ -58,6 +58,11 @@ export interface ITraineeProfile {
   status?: TraineeProfileStatus;
   cv_score?: number;
   test_score?: number;
+  career_school_username?: string;
+  career_school_password?: string;
+  progress_career_school?: number;
+  testing_platform_username?: string;
+  testing_platform_password?: string;
 }
 
 export type IPatchTraineeProfile = Partial<

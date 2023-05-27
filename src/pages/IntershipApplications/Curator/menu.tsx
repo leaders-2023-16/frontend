@@ -12,12 +12,12 @@ export const Menu = () => {
         <NavLink to={"/intership-applications"}>Заявки на стажировку</NavLink>
       </AntMenu.Item>
 
-      <AntMenu.Item key="/vacancies">
-        <NavLink to={"/vacancies"}>Заявки на стажеров</NavLink>
+      <AntMenu.Item key="/accepted-applications">
+        <NavLink to={"/accepted-applications"}>Проходят отбор</NavLink>
       </AntMenu.Item>
 
-      <AntMenu.Item key="/vacancy-responses">
-        <NavLink to={"/vacancy-responses"}>Отклики</NavLink>
+      <AntMenu.Item key="/vacancies">
+        <NavLink to={"/vacancies"}>Заявки на стажеров</NavLink>
       </AntMenu.Item>
     </AntMenu>
   );

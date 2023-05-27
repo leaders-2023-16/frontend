@@ -17,7 +17,7 @@ export const Actions: React.FC<ActionsProps> = ({ applicationId, status }) => {
 
   const handlePressAccept = React.useCallback(() => {
     mutate({
-      status: IntershipApplicationStatus.APPROVED,
+      status: IntershipApplicationStatus.NEXT_STAGE,
       applicantId: applicationId,
     });
   }, [mutate, applicationId]);
@@ -30,9 +30,9 @@ export const Actions: React.FC<ActionsProps> = ({ applicationId, status }) => {
   }, [mutate, applicationId]);
 
   if (
-    (status === IntershipApplicationStatus.APPROVED ||
-      status === IntershipApplicationStatus.REJECTED) &&
-    !isEdit
+    !isEdit &&
+    (status === IntershipApplicationStatus.NEXT_STAGE ||
+      status === IntershipApplicationStatus.REJECTED)
   ) {
     return (
       <Row>
@@ -44,18 +44,29 @@ export const Actions: React.FC<ActionsProps> = ({ applicationId, status }) => {
     );
   }
 
-  return (
-    <Col>
-      <Row>
-        <Col flex={1} />
-        <Button loading={isLoading} onClick={handlePressReject}>
-          Отклонить
-        </Button>
-        <Col style={{ width: "20px" }} />
-        <Button type="primary" loading={isLoading} onClick={handlePressAccept}>
-          Принять
-        </Button>
-      </Row>
-    </Col>
-  );
+  if (
+    status === IntershipApplicationStatus.NEXT_STAGE ||
+    status === IntershipApplicationStatus.REJECTED
+  ) {
+    return (
+      <Col>
+        <Row>
+          <Col flex={1} />
+          <Button loading={isLoading} onClick={handlePressReject}>
+            Отклонить
+          </Button>
+          <Col style={{ width: "20px" }} />
+          <Button
+            type="primary"
+            loading={isLoading}
+            onClick={handlePressAccept}
+          >
+            Принять
+          </Button>
+        </Row>
+      </Col>
+    );
+  }
+
+  return null;
 };

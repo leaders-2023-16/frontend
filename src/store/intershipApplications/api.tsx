@@ -82,6 +82,13 @@ export const intershipApplicationsApi = createApi({
         { type: "intershipApplications", id: params.applicantId },
       ],
     }),
+
+    endUpSelection: builder.mutation({
+      query: () => ({
+        url: `v1/internship-applications/end-up-selection`,
+        method: "POST",
+      }),
+    }),
   }),
 });
 export const {
@@ -89,6 +96,7 @@ export const {
   useGetIntershipApplicationsQuery,
   useSubmitIntershipApplicationMutation,
   useUpdateIntershipApplicationMutation,
+  useEndUpSelectionMutation,
 } = intershipApplicationsApi;
 
 interface GetIntershipApplicationsParams {
