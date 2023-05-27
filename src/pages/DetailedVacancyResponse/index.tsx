@@ -4,6 +4,7 @@ import { selectAuthUser } from "@/store/auth/selectors";
 import { UserRole } from "@/types/User";
 import { TraineeDetailedVacancyResponse } from "./Trainee";
 import { MentorDetailedVacancyResponsePage } from "./Mentor";
+import { Navigate } from "react-router-dom";
 
 export const DetailedVacancyResposePage = onlyRoles(
   [UserRole.TRAINEE, UserRole.CURATOR, UserRole.MENTOR],
@@ -11,7 +12,7 @@ export const DetailedVacancyResposePage = onlyRoles(
     const user = useAppSelector(selectAuthUser);
 
     if (!user) {
-      return null;
+      return <Navigate to="/" />;
     }
 
     if (user.role === UserRole.TRAINEE) {
@@ -20,6 +21,6 @@ export const DetailedVacancyResposePage = onlyRoles(
       return <MentorDetailedVacancyResponsePage />;
     }
 
-    return null;
+    return <Navigate to="/" />;
   }
 );

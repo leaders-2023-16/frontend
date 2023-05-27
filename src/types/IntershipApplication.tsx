@@ -3,8 +3,9 @@ import { IUser } from "./User";
 export enum IntershipApplicationStatus {
   PENDING = "pending",
   REJECTED = "rejected",
-  NEXT_STAGE = "next-stage",
+  NEXT_STAGE = "next_stage",
   APPROVED = "approved",
+  NOT_QUALIFY = "not_qualify",
 }
 
 export interface IIntershipApplication {
@@ -19,4 +20,7 @@ export interface IIntershipApplication {
   created_at?: string;
   is_recommended: boolean;
   direction?: number;
+
+  cv_score?: number;
+  test_score?: number;
 }

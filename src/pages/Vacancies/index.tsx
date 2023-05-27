@@ -13,7 +13,7 @@ export const VacanciesPage = onlyRoles(
     const user = useAppSelector(selectAuthUser);
 
     if (!user) {
-      return null;
+      return <Navigate to="/" />;
     }
 
     if (user.role === UserRole.PERSONNEL) {

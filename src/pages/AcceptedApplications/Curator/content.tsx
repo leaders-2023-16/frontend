@@ -1,12 +1,19 @@
 import React from "react";
 
-import { Col, List, Row, Typography } from "antd";
+import { App, Button, Col, List, Row } from "antd";
 import { useNavigate } from "react-router-dom";
-import { useGetIntershipApplicationsQuery } from "@/store/intershipApplications/api";
+import {
+  useEndUpSelectionMutation,
+  useGetIntershipApplicationsQuery,
+} from "@/store/intershipApplications/api";
 
 export const Content = () => {
   const [page, setPage] = React.useState(1);
+  const { notification } = App.useApp();
+
   const { data, isLoading } = useGetIntershipApplicationsQuery({ page });
+  const [mutate, { isLoading: isStoppingSelection }] =
+    useEndUpSelectionMutation();
 
   const navigate = useNavigate();
 
@@ -17,10 +24,32 @@ export const Content = () => {
     [navigate]
   );
 
+  const handlePressStopSelection = React.useCallback(async () => {
+    try {
+      await mutate({}).unwrap();
+      setPage(1);
+    } catch (e) {
+      notification.error({
+        message: "Ошибка выполнения запроса",
+        description: "Повторите попытку позже",
+      });
+    }
+  }, [mutate, notification]);
+
   return (
     <>
+      <Row>
+        <Col flex={1} />
+        <Button
+          type="primary"
+          loading={isStoppingSelection}
+          onClick={handlePressStopSelection}
+        >
+          Закончить отбор
+        </Button>
+      </Row>
       <List
-        loading={isLoading}
+        loading={isLoading || isStoppingSelection}
         itemLayout="vertical"
         size="large"
         pagination={{
@@ -34,7 +63,6 @@ export const Content = () => {
               <Col flex={1}>
                 {item.applicant.first_name} {item.applicant.last_name}
               </Col>
-              {/* <Typography.Text>Оценка резюме: {item.}</Typography.Text> */}
               <Col>{item.status}</Col>
             </Row>
           </List.Item>

@@ -24,6 +24,6 @@ export const DetailedVacancyPage = onlyRoles(
       return <PersonnelDetailedVacancyPage />;
     }
 
-    return null;
+    return <Navigate to="/" />;
   }
 );
