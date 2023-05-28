@@ -143,7 +143,7 @@ export const Content = () => {
 
       <Calendar
         mode="month"
-        value={dayjs(selectedDate)}
+        // value={dayjs(selectedDate)}
         onSelect={handleSelect}
         onChange={handleChange}
         cellRender={cellRender}

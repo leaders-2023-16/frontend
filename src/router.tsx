@@ -16,6 +16,7 @@ import { DetailedVacancyResposePage } from "./pages/DetailedVacancyResponse";
 import { AcceptedApplicationsPage } from "./pages/AcceptedApplications";
 import { WorkPlacesPage } from "./pages/WorkPlaces";
 import { DetailedWorkPlacePage } from "./pages/DetailedWorkPlace";
+import { StatisticsPage } from "./pages/Statistics";
 
 export const router = createBrowserRouter([
   {
@@ -76,6 +77,10 @@ export const router = createBrowserRouter([
           {
             path: "vacancy-responses/:vacancyResponseId",
             element: <DetailedVacancyResposePage />,
+          },
+          {
+            path: "statistics",
+            element: <StatisticsPage />,
           },
           {
             path: "profile",
