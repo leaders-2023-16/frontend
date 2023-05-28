@@ -9,6 +9,8 @@ import { Container } from "../Container";
 import logo from "../../assets/logo.svg";
 import { Tabs } from "./Tabs";
 import { CustomButton } from "../Button";
+import { UserRole } from "@/types/User";
+import { compact } from "lodash";
 
 export const LayoutPage = () => {
   const { user } = useAppSelector(selectAuth);
@@ -20,21 +22,23 @@ export const LayoutPage = () => {
   }, [dispatch]);
 
   const items = useMemo(
-    () => [
-      {
-        key: "1",
-        label: "Профиль",
-        onClick: () => navigate("/profile"),
-        icon: <UserOutlined />,
-      },
-      {
-        key: "2",
-        label: "Выйти",
-        onClick: handleLogout,
-        icon: <LogoutOutlined />,
-      },
-    ],
-    [handleLogout, navigate]
+    () =>
+      compact([
+        (user?.role === UserRole.TRAINEE ||
+          user?.role === UserRole.CANDIDATE) && {
+          key: "1",
+          label: "Профиль",
+          onClick: () => navigate("/profile"),
+          icon: <UserOutlined />,
+        },
+        {
+          key: "2",
+          label: "Выйти",
+          onClick: handleLogout,
+          icon: <LogoutOutlined />,
+        },
+      ]),
+    [handleLogout, navigate, user?.role]
   );
 
   return (
@@ -77,7 +81,9 @@ export const LayoutPage = () => {
           </Row>
         </Layout.Header>
         <Layout>
-          <Layout.Content style={{ margin: "0 144px", backgroundColor: 'white' }}>
+          <Layout.Content
+            style={{ margin: "0 144px", backgroundColor: "white" }}
+          >
             <Container>
               <Outlet />
             </Container>

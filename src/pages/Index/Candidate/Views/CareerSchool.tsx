@@ -5,10 +5,7 @@ import {
   IntershipApplicationLabel,
   IntershipApplicationStatus,
 } from "@/types/IntershipApplication";
-import { TrainDirection, TrainDirectionLabel } from "@/types/TrainDirection";
-import { Calendar, Col, Row, Space, Tag } from "antd";
-import Paragraph from "antd/es/typography/Paragraph";
-import Title from "antd/es/typography/Title";
+import { Col, Row, Space, Tooltip } from "antd";
 import { FC } from "react";
 
 export const CareerSchool: FC<{
@@ -50,11 +47,18 @@ export const CareerSchool: FC<{
           <>
             <CustomTitle>Логин: {pass}</CustomTitle>
             <CustomTitle>Пароль: {user}</CustomTitle>
+            <CustomButton isPrimary>Перейти к Карьерной Школе</CustomButton>
           </>
         )}
-        <CustomButton isPrimary disabled>
-          Перейти к Карьерной Школе
-        </CustomButton>
+        {!pass && !user && (
+          <Tooltip title="Кнопка станет доступна после того как вашу заявку одобрят и создадут учетную запись">
+            <div style={{
+              margin: '18px',
+              color: 'grey',
+              cursor: 'default'
+            }}>Перейти к Карьерной школе</div>
+          </Tooltip>
+        )}
       </Space>
     </Col>
   );

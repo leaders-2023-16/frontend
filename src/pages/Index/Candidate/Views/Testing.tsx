@@ -5,10 +5,7 @@ import {
   IntershipApplicationLabel,
   IntershipApplicationStatus,
 } from "@/types/IntershipApplication";
-import { TrainDirection, TrainDirectionLabel } from "@/types/TrainDirection";
-import { Calendar, Col, Row, Space, Tag } from "antd";
-import Paragraph from "antd/es/typography/Paragraph";
-import Title from "antd/es/typography/Title";
+import { Col, Row, Space, Tooltip } from "antd";
 import { FC } from "react";
 
 export const Testing: FC<{
@@ -23,12 +20,12 @@ export const Testing: FC<{
           <Space direction="vertical">
             <CustomTitle>
               Тестирование — это описание что представляет собой этап тести
-              Тестирование — это описание что представляет собой этап
-              тести Тестирование — это описание что представляет собой этап
-              тести Тестирование — это описание что представляет собой этап
-              тести Тестирование — это описание что представляет собой этап
-              тести Тестирование — это описание что представляет собой этап
-              тести Тестирование — это описание что представляет собой этап тести
+              Тестирование — это описание что представляет собой этап тести
+              Тестирование — это описание что представляет собой этап тести
+              Тестирование — это описание что представляет собой этап тести
+              Тестирование — это описание что представляет собой этап тести
+              Тестирование — это описание что представляет собой этап тести
+              Тестирование — это описание что представляет собой этап тести
             </CustomTitle>
           </Space>
         </Col>
@@ -52,11 +49,18 @@ export const Testing: FC<{
           <>
             <CustomTitle>Логин: {pass}</CustomTitle>
             <CustomTitle>Пароль: {user}</CustomTitle>
+            <CustomButton isPrimary>Перейти к тестированию</CustomButton>
           </>
         )}
-        <CustomButton isPrimary disabled>
-          Перейти к тестированию
-        </CustomButton>
+        {!pass && !user && (
+          <Tooltip title="Кнопка станет доступна после того как вашу заявку одобрят и создадут учетную запись">
+          <div style={{
+            margin: '18px',
+            color: 'grey',
+            cursor: 'default'
+          }}>Перейти к тестированию</div>
+        </Tooltip>
+        )}
       </Space>
     </Col>
   );

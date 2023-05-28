@@ -5,6 +5,7 @@ import { getCuratorWorkPlacesPageState } from "../Store/selectors";
 import { useDispatch } from "react-redux";
 import { curatorWorkPlacesPageActions } from "../Store";
 import { useExportReportMutation } from "@/store/reports/api";
+import { http } from "@/services/axios";
 
 export const Filters = () => {
   const { notification } = App.useApp();
@@ -16,7 +17,27 @@ export const Filters = () => {
 
   const handlePressExport = React.useCallback(async () => {
     try {
-      await mutate({}).unwrap();
+      const data = await http({
+        url: "v1/reports/export/",
+        method: "GET",
+        responseType: "blob",
+      });
+      const url = window.URL.createObjectURL(new Blob([data.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      const filename = data.headers["Content-Disposition"]
+        .split('filename="')[1]
+        .split('"')[0];
+      link.setAttribute("download", filename);
+
+      // Append to html link element page
+      document.body.appendChild(link);
+
+      // Start download
+      link.click();
+
+      // Clean up and remove the link
+      document.body.removeChild(link);
     } catch (e) {
       notification.open({
         type: "error",
@@ -24,7 +45,7 @@ export const Filters = () => {
         description: "Попробуйте еще раз, или повторите позже",
       });
     }
-  }, [notification, mutate]);
+  }, [notification]);
 
   const handleChangeOnlyActive = React.useCallback(
     (value: string) => {

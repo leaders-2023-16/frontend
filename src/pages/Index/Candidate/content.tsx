@@ -68,21 +68,13 @@ export const Content = () => {
             ),
           },
           {
+            disabled: true,
             key: "4",
             label: "Кейс-чемпионат",
             children: <></>,
           },
         ]}
       ></Tabs>
-      {/* <Spin tip="Loading..." spinning={isLoading}>
-        {!data ? (
-          <SubmitApplicationForm />
-        ) : data.status === IntershipApplicationStatus.PENDING ? (
-          <WaitingApplicationStatus />
-        ) : !data.status ? (
-          <SubmitApplicationForm />
-        ) : null}
-      </Spin> */}
     </>
   );
 };

@@ -18,8 +18,8 @@ export const Tabs: FC<{ role?: UserRole }> = ({ role }) => {
       <>
         <Space size='large'>
           <LinkButton to="/profile" name="Профиль" />
-          <LinkButton to="/profile" name="Стажировка" />
-          <LinkButton to="/profile" name="Вакансии" />
+          <LinkButton to="/" name="Стажировка" />
+          {/* <LinkButton to="/profile" name="Вакансии" /> */}
         </Space>
       </>
     );

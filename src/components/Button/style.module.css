@@ -24,5 +24,12 @@
 }
 
 .disabled {
-    
+    background-color: white;
+    height: 46px;
+    border-radius: 50px;
+    padding-left: 32px;
+    padding-right: 32px;
+    font-size: 14px;
+    border: 2px solid white;
+    transition: all ease 0.3s;
 }

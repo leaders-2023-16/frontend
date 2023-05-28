@@ -6,7 +6,7 @@ export const CustomButton = ({
   isPrimary = false,
   ...props
 }: React.ButtonHTMLAttributes<HTMLButtonElement> & { isPrimary?: boolean }) => {
-  return props.disabled ? (
+  return !props.disabled ? (
     <button
       {...props}
       className={cn(style.commonButton, isPrimary && style.primary)}
@@ -14,6 +14,8 @@ export const CustomButton = ({
       {children}
     </button>
   ) : (
-    <button></button>
+    <button {...props} className={cn(style.disabled)}>
+      {children}
+    </button>
   );
 };

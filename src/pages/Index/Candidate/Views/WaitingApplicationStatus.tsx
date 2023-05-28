@@ -5,9 +5,7 @@ import {
   IntershipApplicationStatus,
 } from "@/types/IntershipApplication";
 import { TrainDirection, TrainDirectionLabel } from "@/types/TrainDirection";
-import { Calendar, Col, Row, Space, Tag } from "antd";
-import Paragraph from "antd/es/typography/Paragraph";
-import Title from "antd/es/typography/Title";
+import { Col, Row, Space } from "antd";
 import { FC } from "react";
 
 export const WaitingApplicationStatus: FC<{
