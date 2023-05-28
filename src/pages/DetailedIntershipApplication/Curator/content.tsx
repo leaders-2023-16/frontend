@@ -13,6 +13,7 @@ import { IntershipApplicationStatus } from "@/types/IntershipApplication";
 import { SelectionForm } from "./Views/SelectionForm";
 import { useAppDispatch } from "@/store";
 import { curatorDetailedIntershipApplicationPageActions } from "./Store";
+import dayjs from 'dayjs'
 
 export const Content = () => {
   const { applicationId } = useParams();
@@ -61,7 +62,7 @@ export const Content = () => {
               <Col flex={1} />
               <Col>
                 <Paragraph>
-                  Дата подачи заявки: {application?.created_at}
+                  Дата подачи заявки: {dayjs(application?.created_at).format('DD.MM.YYYY HH:MM:ss')}
                 </Paragraph>
               </Col>
             </Row>
