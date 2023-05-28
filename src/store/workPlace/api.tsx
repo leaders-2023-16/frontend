@@ -9,11 +9,18 @@ export const workPlacesApi = createApi({
   tagTypes: ["workPlaces", "detailedWorkPlace"],
   refetchOnMountOrArgChange: true,
   endpoints: (builder) => ({
-    getWorkPlaces: builder.query<IWorkPlace[], void>({
-      query: () => ({
-        url: `v1/work-places/`,
-        method: "GET",
-      }),
+    getWorkPlaces: builder.query<IWorkPlace[], GetWorkPlacesParams>({
+      query: (params) => {
+        let url = `v1/work-places/`;
+
+        if (params.trainee_id) {
+          url += `?&trainee=${params.trainee_id}`;
+        }
+        return {
+          url,
+          method: "GET",
+        };
+      },
     }),
 
     getWorkPlaceByTraineeId: builder.query<IWorkPlace, number>({
@@ -60,4 +67,8 @@ export const {
 interface UpdateWorkPlaceByIdParams {
   id: number;
   is_active?: boolean;
+}
+
+interface GetWorkPlacesParams {
+  trainee_id?: number;
 }

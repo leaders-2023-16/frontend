@@ -1,15 +1,17 @@
 import React from "react";
-import { Col, List, Row, Typography } from "antd";
-import { useGetVacanciesQuery } from "@/store/vacancies/api";
+import { Col, List, Row } from "antd";
 import { useNavigate } from "react-router-dom";
-import { VacancyStatus } from "@/types/Vacancy";
-import {
-  useGetWorkPlaceByIdQuery,
-  useGetWorkPlacesQuery,
-} from "@/store/workPlace/api";
+import { useGetWorkPlacesQuery } from "@/store/workPlace/api";
 
-export const Content = () => {
-  const { data, isLoading } = useGetWorkPlacesQuery({});
+import { useAppSelector } from "@/store";
+import { selectAuthUser } from "@/store/auth/selectors";
+
+export const LastWorkPlaces = () => {
+  const user = useAppSelector(selectAuthUser);
+  const { data, isLoading } = useGetWorkPlacesQuery(
+    { trainee_id: user?.id || 0 },
+    { skip: !user }
+  );
 
   const navigate = useNavigate();
 
