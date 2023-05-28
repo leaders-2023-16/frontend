@@ -17,6 +17,15 @@ export const TrainDirectionName = {
   [TrainDirection.CITY_ECONOMIC]: "city-economic",
   [TrainDirection.HR_CITY]: "hr-city",
 };
+export const TrainDirectionLabel = {
+  [TrainDirection.IT_CITY]: "IT-город",
+  [TrainDirection.MEDIA_CITY]: "Медийный город",
+  [TrainDirection.SOCIAL_CITY]: "Социальный город",
+  [TrainDirection.COMFORT_CITY_ZONE]: "Комфортная городская среда",
+  [TrainDirection.RIGHTS_AREA]: "Правовое пространство",
+  [TrainDirection.CITY_ECONOMIC]: "Городская экономика",
+  [TrainDirection.HR_CITY]: "HR-город",
+};
 
 export const TrainDirectionByName = {
   "it-city": TrainDirection.IT_CITY,
