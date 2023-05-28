@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 import { EducationView } from "./Views/EducationView";
 import { WorkExperienceView } from "./Views/WorkExperienceView";
 import { Actions } from "./Views/Actions";
-import { IntershipApplicationStatus } from "@/types/IntershipApplication";
+import { IntershipApplicationLabel, IntershipApplicationStatus } from "@/types/IntershipApplication";
 import { SelectionForm } from "./Views/SelectionForm";
 import { useAppDispatch } from "@/store";
 import { curatorDetailedIntershipApplicationPageActions } from "./Store";
@@ -73,7 +73,7 @@ export const Content = () => {
             <Spin spinning={isLoadingCountry}>
               <Paragraph>Гражданство: {country?.name}</Paragraph>
             </Spin>
-            <Paragraph>Статус заявки: {application?.status}</Paragraph>
+            <Paragraph>Статус заявки: {IntershipApplicationLabel[application?.status]}</Paragraph>
           </Col>
         </Row>
       </Col>
