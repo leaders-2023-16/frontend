@@ -6,9 +6,16 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 export const workPlacesApi = createApi({
   reducerPath: "workPlacesApi",
   baseQuery: httpBaseQuery(),
-  tagTypes: ["detailedWorkPlace"],
+  tagTypes: ["workPlaces", "detailedWorkPlace"],
   refetchOnMountOrArgChange: true,
   endpoints: (builder) => ({
+    getWorkPlaces: builder.query<IWorkPlace[], void>({
+      query: () => ({
+        url: `v1/work-places/`,
+        method: "GET",
+      }),
+    }),
+
     getWorkPlaceByTraineeId: builder.query<IWorkPlace, number>({
       query: (traineeId) => ({
         url: `v1/work-places/${traineeId}/by-trainee/`,
@@ -47,6 +54,7 @@ export const {
   useCurrentWorkPlaceQuery,
   useGetWorkPlaceByIdQuery,
   useUpdateWorkPlaceByIdMutation,
+  useGetWorkPlacesQuery,
 } = workPlacesApi;
 
 interface UpdateWorkPlaceByIdParams {
