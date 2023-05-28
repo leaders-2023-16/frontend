@@ -1,15 +1,47 @@
-import { Col } from "antd";
-import Paragraph from "antd/es/typography/Paragraph";
-import Title from "antd/es/typography/Title";
+import { CustomTitle } from "@/components/CustomTitle";
+import { Status } from "@/components/Status";
+import {
+  IntershipApplicationLabel,
+  IntershipApplicationStatus,
+} from "@/types/IntershipApplication";
+import { TrainDirection, TrainDirectionLabel } from "@/types/TrainDirection";
+import { Col, Row, Space } from "antd";
+import { FC } from "react";
 
-export const WaitingApplicationStatus = () => {
+export const WaitingApplicationStatus: FC<{
+  direction: TrainDirection;
+  status?: IntershipApplicationStatus;
+}> = ({ direction, status }) => {
   return (
     <Col>
-      <Title>Заявка успешно подана</Title>
-      <Paragraph>
-        В ближайшее время куратор првоерит ваше резюме и вы получите приглашение
-        на прохождение отбора
-      </Paragraph>
+      <Row justify={"space-between"} align={"middle"}>
+        <Col>
+          <Space direction="vertical">
+            <CustomTitle isTitle>Заявка успешно подана</CustomTitle>
+            <CustomTitle>
+              Выбрано направление «{TrainDirectionLabel[direction]}»
+            </CustomTitle>
+            <CustomTitle>
+              В ближайшее время куратор првоерит ваше резюме и вы получите
+              приглашение на прохождение отбора
+            </CustomTitle>
+          </Space>
+        </Col>
+        <Col>
+          {status && (
+            <Status
+              status={IntershipApplicationLabel[status]}
+              color={
+                status === IntershipApplicationStatus.APPROVED
+                  ? "green"
+                  : status === IntershipApplicationStatus.REJECTED
+                  ? "red"
+                  : "blue"
+              }
+            />
+          )}
+        </Col>
+      </Row>
     </Col>
   );
 };

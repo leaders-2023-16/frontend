@@ -46,6 +46,10 @@ export type TraineeProfileType = {
   work_experiences: WorkExperiences[];
   birth_date: string;
   sex: string | null;
+  career_school_username?: string;
+  career_school_password?: string;
+  testing_platform_username?: string;
+  testing_platform_password?: string;
 };
 
 export type UpdateTraineeProfile = Omit<TraineeProfileType, "citizenship"> & {

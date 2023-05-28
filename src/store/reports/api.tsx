@@ -54,10 +54,11 @@ export const reportsApi = createApi({
       invalidatesTags: ["reports"],
     }),
 
-    exportReport: builder.mutation({
+    exportReport: builder.mutation<string, unknown>({
       query: () => ({
         url: `v1/reports/export/`,
         method: "GET",
+        responseType: 'blob'
       }),
     }),
   }),

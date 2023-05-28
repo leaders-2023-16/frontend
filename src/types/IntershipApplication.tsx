@@ -1,3 +1,4 @@
+import { TraineeProfileType } from "@/store/traineeProfile/types";
 import { IUser } from "./User";
 
 export enum IntershipApplicationStatus {
@@ -6,6 +7,13 @@ export enum IntershipApplicationStatus {
   NEXT_STAGE = "next_stage",
   APPROVED = "approved",
   NOT_QUALIFY = "not_qualify",
+}
+export const IntershipApplicationLabel = {
+  [IntershipApplicationStatus.APPROVED]: 'Одобрено',
+  [IntershipApplicationStatus.NEXT_STAGE]: 'Проходит отбор',
+  [IntershipApplicationStatus.NOT_QUALIFY]: 'Не прошел отбор',
+  [IntershipApplicationStatus.PENDING]: 'На рассмотрении',
+  [IntershipApplicationStatus.REJECTED]: 'Отклонено',
 }
 
 export interface IIntershipApplication {
@@ -21,4 +29,5 @@ export interface IIntershipApplication {
 
   cv_score?: number;
   test_score?: number;
+  trainee_profile?: TraineeProfileType
 }

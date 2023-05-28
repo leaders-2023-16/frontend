@@ -1,5 +1,5 @@
 .primary {
-    background-color: #1A1230;
+    background-color: #1A1230 !important;
     color: white
 }
 
@@ -8,6 +8,7 @@
 }
 
 .commonButton {
+    background-color: white;
     height: 46px;
     border-radius: 50px;
     padding-left: 32px;
@@ -20,4 +21,15 @@
 
 .commonButton:hover {
     border-color: #48357c !important;
+}
+
+.disabled {
+    background-color: white;
+    height: 46px;
+    border-radius: 50px;
+    padding-left: 32px;
+    padding-right: 32px;
+    font-size: 14px;
+    border: 2px solid white;
+    transition: all ease 0.3s;
 }

@@ -54,7 +54,7 @@ export const intershipApplicationsApi = createApi({
           method: "POST",
           data: { direction },
         }),
-        invalidatesTags: ["intershipApplications"],
+        invalidatesTags: ["intershipApplications", 'detailedInternshipApplication'],
       }
     ),
 
