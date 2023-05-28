@@ -24,7 +24,7 @@ import { ProfileEdit } from "./ProfileEdit";
 import { validate } from "./utils";
 import { IPatchTraineeProfile } from "@/types/TraineeProfile";
 import { CustomButton } from "../Button";
-import { UserRoleLabel } from "@/types/User";
+import { UserRole, UserRoleLabel } from "@/types/User";
 
 const antIcon = <LoadingOutlined style={{ fontSize: 48 }} spin />;
 
@@ -104,25 +104,30 @@ export const TraineeProfile = () => {
           </Space>
         </Col>
         <Col>
-          
-          {!isEditing ? (
-            <CustomButton style={{ marginTop: "8px" }} onClick={handleEdit}>
-              Редактировать
-            </CustomButton>
-          ) : (
-            <Space>
-              <CustomButton
-                isPrimary
-                style={{ marginTop: "8px" }}
-                onClick={handleUpdate}
-              >
-                Сохранить
+          {user?.role === UserRole.TRAINEE ||
+          user?.role === UserRole.CANDIDATE ? (
+            !isEditing ? (
+              <CustomButton style={{ marginTop: "8px" }} onClick={handleEdit}>
+                Редактировать
               </CustomButton>
-              <CustomButton style={{ marginTop: "8px" }} onClick={handleCancel}>
-                Отменить
-              </CustomButton>
-            </Space>
-          )}
+            ) : (
+              <Space>
+                <CustomButton
+                  isPrimary
+                  style={{ marginTop: "8px" }}
+                  onClick={handleUpdate}
+                >
+                  Сохранить
+                </CustomButton>
+                <CustomButton
+                  style={{ marginTop: "8px" }}
+                  onClick={handleCancel}
+                >
+                  Отменить
+                </CustomButton>
+              </Space>
+            )
+          ) : null}
         </Col>
       </Row>
 
@@ -136,7 +141,7 @@ export const TraineeProfile = () => {
         </>
       )}
 
-      <Modal
+      {/* <Modal
         open={showModal}
         onCancel={handleClose}
         footer={false}
@@ -175,7 +180,7 @@ export const TraineeProfile = () => {
             Заполнить профиль
           </CustomButton>
         </div>
-      </Modal>
+      </Modal> */}
     </>
   );
 };

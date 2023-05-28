@@ -4,6 +4,7 @@ import { Col, Divider, Row, Spin, Typography } from "antd";
 import { Navigate, useParams } from "react-router-dom";
 import { useGetVacancyResponseByIdQuery } from "@/store/vacancyResponse/api";
 import { Actions } from "./Views/Actions";
+import { User } from "@/components/User";
 
 export const Content = () => {
   const { vacancyResponseId } = useParams();
@@ -72,16 +73,14 @@ export const Content = () => {
 
         <Typography.Title level={4}>Наставник</Typography.Title>
         {vacancy?.mentor ? (
-          <Row>
-            <Col flex={1}>
-              <Typography.Text>
-                {vacancy?.mentor?.first_name} {vacancy?.mentor?.last_name}
-              </Typography.Text>
-            </Col>
-            <Col>
-              <Typography.Text>{vacancy?.mentor?.email}</Typography.Text>
-            </Col>
-          </Row>
+          <User user={vacancy.mentor} />
+        ) : (
+          <Typography.Text>-</Typography.Text>
+        )}
+
+        <Typography.Title level={4}>Кандидат</Typography.Title>
+        {data?.applicant ? (
+          <User user={{ id: data.applicant.user_id, ...data.applicant }} />
         ) : (
           <Typography.Text>-</Typography.Text>
         )}

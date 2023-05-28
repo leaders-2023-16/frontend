@@ -17,6 +17,7 @@ import { AcceptedApplicationsPage } from "./pages/AcceptedApplications";
 import { WorkPlacesPage } from "./pages/WorkPlaces";
 import { DetailedWorkPlacePage } from "./pages/DetailedWorkPlace";
 import { StatisticsPage } from "./pages/Statistics";
+import { OtherTraineeProfile } from "./pages/traineeProfile/Other";
 
 export const router = createBrowserRouter([
   {
@@ -85,6 +86,10 @@ export const router = createBrowserRouter([
           {
             path: "profile",
             element: <TraineeProfilePage />,
+          },
+          {
+            path: "trainee-profile/:userId",
+            element: <OtherTraineeProfile />,
           },
         ],
       },

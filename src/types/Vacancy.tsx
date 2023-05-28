@@ -54,3 +54,10 @@ export interface IVacancy {
   created_at: string;
   schedule?: VacancySchedule;
 }
+
+export const VacancyStatusName = {
+  [VacancyStatus.PENDING]: "На рассмотрении",
+  [VacancyStatus.CLOSED]: "В архиве",
+  [VacancyStatus.PUBLISHED]: "Опубликована",
+  [VacancyStatus.REJECTED]: "Опубликована",
+};

@@ -21,6 +21,10 @@ export const LayoutPage = () => {
     dispatch(logoutAsync());
   }, [dispatch]);
 
+  const handlePressIcon = useCallback(() => {
+    navigate("/");
+  }, [navigate]);
+
   const items = useMemo(
     () =>
       compact([
@@ -47,7 +51,7 @@ export const LayoutPage = () => {
         <Layout.Header>
           <Row justify={"space-between"} align={"middle"}>
             <Col style={{ display: "flex" }}>
-              <img src={logo} />
+              <img src={logo} onClick={handlePressIcon} />
             </Col>
             <Col>
               <Tabs role={user?.role} />

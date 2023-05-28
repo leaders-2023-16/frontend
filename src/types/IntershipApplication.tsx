@@ -9,12 +9,12 @@ export enum IntershipApplicationStatus {
   NOT_QUALIFY = "not_qualify",
 }
 export const IntershipApplicationLabel = {
-  [IntershipApplicationStatus.APPROVED]: 'Одобрено',
-  [IntershipApplicationStatus.NEXT_STAGE]: 'Проходит отбор',
-  [IntershipApplicationStatus.NOT_QUALIFY]: 'Не прошел отбор',
-  [IntershipApplicationStatus.PENDING]: 'На рассмотрении',
-  [IntershipApplicationStatus.REJECTED]: 'Отклонено',
-}
+  [IntershipApplicationStatus.APPROVED]: "Одобрено",
+  [IntershipApplicationStatus.NEXT_STAGE]: "Проходит отбор",
+  [IntershipApplicationStatus.NOT_QUALIFY]: "Не прошел отбор",
+  [IntershipApplicationStatus.PENDING]: "На рассмотрении",
+  [IntershipApplicationStatus.REJECTED]: "Отклонено",
+};
 
 export interface IIntershipApplication {
   status?: IntershipApplicationStatus;
@@ -29,5 +29,5 @@ export interface IIntershipApplication {
 
   cv_score?: number;
   test_score?: number;
-  
+  trainee_profile?: TraineeProfileType;
 }
