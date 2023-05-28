@@ -1,11 +1,14 @@
 import { Menu as AntMenu } from "antd";
 import { NavLink } from "react-router-dom";
 
-export const Menu = () => {
+interface CuratorMenuProps {
+  activePath: string;
+}
+export const CuratorMenu: React.FC<CuratorMenuProps> = ({ activePath }) => {
   return (
     <AntMenu
       mode="vertical"
-      defaultSelectedKeys={["/accepted-applications"]}
+      defaultSelectedKeys={[activePath]}
       overflowedIndicator={null}
     >
       <AntMenu.Item key="/intership-applications">
@@ -26,6 +29,10 @@ export const Menu = () => {
 
       <AntMenu.Item key="/work-places">
         <NavLink to={"/work-places"}>Стажировки</NavLink>
+      </AntMenu.Item>
+
+      <AntMenu.Item key="/statistics">
+        <NavLink to={"/statistics"}>Статистика</NavLink>
       </AntMenu.Item>
     </AntMenu>
   );
