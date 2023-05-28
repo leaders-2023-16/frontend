@@ -10,7 +10,7 @@ import {
 import { Filters } from "./Views/Filters";
 
 export const Content = () => {
-  const { data, isLoading } = useGetWorkPlacesQuery();
+  const { data, isLoading } = useGetWorkPlacesQuery({});
 
   const navigate = useNavigate();
 
