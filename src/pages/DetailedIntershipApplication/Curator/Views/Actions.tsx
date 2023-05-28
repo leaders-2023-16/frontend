@@ -45,6 +45,7 @@ export const Actions: React.FC<ActionsProps> = ({ applicationId, status }) => {
   }
 
   if (
+    status === IntershipApplicationStatus.PENDING ||
     status === IntershipApplicationStatus.NEXT_STAGE ||
     status === IntershipApplicationStatus.REJECTED
   ) {

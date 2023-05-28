@@ -125,7 +125,7 @@ export const Content = () => {
       <Col>
         {application && application.status && (
           <Actions
-            applicationId={application._id}
+            applicationId={application.applicant.id}
             status={application.status}
           />
         )}

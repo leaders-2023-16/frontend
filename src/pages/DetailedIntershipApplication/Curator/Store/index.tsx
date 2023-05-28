@@ -1,4 +1,7 @@
-import { ITraineeProfile, TraineeProfileStatus } from "@/types/TraineeProfile";
+import {
+  ITraineeProfile,
+  TraineeProfileTestStatus,
+} from "@/types/TraineeProfile";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -68,10 +71,10 @@ export const curatorDetailedIntershipApplicationPageSlice = createSlice({
       state.testing_platform_username = payload.testing_platform_username || "";
       state.testing_platform_password = payload.testing_platform_password || "";
 
-      state.test_passed = payload.status
-        ? payload.status === TraineeProfileStatus.FAILED
+      state.test_passed = payload.test_status
+        ? payload.test_status === TraineeProfileTestStatus.FAILED
           ? false
-          : payload.status === TraineeProfileStatus.PASSED
+          : payload.test_status === TraineeProfileTestStatus.PASSED
           ? true
           : undefined
         : undefined;

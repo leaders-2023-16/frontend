@@ -5,6 +5,7 @@ import { UserRole } from "@/types/User";
 import { TraineeDetailedVacancyResponse } from "./Trainee";
 import { MentorDetailedVacancyResponsePage } from "./Mentor";
 import { Navigate } from "react-router-dom";
+import { CuratorDetailedVacancyResponsePage } from "./Curator";
 
 export const DetailedVacancyResposePage = onlyRoles(
   [UserRole.TRAINEE, UserRole.CURATOR, UserRole.MENTOR],
@@ -19,6 +20,8 @@ export const DetailedVacancyResposePage = onlyRoles(
       return <TraineeDetailedVacancyResponse />;
     } else if (user.role === UserRole.MENTOR) {
       return <MentorDetailedVacancyResponsePage />;
+    } else if (user.role === UserRole.CURATOR) {
+      return <CuratorDetailedVacancyResponsePage />;
     }
 
     return <Navigate to="/" />;

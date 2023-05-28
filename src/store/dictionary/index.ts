@@ -1,5 +1,6 @@
 import { httpBaseQuery } from "@/services/axios";
 import { ICountry } from "@/types/Country";
+import { IDepartment } from "@/types/Department";
 import { createApi } from "@reduxjs/toolkit/query/react";
 
 export const dictionaryApi = createApi({
@@ -32,7 +33,7 @@ export const dictionaryApi = createApi({
       ],
     }),
 
-    getDepartments: builder.query<{ id: number; name: string }[], void>({
+    getDepartments: builder.query<IDepartment[], void>({
       query: () => ({ url: `v1/departments/`, method: "GET" }),
     }),
   }),

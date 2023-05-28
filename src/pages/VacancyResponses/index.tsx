@@ -5,6 +5,7 @@ import { useAppSelector } from "@/store";
 import { selectAuthUser } from "@/store/auth/selectors";
 import { MentorVacancyResponsesPage } from "./Mentor";
 import { Navigate } from "react-router-dom";
+import { CuratorVacancyResponsesPage } from "./Curator";
 
 export const VacancyResponsesPage = onlyRoles(
   [UserRole.TRAINEE, UserRole.MENTOR, UserRole.CURATOR],
@@ -19,6 +20,8 @@ export const VacancyResponsesPage = onlyRoles(
       return <TraineeVacancyResponsePage />;
     } else if (user.role === UserRole.MENTOR) {
       return <MentorVacancyResponsesPage />;
+    } else if (user.role === UserRole.CURATOR) {
+      return <CuratorVacancyResponsesPage />;
     }
 
     return <Navigate to="/" />;

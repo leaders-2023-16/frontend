@@ -1,6 +1,5 @@
 import React from "react";
 import { Col, List, Row } from "antd";
-import { useGetVacanciesQuery } from "@/store/vacancies/api";
 import { useNavigate } from "react-router-dom";
 import { useGetVacancyResponsesQuery } from "@/store/vacancyResponse/api";
 
@@ -25,8 +24,10 @@ export const Content = () => {
       pagination={{
         onChange: setPage,
         pageSize: 10,
+        defaultCurrent: 1,
+        total: data?.count,
       }}
-      dataSource={data}
+      dataSource={data?.results}
       renderItem={(item) => (
         <List.Item key={item.id} onClick={() => handlePress(item.id)}>
           <Row>

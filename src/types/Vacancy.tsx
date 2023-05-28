@@ -9,6 +9,7 @@ export enum VacancyStatus {
   PENDING = "pending",
   REJECTED = "rejected",
   PUBLISHED = "published",
+  CLOSED = "closed",
 }
 
 export enum VacancyTestTaskType {

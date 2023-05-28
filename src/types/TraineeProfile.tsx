@@ -1,4 +1,4 @@
-export enum TraineeProfileStatus {
+export enum TraineeProfileTestStatus {
   PASSED = "PASSED",
   IN_PROGRESS = "IN_PROGRESS",
   FAILED = "FAILED",
@@ -55,9 +55,9 @@ export interface ITraineeProfile {
   email?: string;
   birth_date?: string;
   sex?: TraineeProfileSex;
-  status?: TraineeProfileStatus;
   cv_score?: number;
   test_score?: number;
+  test_status?: TraineeProfileTestStatus;
   career_school_username?: string;
   career_school_password?: string;
   progress_career_school?: number;

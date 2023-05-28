@@ -5,9 +5,10 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 export const vacanciesApi = createApi({
   reducerPath: "vacanciesApi",
   baseQuery: httpBaseQuery(),
-  tagTypes: ["vacancies"],
+  tagTypes: ["vacancies", "detailedVacancy"],
+  refetchOnMountOrArgChange: true,
   endpoints: (builder) => ({
-    getVacancies: builder.query<IVacancy[], GetVacanciesParams>({
+    getVacancies: builder.query<GetVacanciesResponse, GetVacanciesParams>({
       query: (params) => {
         let url = `v1/vacancies/?limit=10&offset=${(params.page - 1) * 10}`;
 
@@ -20,17 +21,7 @@ export const vacanciesApi = createApi({
           method: "GET",
         };
       },
-      transformResponse: (response: GetVacanciesResponse) => response.results,
-      providesTags: (result, error, arg) =>
-        result
-          ? [
-              ...result.map(({ id }) => ({
-                type: "vacancies" as const,
-                id,
-              })),
-              { type: "vacancies", id: "LIST" },
-            ]
-          : [{ type: "vacancies", id: "LIST" }],
+      providesTags: ["vacancies"],
     }),
     createVacancy: builder.mutation<
       IVacancy,
@@ -52,7 +43,7 @@ export const vacanciesApi = createApi({
         method: "POST",
         data,
       }),
-      invalidatesTags: [{ type: "vacancies", id: "LIST" }],
+      invalidatesTags: ["vacancies"],
     }),
 
     getVacancyById: builder.query<IVacancy, number>({
@@ -60,7 +51,7 @@ export const vacanciesApi = createApi({
         url: `v1/vacancies/${id}/`,
         method: "GET",
       }),
-      providesTags: (result, error, id) => [{ type: "vacancies", id }],
+      providesTags: ["detailedVacancy"],
     }),
 
     updateVacancy: builder.mutation<
@@ -80,9 +71,7 @@ export const vacanciesApi = createApi({
         method: "PATCH",
         data,
       }),
-      invalidatesTags: (result, error, params) => [
-        { type: "vacancies", id: params.id },
-      ],
+      invalidatesTags: ["vacancies", "detailedVacancy"],
     }),
   }),
 });
@@ -101,5 +90,5 @@ interface GetVacanciesParams {
 
 interface GetVacanciesResponse {
   results: IVacancy[];
-  total: number;
+  count: number;
 }

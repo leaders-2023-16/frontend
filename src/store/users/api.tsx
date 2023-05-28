@@ -6,6 +6,9 @@ export const usersApi = createApi({
   reducerPath: "usersApi",
   baseQuery: httpBaseQuery(),
   tagTypes: ["users", "freeMentors"],
+
+  refetchOnMountOrArgChange: true,
+
   endpoints: (builder) => ({
     getUsers: builder.query<IUser[], GetUsersParams>({
       query: (params) => ({
