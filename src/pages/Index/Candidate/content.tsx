@@ -47,8 +47,8 @@ export const Content = () => {
             children: (
               <>
                 <CareerSchool
-                  pass={data?.trainee_profile?.career_school_password}
-                  user={data?.trainee_profile?.career_school_username}
+                  pass={data?.applicant?.trainee_profile?.career_school_password}
+                  user={data?.applicant?.trainee_profile?.career_school_username}
                   status={data?.status}
                 />
               </>
@@ -60,8 +60,8 @@ export const Content = () => {
             children: (
               <>
                 <Testing
-                  pass={data?.trainee_profile?.testing_platform_password}
-                  user={data?.trainee_profile?.testing_platform_username}
+                  pass={data?.applicant?.trainee_profile?.testing_platform_password}
+                  user={data?.applicant?.trainee_profile?.testing_platform_username}
                   status={data?.status}
                 />
               </>

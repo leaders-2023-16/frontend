@@ -29,5 +29,5 @@ export interface IIntershipApplication {
 
   cv_score?: number;
   test_score?: number;
-  trainee_profile?: TraineeProfileType
+  
 }
