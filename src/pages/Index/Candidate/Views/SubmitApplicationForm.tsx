@@ -2,24 +2,15 @@ import React, { useState } from "react";
 
 import {
   App,
-  Button,
   Col,
   List,
   Modal,
   Row,
-  Select,
   Space,
-  Typography,
 } from "antd";
-import { useAppDispatch, useAppSelector } from "@/store";
-
-import { getSelectedDirectionTrain } from "../Store/selectors";
-import { candidateIndexPageActions } from "../Store";
 import {
   TrainDirection,
-  TrainDirectionByName,
   TrainDirectionLabel,
-  TrainDirectionName,
 } from "@/types/TrainDirection";
 import { useSubmitIntershipApplicationMutation } from "@/store/intershipApplications/api";
 import { CustomTitle } from "@/components/CustomTitle";
@@ -116,9 +107,6 @@ export const SubmitApplicationForm = () => {
               </Col>
               <Col span={4}>
                 <Space size={"large"} style={{ marginTop: "22px" }}>
-                  <CustomButton onClick={() => navigate()}>
-                    Подробнее
-                  </CustomButton>
                   <CustomButton isPrimary onClick={() => openModal(el.value)}>
                     Выбрать
                   </CustomButton>
