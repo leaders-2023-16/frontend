@@ -10,7 +10,7 @@ export const vacanciesApi = createApi({
   endpoints: (builder) => ({
     getVacancies: builder.query<GetVacanciesResponse, GetVacanciesParams>({
       query: (params) => {
-        let url = `?limit=${params.limit ?? 10}&offset=${(params.page - 1) * (params.limit ?? 10)}`;
+        let url = `v1/vacancies/?limit=${params.limit ?? 10}&offset=${(params.page - 1) * (params.limit ?? 10)}`;
 
         if (params.status) {
           url += `&status=${params.status}`;
