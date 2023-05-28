@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-
 import {
   IPatchTraineeProfile,
   ITraineeProfile,
@@ -8,19 +7,44 @@ import {
   TraineeProfileSex,
   TraineeProfileWorkExperience,
 } from "@/types/TraineeProfile";
+import { Degree } from "@/store/traineeProfile/types";
+
+const emptyEdu = {
+  degree: Degree.Bachelor,
+  description: "",
+  name: "",
+  specialization: "",
+  start_year: "",
+  type: "",
+  end_year: "",
+};
+const emptyWork = {
+  description: "",
+  employer: "",
+  position: "",
+  start_date: "",
+  end_date: "",
+};
+
 type ProfileEditType = Partial<ITraineeProfile> & {
   onChange: (data: IPatchTraineeProfile) => void;
   countries: { id: number; name: string }[];
 };
 
-export const useProfileEdit = ({
-  onChange,
-  countries,
-  ...data
-}: ProfileEditType) => {
+export const useProfileEdit = ({ onChange, ...data }: ProfileEditType) => {
   const [editingObj, setEditingObj] = useState<IPatchTraineeProfile>({
     ...JSON.parse(JSON.stringify(data)),
-    citizenship: 471,
+    ...(data.educations?.length
+      ? {
+          educations: [...data.educations],
+        }
+      : { educations: [emptyEdu] }),
+    ...(data.work_experiences?.length
+      ? {
+          work_experiences: [...data.work_experiences],
+        }
+      : { work_experiences: [emptyWork] }),
+    citizenship: 475,
   });
   const [link, setLink] = useState("");
   const [linkError, setLinkError] = useState("");
@@ -93,6 +117,7 @@ export const useProfileEdit = ({
     setEditingObj((p) => ({
       ...p,
       educations: [
+        ...(p.educations || []),
         {
           degree: TraineeProfileDegree.Bachelor,
           description: "",
@@ -155,6 +180,10 @@ export const useProfileEdit = ({
     setEditingObj((p) => ({ ...p, sex }));
   };
 
+  const handleChangeBirth = (birth_date: string) => {
+    setEditingObj((p) => ({ ...p, birth_date }));
+  };
+
   return {
     editingObj,
     setEditingObj,
@@ -188,6 +217,10 @@ export const useProfileEdit = ({
     citizenship: {
       value: editingObj.citizenship,
       onChange: handleChangeCity,
+    },
+    birth: {
+      value: editingObj.birth_date,
+      onChange: handleChangeBirth,
     },
   };
 };

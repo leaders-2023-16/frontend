@@ -1,16 +1,22 @@
 export enum Degree {
-  Bachelor = 'Bachelor',
-  Master = 'Master',
-  Doctorate = 'Doctorate'
+  Bachelor = "Bachelor",
+  Master = "Master",
+  Doctorate = "Doctorate",
 }
 
+export const DegreeToLabel = {
+  [Degree.Bachelor]: "Бакалавр",
+  [Degree.Master]: "Магистр",
+  [Degree.Doctorate]: "Доктор",
+};
+
 export type WorkExperiences = {
-  employer: string,
-  position: string,
-  start_date: string,
-  end_date: string | null,
-  description: string,
-}
+  employer: string;
+  position: string;
+  start_date: string;
+  end_date: string | null;
+  description: string;
+};
 
 export type Education = {
   name: string;
@@ -18,14 +24,14 @@ export type Education = {
   start_year: string;
   end_year: string | null;
   specialization: string;
-  degree: 'Master' | 'Bachelor' | 'Doctorate';
+  degree: "Master" | "Bachelor" | "Doctorate";
   description: string | null;
-}
+};
 
 export type Citizenship = {
   id: number;
   name: string;
-}
+};
 
 export type TraineeProfileType = {
   user_id: string;
@@ -36,12 +42,12 @@ export type TraineeProfileType = {
   bio: string;
   phone_number: string | null;
   links: { url: string }[];
-  educations: Education[]
-  work_experiences: WorkExperiences[]
+  educations: Education[];
+  work_experiences: WorkExperiences[];
   birth_date: string;
   sex: string | null;
-}
+};
 
-export type UpdateTraineeProfile = Omit<TraineeProfileType, 'citizenship'> & {
-  citizenship: number
-}
+export type UpdateTraineeProfile = Omit<TraineeProfileType, "citizenship"> & {
+  citizenship: number;
+};

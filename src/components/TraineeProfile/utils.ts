@@ -3,11 +3,11 @@ import { IPatchTraineeProfile } from "@/types/TraineeProfile";
 export const validate = (editingObj: IPatchTraineeProfile) => {
   if (
     editingObj.educations?.length &&
-    !editingObj.educations?.every(
-      (e) => e.name && e.start_year && e.type !== "school" && e.specialization
+    !editingObj.educations?.every((e) =>
+      e.name && e.start_year && e.type !== "school" ? e.specialization : true
     )
   ) {
-    return false;
+    return "Полностью заполните Образование";
   }
   if (
     editingObj.work_experiences?.length &&
@@ -15,7 +15,10 @@ export const validate = (editingObj: IPatchTraineeProfile) => {
       (e) => e.employer && e.start_date && e.position
     )
   ) {
-    return false;
+    return "Полностью заполните Опыт работы";
+  }
+  if (!editingObj.bio) {
+    return "Заполните О себе!";
   }
 
   return true;

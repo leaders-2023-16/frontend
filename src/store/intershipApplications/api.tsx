@@ -77,7 +77,7 @@ export const intershipApplicationsApi = createApi({
 
     endUpSelection: builder.mutation({
       query: () => ({
-        url: `v1/internship-applications/end-up-selection`,
+        url: `v1/internship-applications/end-up-selection/`,
         method: "POST",
       }),
       invalidatesTags: [

@@ -1,11 +1,33 @@
-import React from "react";
-import { Col, List, Row } from "antd";
 import { useGetVacanciesQuery } from "@/store/vacancies/api";
+import {
+  Button,
+  Card,
+  Col,
+  List,
+  Pagination,
+  Row,
+  Space,
+  Spin,
+  Tag,
+  Typography,
+} from "antd";
+import React from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const LIMIT = 2;
+
+const SCHEDULE_TO_LABEL = {
+  'part-time': 'от 20ч',
+  'full-time': 'от 40ч',
+}
+
 export const Content = () => {
-  const [page, setPage] = React.useState(1);
-  const { data, isLoading } = useGetVacanciesQuery({ page });
+  const [page, setPage] = useState(1);
+  const { data, isLoading } = useGetVacanciesQuery({
+    page,
+    limit: LIMIT,
+  });
 
   const navigate = useNavigate();
 
@@ -15,27 +37,39 @@ export const Content = () => {
     },
     [navigate]
   );
+  
+  if (isLoading) {
+    return <Spin />;
+  }
+
+  if (!data?.results.length) {
+    return <>Нет подходящих вакансий</>;
+  }
 
   return (
-    <List
-      loading={isLoading}
-      itemLayout="vertical"
-      size="large"
-      pagination={{
-        onChange: setPage,
-        pageSize: 10,
-        defaultCurrent: 1,
-        total: data?.count,
-      }}
-      dataSource={data?.results}
-      renderItem={(item) => (
-        <List.Item key={item.id} onClick={() => handlePress(item.id)}>
-          <Row>
-            <Col flex={1}>{item.name}</Col>
-            <Col>{item.status}</Col>
-          </Row>
-        </List.Item>
-      )}
-    />
+    <>
+      <List
+        loading={isLoading}
+        itemLayout="vertical"
+        size="large"
+        pagination={{
+          onChange: setPage,
+          current: page,
+          pageSize: LIMIT,
+          total: data.count,
+        }}
+        dataSource={data?.results}
+        renderItem={(item) => (
+          <Card onClick={() => handlePress(item.id)} title={item.required_qualifications.map(e => e.name).join(', ')} extra={[<Tag>{item.status}</Tag>]}>
+            <Typography.Paragraph>Занятость: {SCHEDULE_TO_LABEL[item.schedule || 'full-time']}</Typography.Paragraph>
+            {/* <Space>
+              <Button type="primary">Знать Excel</Button>
+              <Button>Знать Excel</Button>
+              <Button>Знать Excel</Button>
+            </Space> */}
+          </Card>
+        )}
+      />
+    </>
   );
 };
