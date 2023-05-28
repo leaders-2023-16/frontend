@@ -185,6 +185,7 @@ export const Content = () => {
     return <Navigate to="/" />;
   }
 
+  console.log(selectedDate);
   return (
     <Spin spinning={isLoading}>
       <Typography.Text>
@@ -200,10 +201,8 @@ export const Content = () => {
 
       {data?.is_active ? (
         <>
-          {" "}
           <Calendar
             mode="month"
-            value={dayjs(selectedDate)}
             onSelect={handleSelect}
             onChange={handleChange}
             cellRender={cellRender}
