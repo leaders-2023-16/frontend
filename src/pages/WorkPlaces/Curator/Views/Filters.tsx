@@ -25,7 +25,8 @@ export const Filters = () => {
       const url = window.URL.createObjectURL(new Blob([data.data]));
       const link = document.createElement("a");
       link.href = url;
-      const filename = data.headers["Content-Disposition"]
+
+      const filename = data.headers["content-disposition"]
         .split('filename="')[1]
         .split('"')[0];
       link.setAttribute("download", filename);
