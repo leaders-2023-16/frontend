@@ -1,8 +1,9 @@
+import { IntershipApplicationStatus } from "@/types/IntershipApplication";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   onlyRecommended: true,
-  onlyWithoutAction: true,
+  selectedStatus: undefined as IntershipApplicationStatus | undefined,
 };
 
 export const curatorInternshipApplicationPageSlice = createSlice({
@@ -12,8 +13,11 @@ export const curatorInternshipApplicationPageSlice = createSlice({
     setOnlyRecommended: (state, { payload }: PayloadAction<boolean>) => {
       state.onlyRecommended = payload;
     },
-    setOnlyWithoutAction: (state, { payload }: PayloadAction<boolean>) => {
-      state.onlyWithoutAction = payload;
+    setSelectedStatus: (
+      state,
+      { payload }: PayloadAction<IntershipApplicationStatus | undefined>
+    ) => {
+      state.selectedStatus = payload;
     },
   },
 });

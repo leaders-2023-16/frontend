@@ -5,10 +5,11 @@ import { useAppSelector } from "@/store";
 import { getCuratorInternshipApplicationsPageState } from "../Store/selectors";
 import { curatorInternshipApplicationPageActions } from "../Store";
 import { SegmentedValue } from "antd/es/segmented";
+import { IntershipApplicationStatus } from "@/types/IntershipApplication";
 
 export const Filters = () => {
   const dispatch = useDispatch();
-  const { onlyRecommended, onlyWithoutAction } = useAppSelector(
+  const { onlyRecommended, selectedStatus } = useAppSelector(
     getCuratorInternshipApplicationsPageState
   );
 
@@ -28,16 +29,17 @@ export const Filters = () => {
   );
 
   const handleChangeOnlyWithoutAction = React.useCallback(
-    (value: string) => {
+    (value: any) => {
       if (value === "all") {
         dispatch(
-          curatorInternshipApplicationPageActions.setOnlyWithoutAction(false)
+          curatorInternshipApplicationPageActions.setSelectedStatus(undefined)
         );
-      } else {
-        dispatch(
-          curatorInternshipApplicationPageActions.setOnlyWithoutAction(true)
-        );
+        return;
       }
+
+      dispatch(
+        curatorInternshipApplicationPageActions.setSelectedStatus(value)
+      );
     },
     [dispatch]
   );
@@ -58,12 +60,31 @@ export const Filters = () => {
 
         <Form.Item label="По статусу" style={{ marginRight: "10px" }}>
           <Select
-            style={{ width: "150px" }}
-            value={onlyWithoutAction ? "only-without-action" : "all"}
+            style={{ width: "200px" }}
+            value={selectedStatus || "all"}
             onChange={handleChangeOnlyWithoutAction}
             options={[
               { value: "all", label: "Все" },
-              { value: "only-without-action", label: "Не отвеченные" },
+              {
+                value: IntershipApplicationStatus.PENDING,
+                label: "Не отвеченные",
+              },
+              {
+                value: IntershipApplicationStatus.REJECTED,
+                label: "Отклоненные",
+              },
+              {
+                value: IntershipApplicationStatus.NEXT_STAGE,
+                label: "Проходят отбор",
+              },
+              {
+                value: IntershipApplicationStatus.NOT_QUALIFY,
+                label: "Не прошли отбор",
+              },
+              {
+                value: IntershipApplicationStatus.APPROVED,
+                label: "Прошли на стажировку",
+              },
             ]}
           />
         </Form.Item>

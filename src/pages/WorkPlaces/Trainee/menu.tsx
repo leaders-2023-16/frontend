@@ -5,7 +5,7 @@ export const Menu = () => {
   return (
     <AntMenu
       mode="vertical"
-      defaultSelectedKeys={["/vacancy-responses"]}
+      defaultSelectedKeys={["/work-places"]}
       overflowedIndicator={null}
     >
       <AntMenu.Item key="/vacancies">

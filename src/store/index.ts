@@ -15,6 +15,7 @@ import { personnelDetailedVacancyPageReducer } from "@/pages/DetailedVacancy/Per
 import { usersApi } from "./users/api";
 import { curatorDetailedIntershipApplicationPageReducer } from "@/pages/DetailedIntershipApplication/Curator/Store";
 import { curatorInternshipApplicationPageReducer } from "@/pages/IntershipApplications/Curator/Store";
+import { workPlacesApi } from "./workPlace/api";
 
 export const store = configureStore({
   reducer: {
@@ -36,6 +37,7 @@ export const store = configureStore({
     [vacanciesApi.reducerPath]: vacanciesApi.reducer,
     [vacancyResponsesApi.reducerPath]: vacancyResponsesApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
+    [workPlacesApi.reducerPath]: workPlacesApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -45,7 +47,8 @@ export const store = configureStore({
       dictionaryApi.middleware,
       vacanciesApi.middleware,
       vacancyResponsesApi.middleware,
-      usersApi.middleware
+      usersApi.middleware,
+      workPlacesApi.middleware
     ),
 });
 
