@@ -11,6 +11,10 @@ export const Menu = () => {
       <AntMenu.Item key="/vacancy-responses">
         <NavLink to={"/vacancy-responses"}>Отклики</NavLink>
       </AntMenu.Item>
+
+      <AntMenu.Item key="/work-places">
+        <NavLink to={"/work-places"}>Стажировки</NavLink>
+      </AntMenu.Item>
     </AntMenu>
   );
 };
