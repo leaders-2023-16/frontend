@@ -31,10 +31,13 @@ import {
   useGetFeedbacksQuery,
   usePostFeedbackMutation,
 } from "@/store/feedbacks/api";
+import { selectAuthUser } from "@/store/auth/selectors";
 
 export const Content = () => {
   const { notification } = App.useApp();
   const { workPlaceId } = useParams();
+
+  const user = useAppSelector(selectAuthUser);
 
   const dispatch = useAppDispatch();
   const { data, isLoading } = useGetWorkPlaceByIdQuery(
@@ -65,8 +68,8 @@ export const Content = () => {
     usePostFeedbackMutation();
   const { data: feedbacks, isLoading: isLoadingFeedbacks } =
     useGetFeedbacksQuery(
-      { to_user: data?.trainee.id, from_user: data?.mentor.id },
-      { skip: !data }
+      { to_user: data?.trainee.id, from_user: user?.id },
+      { skip: !data || !user }
     );
 
   const [value, setValue] = React.useState(5);

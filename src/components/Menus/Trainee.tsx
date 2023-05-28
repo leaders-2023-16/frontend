@@ -1,11 +1,14 @@
 import { Menu as AntMenu } from "antd";
 import { NavLink } from "react-router-dom";
 
-export const Menu = () => {
+interface TraineeMenuProps {
+  activePath: string;
+}
+export const TraineeMenu: React.FC<TraineeMenuProps> = ({ activePath }) => {
   return (
     <AntMenu
       mode="vertical"
-      defaultSelectedKeys={["/vacancy-responses"]}
+      defaultSelectedKeys={[activePath]}
       overflowedIndicator={null}
     >
       <AntMenu.Item key="/vacancies">
@@ -13,6 +16,9 @@ export const Menu = () => {
       </AntMenu.Item>
       <AntMenu.Item key="/vacancy-responses">
         <NavLink to={"/vacancy-responses"}>Отклики</NavLink>
+      </AntMenu.Item>
+      <AntMenu.Item key="/work-places">
+        <NavLink to={"/work-places"}>Стажировка</NavLink>
       </AntMenu.Item>
     </AntMenu>
   );
