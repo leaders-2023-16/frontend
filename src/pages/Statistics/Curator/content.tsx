@@ -40,6 +40,11 @@ export const Content = () => {
     return data.work_experience;
   }, [data]);
 
+  const dataStat = useMemo(() => {
+    if (!data) return [];
+    return data.direction_statistics.filter((el) => !!el.label);
+  }, [data]);
+  console.log(dataStat);
   if (!data) return null;
   return (
     <>
@@ -151,20 +156,20 @@ export const Content = () => {
         <Legend />
         <Bar dataKey="count" fill="#9068C0" name={"Количество"} />
       </BarChart>
-
       <h2>Статистика по направлениям</h2>
       <PieChart width={400} height={400}>
         <Pie
           dataKey="count"
           nameKey="label"
-          data={data.direction_statistics}
+          data={dataStat}
           fill="#9068C0"
           label
         >
-          {data.direction_statistics.map((entry, index) => (
+          {dataStat.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
+        <Legend />
         <Tooltip />
       </PieChart>
       <h2>Статистика заявок на стажеров по департаментам</h2>
