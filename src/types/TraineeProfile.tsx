@@ -1,3 +1,5 @@
+import { IUser } from "./User";
+
 export enum TraineeProfileTestStatus {
   PASSED = "PASSED",
   IN_PROGRESS = "IN_PROGRESS",
@@ -42,7 +44,7 @@ export interface TraineeProfileLink {
   url: string;
 }
 
-export interface ITraineeProfile {
+export interface ITraineeProfile extends Omit<IUser, "id"> {
   user_id: number;
   citizenship?: TraineeProfileCitizenship;
   bio?: string;

@@ -1,12 +1,15 @@
 import React from "react";
 
-import { App, Button, Col, List, Row } from "antd";
+import { App, Button, Col, List, Row, Tag } from "antd";
 import { useNavigate } from "react-router-dom";
 import {
   useEndUpSelectionMutation,
   useGetIntershipApplicationsQuery,
 } from "@/store/intershipApplications/api";
-import { IntershipApplicationStatus } from "@/types/IntershipApplication";
+import {
+  IntershipApplicationLabel,
+  IntershipApplicationStatus,
+} from "@/types/IntershipApplication";
 
 export const Content = () => {
   const [page, setPage] = React.useState(1);
@@ -73,7 +76,9 @@ export const Content = () => {
               <Col flex={1}>
                 {item.applicant.first_name} {item.applicant.last_name}
               </Col>
-              <Col>{item.status}</Col>
+              <Tag>
+                {item.status ? IntershipApplicationLabel[item.status] : "-"}
+              </Tag>
             </Row>
           </List.Item>
         )}

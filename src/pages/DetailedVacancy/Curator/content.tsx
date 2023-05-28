@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useGetVacancyByIdQuery } from "@/store/vacancies/api";
-import { Col, Divider, Row, Spin, Typography } from "antd";
+import { Avatar, Col, Divider, Row, Space, Spin, Typography } from "antd";
 import { Navigate, useParams } from "react-router-dom";
 import { Actions } from "./Views/Actions";
 import { useAppSelector } from "@/store";
@@ -14,6 +14,7 @@ import {
   useGetVacancyResponsesQuery,
 } from "@/store/vacancyResponse/api";
 import { Responses } from "./Views/Responses";
+import { User } from "@/components/User";
 
 export const Content = () => {
   const { vacancyId } = useParams();
@@ -74,16 +75,7 @@ export const Content = () => {
 
         <Typography.Title level={4}>Наставник</Typography.Title>
         {data?.mentor ? (
-          <Row>
-            <Col flex={1}>
-              <Typography.Text>
-                {data?.mentor?.first_name} {data?.mentor?.last_name}
-              </Typography.Text>
-            </Col>
-            <Col>
-              <Typography.Text>{data?.mentor?.email}</Typography.Text>
-            </Col>
-          </Row>
+          <User user={data.mentor} />
         ) : (
           <Typography.Text>-</Typography.Text>
         )}
