@@ -73,7 +73,7 @@ export const Content = () => {
             <Spin spinning={isLoadingCountry}>
               <Paragraph>Гражданство: {country?.name}</Paragraph>
             </Spin>
-            <Paragraph>Статус заявки: {IntershipApplicationLabel[application?.status]}</Paragraph>
+            <Paragraph>Статус заявки: {application?.status && IntershipApplicationLabel[application?.status]}</Paragraph>
           </Col>
         </Row>
       </Col>
