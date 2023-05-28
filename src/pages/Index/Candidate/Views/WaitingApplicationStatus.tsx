@@ -17,14 +17,53 @@ export const WaitingApplicationStatus: FC<{
       <Row justify={"space-between"} align={"middle"}>
         <Col>
           <Space direction="vertical">
-            <CustomTitle isTitle>Заявка успешно подана</CustomTitle>
-            <CustomTitle>
-              Выбрано направление «{TrainDirectionLabel[direction]}»
-            </CustomTitle>
-            <CustomTitle>
-              В ближайшее время куратор првоерит ваше резюме и вы получите
-              приглашение на прохождение отбора
-            </CustomTitle>
+          {status === IntershipApplicationStatus.PENDING && (
+              <>
+                <CustomTitle isTitle>Заявка успешно подана</CustomTitle>
+                <CustomTitle>
+                  Выбрано направление «{TrainDirectionLabel[direction]}»
+                </CustomTitle>
+                <CustomTitle>
+                  В ближайшее время куратор проверит ваше резюме и вы получите
+                  приглашение на прохождение отбора
+                </CustomTitle>
+              </>
+            )}
+            {status === IntershipApplicationStatus.APPROVED && (
+              <>
+                <CustomTitle isTitle>Заявка одобрена</CustomTitle>
+                <CustomTitle>
+                  Выбрано направление «{TrainDirectionLabel[direction]}»
+                </CustomTitle>
+              </>
+            )}
+            {status === IntershipApplicationStatus.REJECTED && (
+              <>
+                <CustomTitle isTitle>К сожалению ваша заявка была отклонена</CustomTitle>
+              </>
+            )}
+            {status === IntershipApplicationStatus.NEXT_STAGE && (
+              <>
+                <CustomTitle isTitle>Заявка одобрена</CustomTitle>
+                <CustomTitle>
+                  Выбрано направление «{TrainDirectionLabel[direction]}»
+                </CustomTitle>
+                <CustomTitle>
+                  Преступайте к прохождению следущего этапа
+                </CustomTitle>
+              </>
+            )}
+            {status === IntershipApplicationStatus.NOT_QUALIFY && (
+              <>
+                <CustomTitle isTitle>Заявка одобрена</CustomTitle>
+                <CustomTitle>
+                  Выбрано направление «{TrainDirectionLabel[direction]}»
+                </CustomTitle>
+                <CustomTitle>
+                  Преступайте к прохождению следущего этапа
+                </CustomTitle>
+              </>
+            )}
           </Space>
         </Col>
         <Col>

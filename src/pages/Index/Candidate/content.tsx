@@ -30,7 +30,7 @@ export const Content = () => {
               <>
                 {!data ? (
                   <SubmitApplicationForm />
-                ) : data.status === IntershipApplicationStatus.PENDING ? (
+                ) : data.status ? (
                   <WaitingApplicationStatus
                     direction={data.direction || 1}
                     status={data.status}
