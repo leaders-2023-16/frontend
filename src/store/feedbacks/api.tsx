@@ -1,8 +1,5 @@
 import { httpBaseQuery } from "@/services/axios";
-import { ICountry } from "@/types/Country";
-import { IDepartment } from "@/types/Department";
 import { IFeedback } from "@/types/Feedback";
-import { IReport } from "@/types/Report";
 import { createApi } from "@reduxjs/toolkit/query/react";
 
 export const feedbacksApi = createApi({

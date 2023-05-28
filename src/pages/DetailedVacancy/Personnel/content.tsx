@@ -9,6 +9,7 @@ import { getPersonnelDetailedVacancyStore } from "./Store/selectors";
 import { personnelDetailedVacancyPageActions } from "./Store";
 import { EditForm } from "./Views/EditForm";
 import { Actions } from "./Views/Actions";
+import { User } from "@/components/User";
 
 export const Content = () => {
   const { vacancyId } = useParams();
@@ -69,16 +70,7 @@ export const Content = () => {
 
         <Typography.Title level={4}>Наставник</Typography.Title>
         {data?.mentor ? (
-          <Row>
-            <Col flex={1}>
-              <Typography.Text>
-                {data?.mentor?.first_name} {data?.mentor?.last_name}
-              </Typography.Text>
-            </Col>
-            <Col>
-              <Typography.Text>{data?.mentor?.email}</Typography.Text>
-            </Col>
-          </Row>
+          <User user={data.mentor} />
         ) : (
           <Typography.Text>-</Typography.Text>
         )}

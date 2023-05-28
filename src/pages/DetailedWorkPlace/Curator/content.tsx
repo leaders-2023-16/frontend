@@ -5,6 +5,7 @@ import {
 } from "@/store/workPlace/api";
 import { App, Button, Col, Divider, Spin, Typography } from "antd";
 import { Navigate, useParams } from "react-router-dom";
+import { User } from "@/components/User";
 
 export const Content = () => {
   const { notification } = App.useApp();
@@ -47,10 +48,10 @@ export const Content = () => {
       <Typography.Title level={2}>{data?.name}</Typography.Title>
       <Typography.Title level={5}>{data?.department.name}</Typography.Title>
       <Divider />
+      <Typography.Title level={5}>Наставник</Typography.Title>
+      {data ? <User user={data?.mentor} /> : "-"}
       <Typography.Title level={5}>Стажер</Typography.Title>
-      <Typography.Text>
-        {data?.trainee.first_name} {data?.trainee.first_name}
-      </Typography.Text>
+      {data ? <User user={data?.trainee} /> : "-"}
 
       {data?.is_active && (
         <Col style={{ marginTop: "20px" }}>

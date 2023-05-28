@@ -1,10 +1,11 @@
 import React from "react";
-import { Col, List, Row, Typography } from "antd";
+import { Col, List, Row, Tag, Typography } from "antd";
 import { useGetVacanciesQuery } from "@/store/vacancies/api";
 import { useNavigate } from "react-router-dom";
 import { Filters } from "./Views/Filters";
 import { useAppSelector } from "@/store";
 import { getCuratorVacanciesPageState } from "./Store/selectors";
+import { VacancyStatusName } from "@/types/Vacancy";
 
 export const Content = () => {
   const [page, setPage] = React.useState(1);
@@ -46,7 +47,7 @@ export const Content = () => {
           <List.Item key={item.id} onClick={() => handlePress(item.id)}>
             <Row>
               <Col flex={1}>{item.name}</Col>
-              <Col>{item.status}</Col>
+              <Tag>{VacancyStatusName[item.status]}</Tag>
             </Row>
           </List.Item>
         )}

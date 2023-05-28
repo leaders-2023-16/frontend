@@ -2,18 +2,21 @@ import React from "react";
 import { useGetCountryByIdQuery } from "@/store/dictionary";
 import { useGetIntershipApplicationQuery } from "@/store/intershipApplications/api";
 import { useGetTraineeProfileByIdQuery } from "@/store/traineeProfile";
-import { Col, Divider, Row, Spin } from "antd";
+import { Col, Divider, Row, Spin, Tag } from "antd";
 import Paragraph from "antd/es/typography/Paragraph";
 import Title from "antd/es/typography/Title";
 import { useParams } from "react-router-dom";
 import { EducationView } from "./Views/EducationView";
 import { WorkExperienceView } from "./Views/WorkExperienceView";
 import { Actions } from "./Views/Actions";
-import { IntershipApplicationLabel, IntershipApplicationStatus } from "@/types/IntershipApplication";
+import {
+  IntershipApplicationLabel,
+  IntershipApplicationStatus,
+} from "@/types/IntershipApplication";
 import { SelectionForm } from "./Views/SelectionForm";
 import { useAppDispatch } from "@/store";
 import { curatorDetailedIntershipApplicationPageActions } from "./Store";
-import dayjs from 'dayjs'
+import dayjs from "dayjs";
 
 export const Content = () => {
   const { applicationId } = useParams();
@@ -62,7 +65,8 @@ export const Content = () => {
               <Col flex={1} />
               <Col>
                 <Paragraph>
-                  Дата подачи заявки: {dayjs(application?.created_at).format('DD.MM.YYYY HH:MM:ss')}
+                  Дата подачи заявки:{" "}
+                  {dayjs(application?.created_at).format("DD.MM.YYYY HH:MM:ss")}
                 </Paragraph>
               </Col>
             </Row>
@@ -73,7 +77,14 @@ export const Content = () => {
             <Spin spinning={isLoadingCountry}>
               <Paragraph>Гражданство: {country?.name}</Paragraph>
             </Spin>
-            <Paragraph>Статус заявки: {application?.status && IntershipApplicationLabel[application?.status]}</Paragraph>
+            <Paragraph>
+              Статус заявки:{" "}
+              <Tag>
+                {application?.status
+                  ? IntershipApplicationLabel[application?.status]
+                  : "-"}
+              </Tag>
+            </Paragraph>
           </Col>
         </Row>
       </Col>

@@ -32,6 +32,7 @@ import {
   usePostFeedbackMutation,
 } from "@/store/feedbacks/api";
 import { selectAuthUser } from "@/store/auth/selectors";
+import { User } from "@/components/User";
 
 export const Content = () => {
   const { notification } = App.useApp();
@@ -188,7 +189,6 @@ export const Content = () => {
     return <Navigate to="/" />;
   }
 
-  console.log(selectedDate);
   return (
     <Spin spinning={isLoading}>
       <Typography.Text>
@@ -198,9 +198,7 @@ export const Content = () => {
       <Typography.Title level={5}>{data?.department.name}</Typography.Title>
       <Divider />
       <Typography.Title level={5}>Стажер</Typography.Title>
-      <Typography.Text>
-        {data?.trainee.first_name} {data?.trainee.first_name}
-      </Typography.Text>
+      {data ? <User user={data?.trainee} /> : "-"}
 
       {data?.is_active ? (
         <>
