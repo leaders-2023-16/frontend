@@ -53,6 +53,13 @@ export const reportsApi = createApi({
       }),
       invalidatesTags: ["reports"],
     }),
+
+    exportReport: builder.mutation({
+      query: () => ({
+        url: `v1/reports/export/`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -60,6 +67,7 @@ export const {
   useGetReportsQuery,
   useUpdateReportMutation,
   useSubmitReportMutation,
+  useExportReportMutation,
 } = reportsApi;
 
 interface GetReportsParams {
