@@ -1,34 +1,33 @@
 import { httpBaseQuery } from "@/services/axios";
-import { IVacancy } from "@/types/Vacancy";
-import { PaginationResponse } from "@/types/commonTypes";
+import { IVacancy, IVacancyTestTask, VacancyStatus } from "@/types/Vacancy";
 import { createApi } from "@reduxjs/toolkit/query/react";
 
 export const vacanciesApi = createApi({
   reducerPath: "vacanciesApi",
   baseQuery: httpBaseQuery(),
-  tagTypes: ["vacancies"],
+  tagTypes: ["vacancies", "detailedVacancy"],
+  refetchOnMountOrArgChange: true,
   endpoints: (builder) => ({
-    getVacancies: builder.query<PaginationResponse<IVacancy[]>, GetVacanciesParams>({
-      query: (params) => ({
-        url: `v1/vacancies/?limit=${params.limit ?? 10}&offset=${(params.page - 1) * (params.limit ?? 10)}`,
-        method: "GET",
-      }),
-      providesTags: (result, error, arg) =>
-        result
-          ? [
-              ...result.results.map(({ id }) => ({
-                type: "vacancies" as const,
-                id,
-              })),
-              { type: "vacancies", id: "LIST" },
-            ]
-          : [{ type: "vacancies", id: "LIST" }],
+    getVacancies: builder.query<GetVacanciesResponse, GetVacanciesParams>({
+      query: (params) => {
+        let url = `?limit=${params.limit ?? 10}&offset=${(params.page - 1) * (params.limit ?? 10)}`;
+
+        if (params.status) {
+          url += `&status=${params.status}`;
+        }
+
+        return {
+          url,
+          method: "GET",
+        };
+      },
+      providesTags: ["vacancies"],
     }),
     createVacancy: builder.mutation<
       IVacancy,
       Pick<
         Required<IVacancy>,
-        "required_qualifications" | "name" | "description" | "status"
+        "name" | "description" | "status" | "schedule"
       > & {
         direction: number;
         mentor: number;
@@ -36,6 +35,7 @@ export const vacanciesApi = createApi({
           Required<IVacancy>["test_task"],
           "title" | "description" | "type"
         >;
+        required_qualifications: string[];
       }
     >({
       query: (data) => ({
@@ -43,30 +43,35 @@ export const vacanciesApi = createApi({
         method: "POST",
         data,
       }),
-      invalidatesTags: [{ type: "vacancies", id: "LIST" }],
+      invalidatesTags: ["vacancies"],
+    }),
+
+    getVacancyById: builder.query<IVacancy, number>({
+      query: (id) => ({
+        url: `v1/vacancies/${id}/`,
+        method: "GET",
+      }),
+      providesTags: ["detailedVacancy"],
     }),
 
     updateVacancy: builder.mutation<
       IVacancy,
       Partial<
-        Pick<
-          Required<IVacancy>,
-          | "required_qualifications"
-          | "name"
-          | "description"
-          | "status"
-          | "test_task"
-        >
-      > & { id: number; direction: number; mentor: number }
+        Pick<Required<IVacancy>, "name" | "description" | "status" | "schedule">
+      > & {
+        id: number;
+        direction?: number;
+        mentor?: number;
+        test_task?: Omit<IVacancyTestTask, "id">;
+        required_qualifications?: string[];
+      }
     >({
       query: ({ id, ...data }) => ({
         url: `v1/vacancies/${id}/`,
         method: "PATCH",
         data,
       }),
-      invalidatesTags: (result, error, params) => [
-        { type: "vacancies", id: params.id },
-      ],
+      invalidatesTags: ["vacancies", "detailedVacancy"],
     }),
   }),
 });
@@ -75,9 +80,16 @@ export const {
   useGetVacanciesQuery,
   useUpdateVacancyMutation,
   useCreateVacancyMutation,
+  useGetVacancyByIdQuery,
 } = vacanciesApi;
 
 interface GetVacanciesParams {
   page: number;
-  limit?: number
+  limit?: number;
+  status?: VacancyStatus;
+}
+
+interface GetVacanciesResponse {
+  results: IVacancy[];
+  count: number;
 }

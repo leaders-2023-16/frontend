@@ -10,6 +10,12 @@ import { CreateVacancyPage } from "./pages/CreateVacancy";
 import { VacanciesPage } from "./pages/Vacancies";
 import { IntershipApplicationsPage } from "./pages/IntershipApplications";
 import { DetailedIntershipApplicationPage } from "./pages/DetailedIntershipApplication";
+import { DetailedVacancyPage } from "./pages/DetailedVacancy";
+import { VacancyResponsesPage } from "./pages/VacancyResponses";
+import { DetailedVacancyResposePage } from "./pages/DetailedVacancyResponse";
+import { AcceptedApplicationsPage } from "./pages/AcceptedApplications";
+import { WorkPlacesPage } from "./pages/WorkPlaces";
+import { DetailedWorkPlacePage } from "./pages/DetailedWorkPlace";
 
 export const router = createBrowserRouter([
   {
@@ -31,6 +37,21 @@ export const router = createBrowserRouter([
           },
 
           {
+            path: "accepted-applications",
+            element: <AcceptedApplicationsPage />,
+          },
+
+          {
+            path: "work-places",
+            element: <WorkPlacesPage />,
+          },
+
+          {
+            path: "work-places/:workPlaceId",
+            element: <DetailedWorkPlacePage />,
+          },
+
+          {
             path: "intership-applications/:applicationId",
             element: <DetailedIntershipApplicationPage />,
           },
@@ -42,6 +63,19 @@ export const router = createBrowserRouter([
           {
             path: "vacancies",
             element: <VacanciesPage />,
+          },
+          {
+            path: "vacancies/:vacancyId",
+            element: <DetailedVacancyPage />,
+          },
+          {
+            path: "vacancy-responses",
+            element: <VacancyResponsesPage />,
+          },
+
+          {
+            path: "vacancy-responses/:vacancyResponseId",
+            element: <DetailedVacancyResposePage />,
           },
           {
             path: "profile",

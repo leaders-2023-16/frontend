@@ -1,9 +1,15 @@
 import { IUser } from "./User";
 
+export enum VacancySchedule {
+  FULL_TIME = "full-time",
+  PART_TIME = "part-time",
+}
+
 export enum VacancyStatus {
   PENDING = "pending",
   REJECTED = "rejected",
   PUBLISHED = "published",
+  CLOSED = "closed",
 }
 
 export enum VacancyTestTaskType {
@@ -46,5 +52,5 @@ export interface IVacancy {
   test_task?: IVacancyTestTask;
   published_at?: string;
   created_at: string;
-  schedule: 'part-time' | 'full-time'
+  schedule?: VacancySchedule;
 }

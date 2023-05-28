@@ -8,6 +8,16 @@ import { intershipApplicationsApi } from "./intershipApplications/api";
 import { dictionaryApi } from "./dictionary";
 import { vacanciesApi } from "./vacancies/api";
 import { personnelCreateVacancyPageReducer } from "@/pages/CreateVacancy/Personnel/Store";
+import { curatorDetailedVacancyPageReducer } from "@/pages/DetailedVacancy/Curator/Store";
+import { vacancyResponsesApi } from "./vacancyResponse/api";
+import { traineeDetailedVacancyPageReducer } from "@/pages/DetailedVacancy/Trainee/Store";
+import { personnelDetailedVacancyPageReducer } from "@/pages/DetailedVacancy/Personnel/Store";
+import { usersApi } from "./users/api";
+import { curatorDetailedIntershipApplicationPageReducer } from "@/pages/DetailedIntershipApplication/Curator/Store";
+import { curatorInternshipApplicationPageReducer } from "@/pages/IntershipApplications/Curator/Store";
+import { workPlacesApi } from "./workPlace/api";
+import { curatorWorkPlacesPageReducer } from "@/pages/WorkPlaces/Curator/Store";
+import { curatorVacanciesPageReducer } from "@/pages/Vacancies/Curator/Store";
 
 export const store = configureStore({
   reducer: {
@@ -16,11 +26,22 @@ export const store = configureStore({
 
     candidateIndexPage: candidateIndexPageReducer,
     personnelCreateVacancyPage: personnelCreateVacancyPageReducer,
+    curatorDetailedVacancyPage: curatorDetailedVacancyPageReducer,
+    traineeDetailedVacancyPage: traineeDetailedVacancyPageReducer,
+    personnelDetailedVacancyPage: personnelDetailedVacancyPageReducer,
+    curatorDetailedIntershipApplicationPage:
+      curatorDetailedIntershipApplicationPageReducer,
+    curatorInternshipApplicationPage: curatorInternshipApplicationPageReducer,
+    curatorWorkPlacesPage: curatorWorkPlacesPageReducer,
+    curatorVacanciesPage: curatorVacanciesPageReducer,
 
     [dictionaryApi.reducerPath]: dictionaryApi.reducer,
     [traineeProfileApi.reducerPath]: traineeProfileApi.reducer,
     [intershipApplicationsApi.reducerPath]: intershipApplicationsApi.reducer,
     [vacanciesApi.reducerPath]: vacanciesApi.reducer,
+    [vacancyResponsesApi.reducerPath]: vacancyResponsesApi.reducer,
+    [usersApi.reducerPath]: usersApi.reducer,
+    [workPlacesApi.reducerPath]: workPlacesApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -28,7 +49,10 @@ export const store = configureStore({
       traineeProfileApi.middleware,
       intershipApplicationsApi.middleware,
       dictionaryApi.middleware,
-      vacanciesApi.middleware
+      vacanciesApi.middleware,
+      vacancyResponsesApi.middleware,
+      usersApi.middleware,
+      workPlacesApi.middleware
     ),
 });
 

@@ -9,10 +9,15 @@ import { useParams } from "react-router-dom";
 import { EducationView } from "./Views/EducationView";
 import { WorkExperienceView } from "./Views/WorkExperienceView";
 import { Actions } from "./Views/Actions";
+import { IntershipApplicationStatus } from "@/types/IntershipApplication";
+import { SelectionForm } from "./Views/SelectionForm";
+import { useAppDispatch } from "@/store";
+import { curatorDetailedIntershipApplicationPageActions } from "./Store";
 
 export const Content = () => {
   const { applicationId } = useParams();
 
+  const dispatch = useAppDispatch();
   const { data: application, isLoading: isLoadingApplication } =
     useGetIntershipApplicationQuery(Number.parseInt(applicationId || ""));
 
@@ -27,6 +32,12 @@ export const Content = () => {
       skip: !applicant?.citizenship?.id,
     }
   );
+
+  React.useEffect(() => {
+    return () => {
+      dispatch(curatorDetailedIntershipApplicationPageActions.reset());
+    };
+  }, [dispatch]);
 
   return (
     <Spin spinning={isLoadingApplicant || isLoadingApplication}>
@@ -66,6 +77,17 @@ export const Content = () => {
         </Row>
       </Col>
       <Col>
+        {application &&
+          !(
+            application?.status === IntershipApplicationStatus.REJECTED ||
+            application.status === IntershipApplicationStatus.PENDING
+          ) && (
+            <>
+              <Divider />
+              <SelectionForm applicaion={application} />
+              <Divider />
+            </>
+          )}
         <Title level={4}>Контактная информация</Title>
         <Paragraph>Email: {applicant?.email || "-"}</Paragraph>
         <Paragraph>Телефон: {applicant?.phone_number || "-"}</Paragraph>
@@ -103,7 +125,7 @@ export const Content = () => {
       <Col>
         {application && application.status && (
           <Actions
-            applicationId={application._id}
+            applicationId={application.applicant.id}
             status={application.status}
           />
         )}

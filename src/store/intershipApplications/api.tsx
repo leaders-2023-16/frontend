@@ -1,16 +1,21 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { httpBaseQuery } from "@/services/axios";
-import { IIntershipApplication } from "@/types/IntershipApplication";
+import {
+  IIntershipApplication,
+  IntershipApplicationStatus,
+} from "@/types/IntershipApplication";
 
 export const intershipApplicationsApi = createApi({
   reducerPath: "intershipApplicationsApi",
 
   baseQuery: httpBaseQuery(),
-  tagTypes: ["intershipApplications"],
+  tagTypes: ["intershipApplications", "detailedInternshipApplication"],
+
+  refetchOnMountOrArgChange: true,
 
   endpoints: (builder) => ({
     getIntershipApplications: builder.query<
-      IIntershipApplication[],
+      GetIntershipApplicationsResponse,
       GetIntershipApplicationsParams
     >({
       query: (params) => {
@@ -19,7 +24,11 @@ export const intershipApplicationsApi = createApi({
         }`;
 
         if (params.is_recommended) {
-          url += "is_recommended=true";
+          url += "&is_recommended=true";
+        }
+
+        if (params.status) {
+          url += `&status=${params.status}`;
         }
 
         return {
@@ -27,21 +36,7 @@ export const intershipApplicationsApi = createApi({
           method: "GET",
         };
       },
-      transformResponse: (response: GetIntershipApplicationsResponse) =>
-        response.results.map((item) => ({
-          ...item,
-          _id: item.applicant.id,
-        })) as any,
-      providesTags: (result, error, arg) =>
-        result
-          ? [
-              ...result.map(({ _id }) => ({
-                type: "intershipApplications" as const,
-                id: _id,
-              })),
-              { type: "intershipApplications", id: "LIST" },
-            ]
-          : [{ type: "intershipApplications", id: "LIST" }],
+      providesTags: ["intershipApplications"],
     }),
 
     getIntershipApplication: builder.query<IIntershipApplication, number>({
@@ -49,11 +44,7 @@ export const intershipApplicationsApi = createApi({
         url: `v1/internship-applications/${applicantId}/`,
         method: "GET",
       }),
-      transformResponse: (response: GetDetailedIntershipApplicationResponse) =>
-        ({ ...response, _id: response.applicant.id } as any),
-      providesTags: (result, error, applicantId) => [
-        { type: "intershipApplications", id: "LIST" },
-      ],
+      providesTags: ["detailedInternshipApplication"],
     }),
 
     submitIntershipApplication: builder.mutation<IIntershipApplication, number>(
@@ -63,7 +54,7 @@ export const intershipApplicationsApi = createApi({
           method: "POST",
           data: { direction },
         }),
-        invalidatesTags: [{ type: "intershipApplications", id: "LIST" }],
+        invalidatesTags: ["intershipApplications"],
       }
     ),
 
@@ -78,8 +69,20 @@ export const intershipApplicationsApi = createApi({
         method: "PATCH",
         data,
       }),
-      invalidatesTags: (result, error, params) => [
-        { type: "intershipApplications", id: params.applicantId },
+      invalidatesTags: [
+        "intershipApplications",
+        "detailedInternshipApplication",
+      ],
+    }),
+
+    endUpSelection: builder.mutation({
+      query: () => ({
+        url: `v1/internship-applications/end-up-selection`,
+        method: "POST",
+      }),
+      invalidatesTags: [
+        "intershipApplications",
+        "detailedInternshipApplication",
       ],
     }),
   }),
@@ -89,10 +92,12 @@ export const {
   useGetIntershipApplicationsQuery,
   useSubmitIntershipApplicationMutation,
   useUpdateIntershipApplicationMutation,
+  useEndUpSelectionMutation,
 } = intershipApplicationsApi;
 
 interface GetIntershipApplicationsParams {
   is_recommended?: true;
+  status?: IntershipApplicationStatus;
   page: number;
 }
 

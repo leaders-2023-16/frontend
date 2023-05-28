@@ -11,7 +11,9 @@ import {
   Tag,
   Typography,
 } from "antd";
+import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LIMIT = 2;
 
@@ -27,6 +29,15 @@ export const Content = () => {
     limit: LIMIT,
   });
 
+  const navigate = useNavigate();
+
+  const handlePress = React.useCallback(
+    (id: number) => {
+      navigate(`/vacancies/${id}`);
+    },
+    [navigate]
+  );
+  
   if (isLoading) {
     return <Spin />;
   }
@@ -49,44 +60,16 @@ export const Content = () => {
         }}
         dataSource={data?.results}
         renderItem={(item) => (
-          <Card title={item.required_qualifications.map(e => e.name).join(', ')} extra={[<Tag>{item.status}</Tag>]}>
-            <Typography.Paragraph>Занятость: {SCHEDULE_TO_LABEL[item.schedule]}</Typography.Paragraph>
-            <Space>
+          <Card onClick={() => handlePress(item.id)} title={item.required_qualifications.map(e => e.name).join(', ')} extra={[<Tag>{item.status}</Tag>]}>
+            <Typography.Paragraph>Занятость: {SCHEDULE_TO_LABEL[item.schedule || 'full-time']}</Typography.Paragraph>
+            {/* <Space>
               <Button type="primary">Знать Excel</Button>
               <Button>Знать Excel</Button>
               <Button>Знать Excel</Button>
-            </Space>
+            </Space> */}
           </Card>
         )}
       />
-
-      {/* <Card
-          title="Должность"
-          extra={[<Tag>Статус</Tag>]}
-        >
-            <Typography.Paragraph>Занятость: от 20ч</Typography.Paragraph>
-            <Space>
-              <Button type='primary' >Знать Excel</Button>
-              <Button>Знать Excel</Button>
-              <Button>Знать Excel</Button>
-            </Space>
-        </Card>
-        <Card title="Должность" extra={[<Tag>Статус</Tag>]}>
-          <Typography.Paragraph>Занятость: от 20ч</Typography.Paragraph>
-          <Space>
-            <Button>Знать Excel</Button>
-            <Button>Знать Excel</Button>
-            <Button>Знать Excel</Button>
-          </Space>
-        </Card>
-        <Card title="Должность" extra={[<Tag>Статус</Tag>]}>
-          <Typography.Paragraph>Занятость: от 20ч</Typography.Paragraph>
-          <Space>
-            <Button>Знать Excel</Button>
-            <Button>Знать Excel</Button>
-            <Button>Знать Excel</Button>
-          </Space>
-        </Card> */}
     </>
   );
 };
