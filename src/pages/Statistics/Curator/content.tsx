@@ -44,7 +44,6 @@ export const Content = () => {
     if (!data) return [];
     return data.direction_statistics.filter((el) => !!el.label);
   }, [data]);
-  console.log(dataStat);
   if (!data) return null;
   return (
     <>
