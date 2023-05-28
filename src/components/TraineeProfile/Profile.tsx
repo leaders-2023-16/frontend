@@ -38,8 +38,7 @@ export const TraineeProfileView: FC<ITraineeProfile> = ({
             Гражданство: {citizenship?.name || "Не указано"}
           </CustomTitle>
           <CustomTitle>Почта: {email || "Не указано"}</CustomTitle>
-          <CustomTitle>Вконтакте: {"Не указано"}</CustomTitle>
-          <CustomTitle>Телеграмм: {"Не указано"}</CustomTitle>
+          {links.map(el => (<CustomTitle>{el.url}</CustomTitle>))}
           <CustomTitle>
             Номер телефона: {phone_number || "Не указано"}
           </CustomTitle>
