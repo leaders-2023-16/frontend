@@ -28,8 +28,6 @@ export const Content = () => {
   const { data, isLoading } = useCurrentWorkPlaceQuery();
 
   const dispatch = useAppDispatch();
-
-  const [mutate, { isLoading: isUpdatingReport }] = useUpdateReportMutation();
   const [create, { isLoading: isCreatingReport }] = useSubmitReportMutation();
 
   const { selectedDate, visibleDate, selectedDateStatus } = useAppSelector(
@@ -172,7 +170,7 @@ export const Content = () => {
         <Button
           type="primary"
           onClick={handlePressSave}
-          loading={isUpdatingReport}
+          loading={isCreatingReport}
         >
           Сохранить
         </Button>

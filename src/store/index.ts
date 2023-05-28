@@ -20,6 +20,7 @@ import { curatorWorkPlacesPageReducer } from "@/pages/WorkPlaces/Curator/Store";
 import { curatorVacanciesPageReducer } from "@/pages/Vacancies/Curator/Store";
 import { traineeWorkPlacesPageReducer } from "@/pages/WorkPlaces/Trainee/Store";
 import { reportsApi } from "./reports/api";
+import { mentorDetailedWorkPlacePageReducer } from "@/pages/DetailedWorkPlace/Mentor/Store";
 
 export const store = configureStore({
   reducer: {
@@ -37,6 +38,7 @@ export const store = configureStore({
     curatorWorkPlacesPage: curatorWorkPlacesPageReducer,
     curatorVacanciesPage: curatorVacanciesPageReducer,
     traineeWorkPlacesPage: traineeWorkPlacesPageReducer,
+    mentorDetailedWorkPlacePage: mentorDetailedWorkPlacePageReducer,
 
     [dictionaryApi.reducerPath]: dictionaryApi.reducer,
     [traineeProfileApi.reducerPath]: traineeProfileApi.reducer,
