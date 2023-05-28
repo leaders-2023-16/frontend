@@ -4,7 +4,10 @@ import { useGetVacanciesQuery } from "@/store/vacancies/api";
 
 export const Content = () => {
   const [page, setPage] = React.useState(1);
-  const { data, isLoading } = useGetVacanciesQuery({ page });
+  const {
+    data,
+    isLoading,
+  } = useGetVacanciesQuery({ page });
 
   return (
     <List
@@ -15,9 +18,9 @@ export const Content = () => {
         onChange: setPage,
         pageSize: 10,
       }}
-      dataSource={data}
+      dataSource={data?.results}
       renderItem={(item) => (
-        <List.Item key={item.id}>
+        <List.Item key={item.id} >
           <Row>
             <Col flex={1}>{item.name}</Col>
             <Col>{item.status}</Col>

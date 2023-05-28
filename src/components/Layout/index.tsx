@@ -8,6 +8,7 @@ import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
 import { Container } from "../Container";
 import logo from "../../assets/logo.svg";
 import { Tabs } from "./Tabs";
+import { CustomButton } from "../Button";
 
 export const LayoutPage = () => {
   const { user } = useAppSelector(selectAuth);
@@ -63,12 +64,12 @@ export const LayoutPage = () => {
               ) : (
                 <>
                   <Space>
-                    <Button onClick={() => navigate("/signup")}>
+                    <CustomButton onClick={() => navigate("/signup")}>
                       Зарегистрироваться
-                    </Button>
-                    <Button type="primary" onClick={() => navigate("/login")}>
+                    </CustomButton>
+                    <CustomButton isPrimary onClick={() => navigate("/login")}>
                       Войти
-                    </Button>
+                    </CustomButton>
                   </Space>
                 </>
               )}
@@ -76,7 +77,7 @@ export const LayoutPage = () => {
           </Row>
         </Layout.Header>
         <Layout>
-          <Layout.Content style={{ padding: "18px 36px" }}>
+          <Layout.Content style={{ margin: "0 144px", backgroundColor: 'white' }}>
             <Container>
               <Outlet />
             </Container>

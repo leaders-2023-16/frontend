@@ -1,5 +1,6 @@
 import { httpBaseQuery } from "@/services/axios";
 import { IVacancy } from "@/types/Vacancy";
+import { PaginationResponse } from "@/types/commonTypes";
 import { createApi } from "@reduxjs/toolkit/query/react";
 
 export const vacanciesApi = createApi({
@@ -7,16 +8,15 @@ export const vacanciesApi = createApi({
   baseQuery: httpBaseQuery(),
   tagTypes: ["vacancies"],
   endpoints: (builder) => ({
-    getVacancies: builder.query<IVacancy[], GetVacanciesParams>({
+    getVacancies: builder.query<PaginationResponse<IVacancy[]>, GetVacanciesParams>({
       query: (params) => ({
-        url: `v1/vacancies/?limit=10&offset=${(params.page - 1) * 10}`,
+        url: `v1/vacancies/?limit=${params.limit ?? 10}&offset=${(params.page - 1) * (params.limit ?? 10)}`,
         method: "GET",
       }),
-      transformResponse: (response: GetVacanciesResponse) => response.results,
       providesTags: (result, error, arg) =>
         result
           ? [
-              ...result.map(({ id }) => ({
+              ...result.results.map(({ id }) => ({
                 type: "vacancies" as const,
                 id,
               })),
@@ -79,9 +79,5 @@ export const {
 
 interface GetVacanciesParams {
   page: number;
-}
-
-interface GetVacanciesResponse {
-  results: IVacancy[];
-  total: number;
+  limit?: number
 }

@@ -1,31 +1,66 @@
-import { useGetVacanciesQuery } from "@/store/vacancies";
-import { Button, Card, Pagination, Space, Spin, Tag, Typography } from "antd";
+import { useGetVacanciesQuery } from "@/store/vacancies/api";
+import {
+  Button,
+  Card,
+  Col,
+  List,
+  Pagination,
+  Row,
+  Space,
+  Spin,
+  Tag,
+  Typography,
+} from "antd";
 import { useState } from "react";
 
-const LIMIT = 10;
+const LIMIT = 2;
+
+const SCHEDULE_TO_LABEL = {
+  'part-time': 'от 20ч',
+  'full-time': 'от 40ч',
+}
 
 export const Content = () => {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const { data, isLoading } = useGetVacanciesQuery({
-    offset: page * LIMIT,
+    page,
     limit: LIMIT,
   });
 
-  // if (!data || isLoading) {
-  //   return <Spin />;
-  // }
+  if (isLoading) {
+    return <Spin />;
+  }
 
-  // if (!data.results.length) {
-  //   return <>noData</>;
-  // }
+  if (!data?.results.length) {
+    return <>Нет подходящих вакансий</>;
+  }
 
   return (
     <>
-      <Space direction="vertical">
-        {data?.results.map((card) => (
-          <Card title={card.name}>asdasd</Card>
-        ))}
-        <Card
+      <List
+        loading={isLoading}
+        itemLayout="vertical"
+        size="large"
+        pagination={{
+          onChange: setPage,
+          current: page,
+          pageSize: LIMIT,
+          total: data.count,
+        }}
+        dataSource={data?.results}
+        renderItem={(item) => (
+          <Card title={item.required_qualifications.map(e => e.name).join(', ')} extra={[<Tag>{item.status}</Tag>]}>
+            <Typography.Paragraph>Занятость: {SCHEDULE_TO_LABEL[item.schedule]}</Typography.Paragraph>
+            <Space>
+              <Button type="primary">Знать Excel</Button>
+              <Button>Знать Excel</Button>
+              <Button>Знать Excel</Button>
+            </Space>
+          </Card>
+        )}
+      />
+
+      {/* <Card
           title="Должность"
           extra={[<Tag>Статус</Tag>]}
         >
@@ -51,13 +86,7 @@ export const Content = () => {
             <Button>Знать Excel</Button>
             <Button>Знать Excel</Button>
           </Space>
-        </Card>
-        <Pagination
-          pageSize={LIMIT}
-          total={data?.count || 10}
-          onChange={(p) => setPage(p)}
-        />
-      </Space>
+        </Card> */}
     </>
   );
 };

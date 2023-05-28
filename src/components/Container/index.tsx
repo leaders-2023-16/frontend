@@ -6,19 +6,16 @@ interface ContainerProps {
 }
 export const Container: React.FC<ContainerProps> = ({ children }) => {
   return (
-    <Row justify={"space-between"}>
-      <Col xs={1} sm={2} md={3} lg={4} xl={4} flex={1} />
+    <Row justify={"space-between"} style={{ }}>
+      {/* <Col xs={1} sm={2} md={3} lg={4} xl={4} flex={1} style={{maxWidth: '144px'}} /> */}
       <Col
-        xs={22}
-        sm={20}
-        md={18}
-        lg={18}
-        xl={16}
-        style={{ maxWidth: "1312px" }}
+        
+        flex={1}
+        style={{ width: '100%', backgroundColor: 'white', padding: '24px' }}
       >
         {children}
       </Col>
-      <Col xs={1} sm={2} md={3} lg={4} xl={4} flex={1} />
+      {/* <Col xs={1} sm={2} md={3} lg={4} xl={4} flex={1} style={{maxWidth: '144px'}}  /> */}
     </Row>
   );
 };

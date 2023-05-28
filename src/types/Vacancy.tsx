@@ -46,4 +46,5 @@ export interface IVacancy {
   test_task?: IVacancyTestTask;
   published_at?: string;
   created_at: string;
+  schedule: 'part-time' | 'full-time'
 }

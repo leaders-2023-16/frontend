@@ -12,13 +12,13 @@ export const theme: ThemeConfig = {
       controlHeight: 39
     },
     Button: {
-      colorPrimary: "#1A1230",
-      colorPrimaryHover: '#48357c',
-      borderRadius: 50,
-      controlHeight: 46,
-      paddingContentHorizontal: 32,
-      paddingContentVertical: 16,
-      fontSize: 14,
+      // colorPrimary: "#1A1230",
+      // colorPrimaryHover: '#48357c',
+      // borderRadius: 50,
+      // controlHeight: 46,
+      // paddingContentHorizontal: 32,
+      // paddingContentVertical: 16,
+      // fontSize: 14,
     },
   },
 };

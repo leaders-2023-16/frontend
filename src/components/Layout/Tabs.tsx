@@ -13,7 +13,7 @@ const LinkButton = ({ to, name }: { to: string; name: string }) => (
 );
 
 export const Tabs: FC<{ role?: UserRole }> = ({ role }) => {
-  if (role === UserRole.TRAINEE) {
+  if (role === UserRole.TRAINEE || role === UserRole.CANDIDATE) {
     return (
       <>
         <Space size='large'>

@@ -52,7 +52,7 @@ export const intershipApplicationsApi = createApi({
       transformResponse: (response: GetDetailedIntershipApplicationResponse) =>
         ({ ...response, _id: response.applicant.id } as any),
       providesTags: (result, error, applicantId) => [
-        { type: "intershipApplications", id: applicantId },
+        { type: "intershipApplications", id: "LIST" },
       ],
     }),
 

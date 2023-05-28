@@ -1,5 +1,17 @@
-export const Button = ({
+import style from './style.module.css'
+import cn from 'classnames'
+
+export const CustomButton = ({
+  children,
+  isPrimary = false,
   ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
-  return <button {...props}>askdml</button>;
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & { isPrimary?: boolean }) => {
+  return (
+    <button
+      {...props}
+      className={cn(style.commonButton, isPrimary && style.primary)}
+    >
+      {children}
+    </button>
+  );
 };

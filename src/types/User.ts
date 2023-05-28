@@ -7,6 +7,15 @@ export enum UserRole {
   ADMIN = "A",
 }
 
+export const UserRoleLabel = {
+  [UserRole.ADMIN]: "Администратор",
+  [UserRole.TRAINEE]: "Стажер",
+  [UserRole.MENTOR]: "Ментор",
+  [UserRole.PERSONNEL]: "Кадр",
+  [UserRole.CURATOR]: "Куратор",
+  [UserRole.CANDIDATE]: "Кандидат",
+};
+
 export interface IUserDepartment {
   id: number;
   name: string;

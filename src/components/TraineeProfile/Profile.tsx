@@ -2,6 +2,8 @@ import { Space, Typography } from "antd";
 import { FC } from "react";
 
 import { ITraineeProfile } from "@/types/TraineeProfile";
+import { CustomTitle } from "../CustomTitle";
+import { Degree, DegreeToLabel } from "@/store/traineeProfile/types";
 
 const { Title, Paragraph, Link } = Typography;
 
@@ -17,51 +19,79 @@ export const TraineeProfileView: FC<ITraineeProfile> = ({
   citizenship,
   links,
   phone_number,
-  first_name,
-  last_name,
   email,
   birth_date,
   sex,
 }) => {
   return (
     <>
-      <Space>
+      {/* <Space>
         <Typography.Text>
           Пол: {sex ? SEX_TO_LABEL[sex as "M" | "F"] : "Не указано"}
         </Typography.Text>
-        <Typography.Text>Гражданство: </Typography.Text>
-      </Space>
-      <Title level={5}>Дата рождения: {birth_date || "Не указано"}</Title>
-      <Title level={5}>Ссылки:{!links?.length && "  -"}</Title>
-      <Space direction="vertical">
-        {links.map((l) => (
-          <>
-            <Link href={l.url} target="_blank">
-              {l.url}
-            </Link>
-          </>
-        ))}
-      </Space>
-      <Title level={5}>Образование:{!educations.length && "  -"}</Title>
-      {educations.map((ed) => (
-        <>
-          <Paragraph>
-            Название: {ed.type} {ed.name}
-          </Paragraph>
-          {ed.type !== "school" && (
+        <Typography.Text>Гражданство: {citizenship?.name}</Typography.Text>
+      </Space> */}
+      <div>
+        <Space direction="vertical">
+          <CustomTitle>Дата рождения: {birth_date || "Не указано"}</CustomTitle>
+          <CustomTitle>
+            Гражданство: {citizenship?.name || "Не указано"}
+          </CustomTitle>
+          <CustomTitle>Почта: {email || "Не указано"}</CustomTitle>
+          <CustomTitle>Вконтакте: {"Не указано"}</CustomTitle>
+          <CustomTitle>Телеграмм: {"Не указано"}</CustomTitle>
+          <CustomTitle>
+            Номер телефона: {phone_number || "Не указано"}
+          </CustomTitle>
+        </Space>
+      </div>
+      <div>
+        <Space direction="vertical" style={{ marginTop: "40px" }}>
+          <CustomTitle isTitle>
+            Опыт работы:{!work_experiences.length && " Не указано"}
+          </CustomTitle>
+          {work_experiences.map((ed) => (
             <>
-              <Paragraph>Специлизация: {ed.specialization}</Paragraph>
-              <Paragraph>Должность: {ed.degree}</Paragraph>
+              <CustomTitle>Должность: {ed.position}</CustomTitle>
+              <CustomTitle>Название организации: {ed.employer}</CustomTitle>
+              <CustomTitle>
+                Даты: {ed.start_date} - {ed.end_date}
+              </CustomTitle>
+              <CustomTitle>Что делал на работе: {ed.description}</CustomTitle>
             </>
-          )}
-          <Paragraph>
-            Годы обучения работы: {ed.start_year} - {ed.end_year}
-          </Paragraph>
-          <Paragraph>Описание: {ed.description}</Paragraph>
-        </>
-      ))}
-
-      <Title level={5}>
+          ))}
+        </Space>
+      </div>
+      <div>
+        <Space direction="vertical" style={{ marginTop: "40px" }}>
+          <CustomTitle isTitle>
+            Образование:{!educations.length && " Не указано"}
+          </CustomTitle>
+          {educations.map((ed) => (
+            <>
+              <CustomTitle>Название: {ed.name}</CustomTitle>
+              {ed.type !== "school" && (
+                <>
+                  <CustomTitle>Степень: {DegreeToLabel[ed.degree]}</CustomTitle>
+                  <CustomTitle>Специальность: {ed.specialization}</CustomTitle>
+                </>
+              )}
+              <CustomTitle>
+                Период обучения: {ed.start_year} - {ed.end_year}
+              </CustomTitle>
+            </>
+          ))}
+        </Space>
+      </div>
+      <div>
+        <Space direction="vertical" style={{ marginTop: "40px" }}>
+          <CustomTitle isTitle>
+            О себе:
+          </CustomTitle>
+          <CustomTitle>{bio}</CustomTitle>
+        </Space>
+      </div>
+      {/* <Title level={5}>
         Опыт работы:
         {!work_experiences.length && "  -"}
       </Title>
@@ -77,7 +107,7 @@ export const TraineeProfileView: FC<ITraineeProfile> = ({
       ))}
 
       <Title level={5}>О себе</Title>
-      <Paragraph>{bio}</Paragraph>
+      <Paragraph>{bio}</Paragraph> */}
     </>
   );
 };
