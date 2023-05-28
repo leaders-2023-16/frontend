@@ -22,6 +22,7 @@ import { traineeWorkPlacesPageReducer } from "@/pages/WorkPlaces/Trainee/Store";
 import { reportsApi } from "./reports/api";
 import { mentorDetailedWorkPlacePageReducer } from "@/pages/DetailedWorkPlace/Mentor/Store";
 import { feedbacksApi } from "./feedbacks/api";
+import { statisticsApi } from "./statistics/api";
 
 export const store = configureStore({
   reducer: {
@@ -50,6 +51,7 @@ export const store = configureStore({
     [workPlacesApi.reducerPath]: workPlacesApi.reducer,
     [reportsApi.reducerPath]: reportsApi.reducer,
     [feedbacksApi.reducerPath]: feedbacksApi.reducer,
+    [statisticsApi.reducerPath]: statisticsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -62,7 +64,8 @@ export const store = configureStore({
       usersApi.middleware,
       workPlacesApi.middleware,
       reportsApi.middleware,
-      feedbacksApi.middleware
+      feedbacksApi.middleware,
+      statisticsApi.middleware
     ),
 });
 
