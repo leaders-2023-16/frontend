@@ -7,7 +7,17 @@ import {
 import { useAppSelector } from "../../store";
 import { selectAuthUser, selectUserId } from "../../store/auth/selectors";
 import { LoadingOutlined } from "@ant-design/icons";
-import { App, Button, Col, Modal, Row, Space, Spin, Typography } from "antd";
+import {
+  App,
+  Button,
+  Calendar,
+  Col,
+  Modal,
+  Row,
+  Space,
+  Spin,
+  Typography,
+} from "antd";
 import { TraineeProfileView } from "./Profile";
 import { ProfileEdit } from "./ProfileEdit";
 
@@ -51,9 +61,9 @@ export const TraineeProfile = () => {
   };
 
   const handleClose = () => {
-    setShowModal(false)
-    params.delete('show_modal')
-  }
+    setShowModal(false);
+    params.delete("show_modal");
+  };
 
   useEffect(() => {
     setEditingObj({ ...data, citizenship: data?.citizenship?.id });
@@ -94,6 +104,7 @@ export const TraineeProfile = () => {
           </Space>
         </Col>
         <Col>
+          
           {!isEditing ? (
             <CustomButton style={{ marginTop: "8px" }} onClick={handleEdit}>
               Редактировать
