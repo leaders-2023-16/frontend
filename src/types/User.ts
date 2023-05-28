@@ -1,3 +1,5 @@
+import { TraineeProfileType } from "@/store/traineeProfile/types";
+
 export enum UserRole {
   CANDIDATE = "F",
   TRAINEE = "T",
@@ -31,4 +33,5 @@ export interface IUser {
   last_name?: string;
 
   department?: IUserDepartment;
+  trainee_profile?: TraineeProfileType
 }
