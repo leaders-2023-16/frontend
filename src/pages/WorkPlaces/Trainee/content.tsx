@@ -22,6 +22,7 @@ import {
   useUpdateReportMutation,
 } from "@/store/reports/api";
 import { ReportStatus } from "@/types/Report";
+import { LastWorkPlaces } from "./Views/LastWorkPlaces";
 
 export const Content = () => {
   const { notification } = App.useApp();
@@ -129,7 +130,7 @@ export const Content = () => {
   };
 
   if (!isLoading && !data?.is_active) {
-    return <Empty description="Нет активной стажировки" />;
+    return <LastWorkPlaces />;
   }
 
   return (
